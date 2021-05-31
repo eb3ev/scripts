@@ -1,0 +1,13 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/key_value"
+
+bookmark_key=$(keys "$bookmarks" " ; " "!/^ *#/ && NF && !/^Group/ {print \$1}" | menu 2 "")
+
+if [ -n "$bookmark_key" ]
+then
+    ${1:-xdg-open} "$(value "$bookmark_key" "$bookmarks")"
+fi
+

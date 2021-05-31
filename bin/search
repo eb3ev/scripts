@@ -1,0 +1,34 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/var/cache"
+. "$lib/key_value"
+. "$lib/lines"
+
+create_histfile () {
+    if [ -e "$search_history" ]
+    then
+        histsize="${search_histsize:-1000}"
+        sed -i "$histsize,\$d" "$search_history"
+    else
+        echo > "$search_history"
+    fi
+} 
+
+search_engine_key=$(keys "$search_engines" | menu 2 "")
+
+if [ -n "$search_engine_key" ]
+then
+    query=$(menu 1 "$search_engine_key" < "$search_history")
+    
+    if [ -n "$query" ]
+    then
+        to_top "$query" "$search_history"
+
+        query=$(enc 2 "$query")
+
+        ${1:-xdg-open} "$(value "$search_engine_key" "$search_engines")$query"
+    fi
+fi
+

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+
+echo -n | menu 5
+

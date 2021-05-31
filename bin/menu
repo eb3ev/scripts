@@ -1,0 +1,54 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+param0="\$2"
+param1="-p \"\$2\""
+param2="-r -p \"\$2\""
+param3="-F -r -p \"\$2\""
+param4="-bw 4 -r -p \"\$2\""
+param5="-P -p ' '"
+
+top_menu () {
+    base_dmenu="dmenu -fn 'Noto Sans-11' -i -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
+}
+
+center_menu () {
+    base_dmenu="dmenu -fn 'Noto Sans-18' -nb '#080808' -sb '#080808' \
+        -pb '#080808' -i -c -l 5 -mn 1 -h 64 -bw 1 -bc '#FFFFFF'"
+
+    param5="-l 0 -P -p ' '"
+}
+
+bottom_menu () {
+    base_dmenu="dmenu -fn 'Noto Sans-11' -i -b -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
+}
+
+default_menu () {
+    base_dmenu="dmenu"
+
+    param0=""
+    param1=""
+    param2=""
+    param3=""
+    param4=""
+    param5=""
+}
+
+case "$(cat "$menurc" 2>/dev/null)" in
+    "top") top_menu ;;
+    "center") center_menu ;;
+    "bottom") bottom_menu ;;
+    *) default_menu ;;
+esac
+
+case "$1" in
+    0) eval "$base_dmenu $param0" ;;
+    1) eval "$base_dmenu $param1" ;;
+    2) eval "$base_dmenu $param2" ;;
+    3) eval "$base_dmenu $param3" ;;
+    4) eval "$base_dmenu $param4" ;;
+    5) eval "$base_dmenu $param5" ;;
+    *) eval "$base_dmenu" ;;
+esac
