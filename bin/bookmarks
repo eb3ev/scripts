@@ -2,7 +2,7 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
-. "$lib/key_value"
+. "$lib/csv"
 
 bookmark_key=$(keys "$bookmarks" " . " "!/^ *#/ && NF && !/^Group/ {print \$1}" | menu 2 "")
 

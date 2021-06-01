@@ -3,7 +3,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 . "$lib/var/cache"
-. "$lib/key_value"
+. "$lib/csv"
 . "$lib/lines"
 
 create_histfile () {

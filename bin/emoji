@@ -1,7 +1,7 @@
 #!/bin/sh
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
-. "$lib/key_value"
+. "$lib/csv"
 
 emoji_key=$(keys "$lib/data/emojis" "" "!/^ *#/ && NF" | menu 3 "Emojis")
 
