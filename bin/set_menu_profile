@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+arg="$1"
+
+arg_check () {
+    case "$arg" in
+        "top"|"center"|"bottom")
+            echo "true"
+            ;;
+    esac
+}
+
+if [ "$(arg_check)" = "true" ]
+then
+    if [ $(wc -l 2>/dev/null < "$menurc") -gt 0 ]
+    then
+        sed -i '1,$d' "$menurc"
+    fi
+
+    echo "$arg" >> "$menurc"
+fi
+

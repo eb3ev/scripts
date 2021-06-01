@@ -1,7 +1,8 @@
 menurc="${XDG_CONFIG_HOME:-$HOME/.config}/menurc"
 
-bookmarks="$HOME/other/lib/bookmarks"
+bookmarks="${BOOKMARKS:-$HOME/linux/lib/bookmarks}"
 
-search_engines="$HOME/other/bookmarks/search-engines"
+search_engines="${SEARCH_ENGINE:-$HOME/linux/lib/search_engines}"
 
-programs="$HOME/.cache/dmenu_run"
+programs="${PROGRAM_LIST:-$HOME/.cache/dmenu_run}"
+

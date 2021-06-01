@@ -37,7 +37,7 @@ to_top () {
     then
         rm_line "$1" "$2" && prepend_line "$1" "$2"
     else
-        rm_line | prepend_line
+        rm_line "$1" | prepend_line
     fi
 }
 
@@ -46,7 +46,7 @@ to_bottom () {
     then
         rm_line "$1" "$2" && append_line "$1" "$2"
     else
-        rm_line | append_line
+        rm_line "$1" | append_line
     fi
 }
 
@@ -57,9 +57,9 @@ rm_file_dups () {
     do
         dup=$(echo "$dups" | head -n 1)
 
-        to_bottom "$dup" "$2"
+        to_bottom "$dup" "$1"
 
-        dups=$(sort "$2" | uniq -D)
+        dups=$(sort "$1" | uniq -D)
     done
 }
 
@@ -84,6 +84,7 @@ rm_list_dups () {
 sync_file_file () {
     rm_file_dups "$1" 
 
+
     uniq=$(cat "$1" "$2" | sort | uniq -u)
 
     for line in $uniq
@@ -93,7 +94,7 @@ sync_file_file () {
             prepend_line "$line" "$1"
         elif [ -z "$(grep -x "$line" "$2")" ]
         then
-            rm_line "$line"
+            rm_line "$line" "$1"
         fi
 
         if [ $(grep -x "$line" "$1" | wc -l) -gt 1 ]

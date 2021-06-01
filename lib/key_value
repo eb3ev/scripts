@@ -1,15 +1,15 @@
-
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 
 keys () {
-    delim="${2:- ; }"
+    delim="${2:- . }"
     filter="${3:-"!/^ *#/ && NF {print \$1}"}"
     awk -F "$delim" "$filter" "$1"
 }
 
 value () {
     key=$(enc 1 "$1")
-    delim="${3:- ; }"
+    delim="${3:- . }"
     value_index="${4:-2}"
-    awk -F "$delim" "/^$key ;/ {print \$$value_index}" "$2"
+    awk -F "$delim" "/^$key \. / {print \$$value_index}" "$2"
 }
+
