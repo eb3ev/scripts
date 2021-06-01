@@ -10,6 +10,14 @@ value () {
     key=$(enc 1 "$1")
     delim="${3:- . }"
     value_index="${4:-2}"
-    awk -F "$delim" "/^$key \. / {print \$$value_index}" "$2"
+    awk -F "$delim" "/^$key$delim/ {print \$$value_index}" "$2"
 }
 
+get_column () {
+    if [ -n "$3" ]
+    then
+        awk -F "$1" "{print \$$2}" "$3"
+    else
+        awk -F "$1" "{print \$$2}"
+    fi
+}
