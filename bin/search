@@ -24,7 +24,7 @@ then
     
     if [ -n "$query" ]
     then
-        to_top "$query" "$search_history"
+        create_histfile && to_top "$query" "$search_history"
 
         query=$(enc 2 "$query")
 

@@ -3,6 +3,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 . "$lib/var/cache"
+. "$lib/lines"
 
 IFS=:
 if stest -dqr -n "$programs" $PATH
@@ -16,59 +17,7 @@ then
     cp "$programs" "$program_history"
 fi
 
-append_program () {
-    if [ $(wc -l < "$program_history") -eq 0 ]
-    then
-        echo "$1" >> "$program_history"
-    else
-        sed -i "1 i $1" "$program_history"
-    fi
-}
-
-rm_program () {
-    sed -i "/^$(enc 1 "$1")\$/d" "$program_history"
-}
-
-rm_dups () {
-    dups=$(sort "$scripts_history" | uniq -D)
-
-    while [ -n "$dups" ]
-    do
-        dup=$(echo "$dups" | head -n 1)
-
-        rm_script "$dup" && append_script "$dup"
-
-        dups=$(sort "$scripts_history" | uniq -D)
-    done
-}
-
-concat_programs () {
-    cat "$programs" "$program_history"
-}
-
-sync_program_history () {
-    rm_dups
-
-    uniq=$(concat_programs | sort | uniq -u)
-
-    for program in $uniq
-    do
-        if [ -z "$(grep -x "$program" "$program_history")" ]
-        then
-            append_program "$program"
-        elif [ -z "$(echo "$programs" | grep -x "$program")" ]
-        then
-            rm_program "$program"
-        fi
-
-        if [ $(grep -x "$program" "$program_history" | wc -l) -gt 1 ]
-        then
-            rm_program "$program" && append_program "$script"
-        fi
-    done
-}
-
-sync_program_history
+sync_file_file "$program_history" "$programs"
 
 case "$1" in
     "-s")
@@ -83,7 +32,7 @@ esac
 
 if [ -n "$program" ]
 then
-    rm_program "$program" && append_program "$program"
+    prepend_line "$program" "$program_history"
 
     eval "$program_prefix \"$program\""
 fi

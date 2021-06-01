@@ -1,84 +1,24 @@
 #!/bin/sh
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
-
 . "$lib/var/cache"
+. "$lib/lines"
 
-scripts="$bin"
-
-filter_scripts () {
-    ls -F1 "$scripts" \
-        | awk '/\*$/' \
-        | sed 's/\*$//g'
-}
-
-scripts_list=$(filter_scripts)
+scripts_list=$(ls -F1 "$bin" | awk '/\*$/' | sed 's/\*$//g')
 
 if [ ! -e "$scripts_history" ]
 then
-    echo "$scripts" > "$scripts_history"
+    echo "$scripts_list" > "$scripts_history"
 fi
 
-append_script () {
-    if [ $(wc -l < "$scripts_history") -eq 0 ]
-    then
-        echo "$1" >> "$scripts_history"
-    else
-        sed -i "1i\\$1" "$scripts_history"
-    fi
-}
-
-rm_script () {
-    sed -i "/^$(enc 1 "$1")\$/d" "$scripts_history"
-}
-
-rm_dups () {
-    dups=$(sort "$scripts_history" | uniq -D)
-
-    while [ -n "$dups" ]
-    do
-        dup=$(echo "$dups" | head -n 1)
-
-        rm_script "$dup" && append_script "$dup"
-
-        dups=$(sort "$scripts_history" | uniq -D)
-    done
-}
-
-concat_scripts () {
-    printf "$scripts_list\n$(< "$scripts_history")"
-}
-
-sync_scripts_history () {
-    rm_dups
-
-    uniq=$(concat_scripts | sort | uniq -u)
-
-    for script in $uniq
-    do
-        if [ -z "$(grep -x "$script" "$scripts_history")" ]
-        then
-            append_script "$script"
-        elif [ -z "$(echo "$scripts_list" | grep -x "$script")" ]
-        then
-            rm_script "$script"
-        fi
-
-        if [ $(grep -x "$script" "$scripts_history" | wc -l) -gt 1 ]
-        then
-            rm_script "$script" && append_script "$script"
-        fi
-    done
-}
-
-sync_scripts_history
+sync_file_list "$scripts_history" "$scripts_list"
 
 script=$(menu 2 "Run" < "$scripts_history")
 
 if [ -n "$script" ]
 then
-    rm_script "$script" && append_script "$script"
+    prepend_line "$script" "$scripts_history"
     
-    $scripts/$script
+    $bin/$script
 fi
 

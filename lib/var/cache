@@ -2,5 +2,5 @@ scripts_history="${XDG_CACHE_HOME:-$HOME/.cache}/scripts-history"
 
 search_history="${XDG_CACHE_HOME:-$HOME/.cache}/search-history"
 
-program_history="${XDG_CACHE_HOME:-$HOME/.cache}/program_history"
+program_history="${XDG_CACHE_HOME:-$HOME/.cache}/program-history"
 
