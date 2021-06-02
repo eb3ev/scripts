@@ -14,21 +14,25 @@ create_histfile () {
     else
         echo > "$search_history"
     fi
+    echo "true"
 } 
 
 search_engine_key=$(keys "$search_engines" | menu 2 "")
 
 if [ -n "$search_engine_key" ]
 then
-    query=$(menu 1 "$search_engine_key" < "$search_history")
-    
-    if [ -n "$query" ]
+    if [ "$(create_histfile)" = "true" ]
     then
-        create_histfile && to_top "$query" "$search_history"
+        query=$(menu 1 "$search_engine_key" < "$search_history")
+        
+        if [ -n "$query" ]
+        then
+            to_top "$query" "$search_history"
 
-        query=$(enc 2 "$query")
+            query=$(enc 2 "$query")
 
-        ${1:-xdg-open} "$(value "$search_engine_key" "$search_engines")$query"
+            ${1:-xdg-open} "$(value "$search_engine_key" "$search_engines")$query"
+        fi
     fi
 fi
 
