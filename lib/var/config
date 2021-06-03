@@ -9,3 +9,5 @@ programs="${PROGRAM_LIST:-$HOME/.cache/dmenu_run}"
 term_cmd="alacritty -e"
 
 editor="nvim"
+
+term_fm="lf"

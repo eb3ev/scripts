@@ -1,0 +1,32 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+if [ ! $# -eq 0 ]
+then
+    for arg in "$@"
+    do
+        if [ -d "$arg" ]
+        then
+            term_exec "$term_fm '$arg'" &
+        fi
+    done
+elif [ "$1" = "--use-clipboard" ]
+then
+    dir=$(xclip -selection clipboard -o 2>dev/null)
+    dir1=$(xclip -selection primary -o 2>/dev/null)
+
+    if [ -d "$dir" ]
+    then
+        term_exec "$term_fm '$dir'"
+    elif [ -d "$dir1" ]
+    then
+        term_exec "$term_fm '$dir1'"
+    else
+        term_exec "$term_fm"
+    fi
+else
+    term_exec "$term_fm"
+fi
+

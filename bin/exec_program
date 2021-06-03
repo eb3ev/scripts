@@ -20,7 +20,7 @@ fi
 sync_file_file "$program_history" "$programs"
 
 case "$1" in
-    "-s")
+    "-s"|"--sudo")
         program="$(menu 4 "Launch" < "$program_history")"
         program_prefix="SUDO_ASKPASS=\"$bin/passwd_prompt\" sudo -A"
         ;;
