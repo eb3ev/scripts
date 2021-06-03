@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for arg in "$@"
+do
+    killall "$arg" 2>/dev/null && eval "$arg" &
+done
+

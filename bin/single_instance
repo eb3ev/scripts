@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for arg in "$@"
+do
+    if [ -z "$(pgrep -x "$arg")" ]
+    then
+        eval "$arg" &
+    fi
+done
+
