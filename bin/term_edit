@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+if [ ! $# -eq 0 ]
+then
+    for arg in "$@"
+    do
+        term_exec "${EDITOR:-$editor} '$arg'" &
+    done
+else
+    term_exec "${EDITOR:-$editor}"
+fi
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+for arg in "$@"
+do
+    eval "${override_term_cmd:-$term_cmd} sh -c 'sleep 0.5 && $arg'" &
+done
+
