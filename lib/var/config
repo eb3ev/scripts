@@ -6,3 +6,6 @@ search_engines="${SEARCH_ENGINE:-$HOME/linux/lib/search_engines}"
 
 programs="${PROGRAM_LIST:-$HOME/.cache/dmenu_run}"
 
+term_cmd="alacritty -e"
+
+editor="nvim"
