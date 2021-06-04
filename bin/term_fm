@@ -10,10 +10,11 @@ then
         if [ -d "$arg" ]
         then
             term_exec "$term_fm '$arg'" &
-        elif [ "$1" = "--use-clipboard" ]
+        elif [ "$arg" = "--use-clipboard" ]
         then
-            dir=$(xclip -selection clipboard -o 2>dev/null)
+            dir=$(xclip -selection clipboard -o 2>/dev/null)
             dir1=$(xclip -selection primary -o 2>/dev/null)
+            echo "$dir"
 
             if [ -d "$dir" ]
             then
