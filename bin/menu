@@ -15,8 +15,8 @@ top_menu () {
 }
 
 center_menu () {
-    base_dmenu="dmenu -fn 'Noto Sans-18' -nb '#080808' -sb '#080808' \
-        -pb '#080808' -i -c -l 5 -mn 1 -h 64 -bw 1 -bc '#FFFFFF'"
+    base_dmenu="dmenu -fn 'Noto Sans-14' -nb '#000000' -sb '#000000' \
+        -pb '#000000' -i -c -l 3 -mn 1 -h 32 -bw 1 -bc '#FFFFFF'"
 
     param5="-l 0 -P -p ' '"
 }
