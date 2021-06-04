@@ -1,0 +1,24 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+
+get_hex_value () {
+    echo "$1" | awk -F ' \\| ' '{print $2}' | sed 's/Hex: //g'
+}
+
+get_rgb_value () {
+    echo "$1" | awk -F ' \\| ' '{print $1}' | sed 's/ //g;s/,/  /g'
+}
+
+color=$(colorpicker --one-shot)
+
+if [ -n "$color" ]
+then
+    hex=$(get_hex_value "$color")
+    rgb=$(get_rgb_value "$color")
+
+    notify-send "Color" "$hex    $rgb"
+
+    echo -n "$hex" | xclip -selection clipboard
+fi
+
