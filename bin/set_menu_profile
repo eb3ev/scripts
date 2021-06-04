@@ -7,7 +7,7 @@ arg="$1"
 
 arg_check () {
     case "$arg" in
-        "top"|"center"|"bottom")
+        "top_window"|"center_window"|"bottom_window"|"term"|"term_window")
             echo "true"
             ;;
         *)

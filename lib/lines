@@ -84,7 +84,6 @@ rm_list_dups () {
 sync_file_file () {
     rm_file_dups "$1" 
 
-
     uniq=$(cat "$1" "$2" | sort | uniq -u)
 
     for line in $uniq
