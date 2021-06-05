@@ -41,7 +41,7 @@ top_window_menu () {
 
 center_window_menu () {
     base_dmenu="dmenu -fn 'Noto Sans-14' -nb '#000000' -sb '#000000' \
-        -pb '#000000' -i -c -l 3 -mn 1 -h 32 -bw 1 -bc '#FFFFFF'"
+        -pb '#000000' -i -c -l 5 -mn 1 -h 32 -bw 1 -bc '#FFFFFF'"
     param0="\$2"
     param1="-p \"\$2\""
     param2="-r -p \"\$2\""
