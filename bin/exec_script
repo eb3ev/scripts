@@ -17,7 +17,7 @@ script=$(menu 2 "Run" < "$scripts_history")
 
 if [ -n "$script" ]
 then
-    prepend_line "$script" "$scripts_history"
+    to_top "$script" "$scripts_history"
     
     $bin/$script
 fi

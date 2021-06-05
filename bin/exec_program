@@ -32,7 +32,7 @@ esac
 
 if [ -n "$program" ]
 then
-    prepend_line "$program" "$program_history"
+    to_top "$program" "$program_history"
 
     eval "$program_prefix \"$program\""
 fi
