@@ -10,6 +10,8 @@ term_cmd="alacritty -e"
 
 editor="nvim"
 
+sudo_editor="sudoedit"
+
 term_fm="lf"
 
 wallpaper_setter="${XDG_CONFIG_HOME:-$HOME/.config}/set_wallpaper"

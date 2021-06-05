@@ -42,32 +42,57 @@ get_file () {
 }
 
 edit_file () {
-    if [ "$1" = "true" ]
+    new_window="false"
+    require_sudo="false"
+    file=""
+    for arg in "$@"
+    do
+        case "$arg" in
+            "--new-window") new_window="true" ;;
+            "--sudo") require_sudo="true" ;;
+            *) file="$arg" ;;
+        esac
+    done
+    if [ "$new_window" = "true" ]
     then
-        term_edit "$2"
+        if [ "$require_sudo" = "true" ]
+        then
+            term_edit --sudo "$file"
+        else
+            term_edit "$file"
+        fi
     else
-        $editor "$2"
+        if [ "$require_sudo" = "true" ]
+        then
+            $sudo_editor "$file"
+        else
+            $editor "$file"
+        fi
     fi
 }
 
-new_window="false"
+args=""
 directories=""
 
 for arg in "$@"
 do
-    if [ "$arg" = "--new-window" ]
-    then
-        new_window="true"
-    elif [ -d "$arg" ]
-    then
-        directories=$(list_add "$directories" "$arg")
-    fi
+    case "$arg" in
+        "--new-window"|"--sudo")
+            args="$args $arg"
+            ;;
+        *)
+            if [ -d "$arg" ]
+            then
+                directories=$(list_add "$directories" "$arg")
+            fi
+            ;;
+    esac
 done
 
 file=$(get_file "$directories")
 
 if [ -n "$file" ]
 then
-    edit_file "$new_window" "$file"
+    edit_file $args "$file"
 fi
 
