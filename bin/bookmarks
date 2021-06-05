@@ -4,7 +4,7 @@
 . "$lib/var/config"
 . "$lib/csv"
 
-bookmark_key=$(keys "$bookmarks" " . " "!/^ *#/ && NF && !/^Group/ {print \$1}" | menu 2 "")
+bookmark_key=$(keys "$bookmarks" " ; " "!/^ *#/ && NF && !/^Group/ {print \$1}" | menu 2 "")
 
 if [ -n "$bookmark_key" ]
 then
