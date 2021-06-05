@@ -1,0 +1,65 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+find_cmd () {
+    if [ -n "$1" ]
+    then
+        directories=$(echo "$@" | sed 's/ /\\ /g')
+        if [ -n "$(command -v fd)" ]
+        then
+            fd . "$directories" -H -I -t f
+        else
+            find "$directories" -type f
+        fi
+    else
+        if [ -n "$(command -v fd)" ]
+        then
+            fd . -H -I -t f
+        else
+            find . -type f
+        fi
+    fi
+}
+
+new_window="false"
+directories=""
+
+for arg in "$@"
+do
+    echo "$arg"
+    if [ "$arg" = "--new-window" ]
+    then
+        new_window="true"
+    elif [ -d "$arg" ]
+    then
+        if [ -z "$directories" ]
+        then
+            directories="$directories"
+        else
+            directories=$"$directories\n$arg"
+        fi
+    fi
+done
+
+if [ "$new_window" = "true" ]
+then
+    editor_cmd="term_edit"
+else
+    editor_cmd="$editor"
+fi
+
+if [ -n "$directories" ]
+then
+    echo "$directories"
+    file=$(find_cmd $directories | menu 1 "Edit")
+else
+    file=$(find_cmd | menu 1 "Edit")
+fi
+
+if [ -n "$file" ]
+then
+    $editor_cmd "$file"
+fi
+
