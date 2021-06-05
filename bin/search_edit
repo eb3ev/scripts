@@ -32,8 +32,6 @@ find_cmd () {
     echo "$vals"
 }
 
-find_cmd "asdf asdf"
-
 new_window="false"
 directories=""
 
