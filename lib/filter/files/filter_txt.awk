@@ -55,4 +55,4 @@ rc$|\
 search-history$|\
 \/\.scripts\/|\
 \[Ll][Ii][Cc][Ee][Nn][Cc][Ee]$\
-/ && !/\/\.git\// && !/\/\git.bck\// && !/\/\.src\//
+/ && !/\/\.git\// && !/\/git.bck\// && !/\/\.src\//

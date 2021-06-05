@@ -4,24 +4,33 @@
 . "$lib/var/config"
 . "$lib/lines"
 
+use_filter="false"
+new_window="false"
+require_sudo="false"
+
 find_cmd () {
+    if [ -n "$(command -v fd)" ]
+    then
+        use_fd="true"
+    else
+        use_fd="false"
+    fi
+
     vals=""
+
     if [ -n "$1" ]
     then
-        if [ -n "$(command -v fd)" ]
-        then
-            for dir in "$1"
-            do
+        for dir in "$1"
+        do
+            if [ "$use_fd" = "true" ]
+            then
                 vals=$(list_add "$vals" "$(fd . "$(printf "$dir")" -H -I -t f)")
-            done
-        else
-            for dir in "$1"
-            do
-                vals=(list_add "$vals" "$(find "$(printf "$dir")" -type f)")
-            done
-        fi
+            else
+                vals=$(list_add "$vals" "$(find "$(printf "$dir")" -type f)")
+            fi
+        done
     else
-        if [ -n "$(command -v fd)" ]
+        if [ "$use_fd" = "true" ]
         then
             vals=$(fd . -H -I -t f)
         else
@@ -33,53 +42,43 @@ find_cmd () {
 }
 
 get_file () {
-    if [ -n "$1" ]
+    files=$(find_cmd "$1")
+
+    if [ "$use_filter" = "true" ]
     then
-        find_cmd "$1" | menu 1 "Edit"
-    else
-        find_cmd | menu 1 "Edit"
+        files=$(echo "$files" | filter --txt-files)
     fi
+
+    echo "$files" | menu 1 "Edit"
 }
 
 edit_file () {
-    new_window="false"
-    require_sudo="false"
-    file=""
-    for arg in "$@"
-    do
-        case "$arg" in
-            "--new-window") new_window="true" ;;
-            "--sudo") require_sudo="true" ;;
-            *) file="$arg" ;;
-        esac
-    done
     if [ "$new_window" = "true" ]
     then
         if [ "$require_sudo" = "true" ]
         then
-            term_edit --sudo "$file"
+            term_edit --sudo "$1"
         else
-            term_edit "$file"
+            term_edit "$1"
         fi
     else
         if [ "$require_sudo" = "true" ]
         then
-            $sudo_editor "$file"
+            $sudo_editor "$1"
         else
-            $editor "$file"
+            $editor "$1"
         fi
     fi
 }
 
-args=""
 directories=""
 
 for arg in "$@"
 do
     case "$arg" in
-        "--new-window"|"--sudo")
-            args="$args $arg"
-            ;;
+        "--new-window") new_window="true" ;;
+        "--require-sudo") require_sudo="true" ;;
+        "--use-filter") use_filter="true" ;;
         *)
             if [ -d "$arg" ]
             then

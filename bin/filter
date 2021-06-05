@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. "${SCRIPTS_RC:-$HOME/scripts}/scriptsrc"
+. "$lib/lines"
+
+args=""
+vals=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--txt-files") args=$(list_add "$args" "$arg") ;;
+        *) vals=$(list_add "$vals" "$arg") ;;
+    esac
+done
+
+if [ -z "$vals" ]
+then
+    read -d '' vals
+fi
+
+for arg in "$args"
+do
+    case "$1" in
+        "--txt-files") echo "$vals" | $lib/filter/files/filter_txt.awk ;;
+    esac
+done
+
