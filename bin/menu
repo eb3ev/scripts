@@ -4,7 +4,7 @@
 . "$lib/var/config"
 
 window_menu () {
-    case "$2" in
+    case "$1" in
         0) eval "$base_dmenu $param0" ;;
         1) eval "$base_dmenu $param1" ;;
         2) eval "$base_dmenu $param2" ;;
@@ -24,7 +24,7 @@ default_menu () {
     param4=""
     param5=""
 
-    window_menu
+    window_menu "$1" "$2"
 }
 
 top_window_menu () {
@@ -36,7 +36,7 @@ top_window_menu () {
     param4="-bw 4 -r -p \"\$2\""
     param5="-P -p ' '"
 
-    window_menu
+    window_menu "$1" "$2"
 }
 
 center_window_menu () {
@@ -49,13 +49,19 @@ center_window_menu () {
     param4="-bw 4 -r -p \"\$2\""
     param5="-l 0 -P -p ' '"
 
-    window_menu
+    window_menu "$1" "$2"
 }
 
 bottom_window_menu () {
     base_dmenu="dmenu -fn 'Noto Sans-11' -i -b -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
+    param0="\$2"
+    param1="-p \"\$2\""
+    param2="-r -p \"\$2\""
+    param3="-F -r -p \"\$2\""
+    param4="-bw 4 -r -p \"\$2\""
+    param5="-l 0 -P -p ' '"
 
-    window_menu
+    window_menu "$1" "$2"
 }
 
 term_menu () {
@@ -93,7 +99,6 @@ term_window_menu () {
         --color info:#D0D0D0,prompt:#FFFFFF,pointer:#FFFFFF,hl+:#FFFFFF
         --color marker:#FFFFFF,spinner:#FFFFFF,header:#FFFFFF,border:-1
     '
-    #alacritty -e sh -c "sleep 0.5 && echo \"$input\" | FZF_DEFAULT_OPTS=\"$FZF_DEFAULT_OPTS\" fzf > \"$temp_file\""
     term_exec --no-fork "echo \"$input\" | FZF_DEFAULT_OPTS=\"$FZF_DEFAULT_OPTS\" fzf > \"$tmp_file\""
     value=$(< "$tmp_file")
     echo "$value"
@@ -102,11 +107,11 @@ term_window_menu () {
 config="${override_menu_config:-$(cat "$menurc" 2>/dev/null)}"
 
 case "$config" in
-    "top_window") top_window_menu ;;
-    "center_window") center_window_menu ;;
-    "bottom_window") bottom_window_menu ;;
-    "term_window") term_window_menu ;;
+    "top_window") top_window_menu "$1" "$2" ;;
+    "center_window") center_window_menu "$1" "$2" ;;
+    "bottom_window") bottom_window_menu "$1" "$2" ;;
+    "term_window") term_window_menu "$1" "$2" ;;
     "term") term_menu ;;
-    *) default_menu ;;
+    *) default_menu "$1" "$2" ;;
 esac
 

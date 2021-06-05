@@ -1,0 +1,89 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/csv"
+. "$lib/lines"
+
+monitors=$(xrandr | awk '/ connected/ {print $1}')
+
+monitors=$(printf "$monitors\nSpan")
+
+monitor_arg=""
+pos=""
+
+get_pos () {
+    pos_opt=$(printf 'Zoom\nCenter\nStretch\nMaximize' | menu 2 "漣")
+
+    if [ -n "$pos_opt" ]
+    then
+        case "$pos_opt" in
+            "Zoom") echo "--zoom" ;;
+            "Center") echo "--center" ;;
+            "Stretch") echo "--stretch" ;;
+            "Maximize") echo "--maximize" ;;
+        esac
+    fi
+}
+
+get_wallpaper () {
+    wallpaper=$(ls -F1 "$wallpapers_dir" | awk '!/\/$|\*$/' | menu 2 " ")
+
+    if [ -n "$wallpaper" ]
+    then
+        pos_arg=$(get_pos)
+
+        if [ -n "$pos_arg" ]
+        then
+            echo "$pos_arg '$wallpapers_dir/$wallpaper'"
+        fi
+    fi
+}
+
+args=""
+for _ in "$monitors"
+do
+    monitor=$(echo "$monitors" | menu 2 " ")
+
+    if [ -z "$monitor" ]
+    then
+        exit 0
+    fi
+
+    if [ "$monitor" = "Span" ]
+    then
+        monitor_arg="--no-randr"
+        monitors=""
+    else
+        monitor_arg="--output $monitor"
+        monitors=$(echo "$monitors" | rm_line "$monitor")
+    fi
+
+    wallpaper_arg=$(get_wallpaper)
+
+    if [ -z "$wallpaper_arg" ]
+    then
+        exit 0
+    fi
+
+    args="$args $monitor_arg $wallpaper_arg"
+done
+
+create_setter_script () {
+    if [ $(wc -l 2>/dev/null < "$wallpaper_setter") -gt 2 ] || [ "$(head -n 1 "$wallpaper_setter" 2>/dev/null)" != '#!/bin/sh' ]
+    then
+        rm -f "$wallpaper_setter"
+    fi
+
+    mkscript "$wallpaper_setter"
+
+    echo "true"
+}
+
+if [ "$(create_setter_script)" = "true" ]
+then
+    echo "xwallpaper$args" >> "$wallpaper_setter"
+
+    $wallpaper_setter
+fi
+

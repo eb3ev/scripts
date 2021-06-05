@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -e "$1" ]
+then
+    echo '#!/bin/sh' > "$1"
+    chmod +x "$1"
+fi
+
