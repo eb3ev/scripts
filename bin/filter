@@ -3,6 +3,8 @@
 . "${SCRIPTS_RC:-$HOME/scripts}/scriptsrc"
 . "$lib/lines"
 
+filter="$lib/filter"
+
 args=""
 vals=""
 
@@ -22,7 +24,7 @@ fi
 for arg in "$args"
 do
     case "$1" in
-        "--txt-files") echo "$vals" | $lib/filter/files/filter_txt.awk ;;
+        "--txt-files") echo "$vals" | $filter/files/filter_txt.awk ;;
     esac
 done
 

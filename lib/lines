@@ -32,12 +32,12 @@ append_line () {
 rm_line () {
     if [ -w "$2" ]
     then
-        sed -i "/^$(enc 1 "$1")\$/d" "$2"
+        sed -i "/^$(enc --sed-regex "$1")\$/d" "$2"
     elif [ $# -gt 0 ]
     then
-        echo "$2" | sed "/^$(enc 1 "$1")\$/d"
+        echo "$2" | sed "/^$(enc --sed-regex "$1")\$/d"
     else
-        sed "/^$(enc 1 "$1")\$/d"
+        sed "/^$(enc --sed-regex "$1")\$/d"
     fi
 }
 

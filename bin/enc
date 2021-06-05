@@ -1,9 +1,34 @@
 #!/bin/sh
 
 . "${SCRIPTS_RC:-$HOME/scripts}/scriptsrc"
+. "$lib/lines"
 
-case "$1" in
-    0) echo "$2" | $lib/encode/enc_awk_regex.sed ;;
-    1) echo "$2" | $lib/encode/enc_sed_regex.sed ;;
-    2) echo "$2" | $lib/encode/enc_html.sed ;;
-esac
+encode="$lib/encode"
+
+args=""
+vals=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--awk-regex"|"--sed-regex")
+            args=$(list_add "$args" "$arg")
+            ;;
+        *) vals=$(list_add "$vals" "$arg") ;;
+    esac
+done
+
+if [ -z "$vals" ]
+then
+    read -d '' vals
+fi
+
+for arg in "$args"
+do
+    case "$1" in
+        "--awk-regex") echo "$vals" | $encode/enc_awk_regex.sed ;;
+        "--sed-regex") echo "$vals" | $encode/enc_sed_regex.sed ;;
+        "--html") echo "$vals" | $encode/enc_html.sed ;;
+    esac
+done
+
