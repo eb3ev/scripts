@@ -2,33 +2,43 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
+. "$lib/lines"
 
 find_cmd () {
+    vals=""
     if [ -n "$1" ]
     then
-        directories=$(echo "$@" | sed 's/ /\\ /g')
         if [ -n "$(command -v fd)" ]
         then
-            fd . "$directories" -H -I -t f
+            for dir in "$@"
+            do
+                vals=$(list_add "$vals" "$(fd . "$dir" -H -I -t f)")
+            done
         else
-            find "$directories" -type f
+            for dir in "$@"
+            do
+                vals=(list_add "$vals" "$(find "$dir" -type f)")
+            done
         fi
     else
         if [ -n "$(command -v fd)" ]
         then
-            fd . -H -I -t f
+            vals=$(fd . -H -I -t f)
         else
-            find . -type f
+            vals=$(find . -type f)
         fi
     fi
+
+    echo "$vals"
 }
+
+find_cmd "asdf asdf"
 
 new_window="false"
 directories=""
 
 for arg in "$@"
 do
-    echo "$arg"
     if [ "$arg" = "--new-window" ]
     then
         new_window="true"
@@ -36,7 +46,7 @@ do
     then
         if [ -z "$directories" ]
         then
-            directories="$directories"
+            directories="$arg"
         else
             directories=$"$directories\n$arg"
         fi
@@ -52,7 +62,6 @@ fi
 
 if [ -n "$directories" ]
 then
-    echo "$directories"
     file=$(find_cmd $directories | menu 1 "Edit")
 else
     file=$(find_cmd | menu 1 "Edit")

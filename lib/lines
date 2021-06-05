@@ -80,6 +80,19 @@ rm_list_dups () {
     echo "$new_list"
 }
 
+concat_list () {
+    printf "$1\n$2"
+}
+
+list_add () {
+    if [ -z "$1" ]
+    then
+        echo "$2"
+    else
+        concat_list "$1" "$2"
+    fi
+}
+
 # Syncs the file list to the main file list.
 sync_file_file () {
     rm_file_dups "$1" 
@@ -149,5 +162,9 @@ sync_list_list () {
     done
 
     echo "$new_list"
+}
+
+esc_spaces () {
+    echo "$1" | sed 's/\\ / /g;s/ /\\ /g'
 }
 
