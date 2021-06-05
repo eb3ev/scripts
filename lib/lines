@@ -180,6 +180,6 @@ sync_list_list () {
 }
 
 esc_spaces () {
-    echo "$1" | sed 's/\\ / /g;s/ /\\ /g'
+    printf $(echo "$1" | sed 's/\\ / /g;s/ /\\ /g')
 }
 

@@ -3,43 +3,11 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 . "$lib/lines"
+. "$lib/files"
 
 use_filter="false"
 new_window="false"
 require_sudo="false"
-
-find_cmd () {
-    if [ -n "$(command -v fd)" ]
-    then
-        use_fd="true"
-    else
-        use_fd="false"
-    fi
-
-    vals=""
-
-    if [ -n "$1" ]
-    then
-        for dir in "$1"
-        do
-            if [ "$use_fd" = "true" ]
-            then
-                vals=$(list_add "$vals" "$(fd . "$(printf "$dir")" -H -I -t f)")
-            else
-                vals=$(list_add "$vals" "$(find "$(printf "$dir")" -type f)")
-            fi
-        done
-    else
-        if [ "$use_fd" = "true" ]
-        then
-            vals=$(fd . -H -I -t f)
-        else
-            vals=$(find . -type f)
-        fi
-    fi
-
-    echo "$vals"
-}
 
 get_file () {
     files=$(find_cmd "$1")
@@ -72,26 +40,39 @@ edit_file () {
 }
 
 directories=""
+filter=""
 
 for arg in "$@"
 do
     case "$arg" in
         "--new-window") new_window="true" ;;
-        "--require-sudo") require_sudo="true" ;;
-        "--use-filter") use_filter="true" ;;
+        "--sudo") require_sudo="true" ;;
+        "--use-filter") filter="--filter-txt" ;;
         *)
             if [ -d "$arg" ]
             then
-                directories=$(list_add "$directories" "$arg")
+                directories=$(list_add "$directories" "'$arg'")
             fi
             ;;
     esac
 done
 
-file=$(get_file "$directories")
-
-if [ -n "$file" ]
+if [ "$new_window" = "true" ]
 then
-    edit_file $args "$file"
+    if [ "$require_sudo" = "true" ]
+    then
+        run_cmd="term_edit --sudo"
+    else
+        run_cmd="term_edit"
+    fi
+else
+    if [ "$require_sudo" = "true" ]
+    then
+        run_cmd="$sudo_editor"
+    else
+        run_cmd="$editor"
+    fi
 fi
+
+eval override_prompt="Edit" override_cmd="$run_cmd" search_open $filter $directories
 

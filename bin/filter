@@ -11,7 +11,9 @@ vals=""
 for arg in "$@"
 do
     case "$arg" in
-        "--txt-files") args=$(list_add "$args" "$arg") ;;
+        "--txt"|"--doc"|"--img"|"--vid")
+            args=$(list_add "$args" "$arg")
+            ;;
         *) vals=$(list_add "$vals" "$arg") ;;
     esac
 done
@@ -21,10 +23,18 @@ then
     read -d '' vals
 fi
 
-for arg in "$args"
-do
-    case "$1" in
-        "--txt-files") echo "$vals" | $filter/files/filter_txt.awk ;;
-    esac
-done
+if [ -n "$args" ]
+then
+    for arg in "$args"
+    do
+        case "$1" in
+            "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
+            "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
+            "--img") echo "$vals" | $filter/files/filter_img.awk ;;
+            "--vid") echo "$vals" | $filter/files/filter_vid.awk ;;
+        esac
+    done
+else
+    echo "$vals"
+fi
 

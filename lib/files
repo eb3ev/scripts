@@ -1,0 +1,36 @@
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/lines"
+
+find_cmd () {
+    if [ -n "$(command -v fd)" ]
+    then
+        use_fd="true"
+    else
+        use_fd="false"
+    fi
+
+    vals=""
+
+    if [ -n "$1" ]
+    then
+        for dir in "$1"
+        do
+            if [ "$use_fd" = "true" ]
+            then
+                vals=$(list_add "$vals" "$(fd . "$(printf "$dir")" -H -I -t f)")
+            else
+                vals=$(list_add "$vals" "$(find "$(printf "$dir")" -type f)")
+            fi
+        done
+    else
+        if [ "$use_fd" = "true" ]
+        then
+            vals=$(fd . -H -I -t f)
+        else
+            vals=$(find . -type f)
+        fi
+    fi
+
+    echo "$vals"
+}
+

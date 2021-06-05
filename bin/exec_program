@@ -5,6 +5,8 @@
 . "$lib/var/cache"
 . "$lib/lines"
 
+require_sudo="false"
+
 IFS=:
 if stest -dqr -n "$programs" $PATH
 then
@@ -22,11 +24,10 @@ sync_file_file "$program_history" "$programs"
 case "$1" in
     "-s"|"--sudo")
         program="$(menu 4 "Launch" < "$program_history")"
-        program_prefix="SUDO_ASKPASS=\"$bin/passwd_prompt\" sudo -A"
+        require_sudo="true"
         ;;
     *)
         program=$(menu 2 "Launch" < "$program_history")
-        program_prefix=""
         ;;
 esac
 
@@ -34,6 +35,11 @@ if [ -n "$program" ]
 then
     to_top "$program" "$program_history"
 
-    eval "$program_prefix \"$program\""
+    if [ "$require_sudo" = "true" ]
+    then
+        SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $program
+    else
+        $program
+    fi
 fi
 

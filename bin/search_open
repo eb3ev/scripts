@@ -1,0 +1,55 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/lines"
+. "$lib/files"
+
+use_filter="false"
+new_window="false"
+require_sudo="false"
+
+get_file () {
+    files=$(find_cmd "$1")
+
+    files=$(echo "$files" | filter $2)
+
+    echo "$files" | menu 1 "${override_prompt:-Open}"
+}
+
+open_file () {
+    if [ "$require_sudo" = "true" ]
+    then
+        SUDO_ASKPASS="$bin/passwd_prompt" sudo -A ${override_cmd:-xdg-open} "$1"
+    else
+        ${override_cmd:-xdg-open} "$1"
+    fi
+}
+
+directories=""
+filters=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--sudo") require_sudo="true" ;;
+        "--filter-txt") filters=$(list_add "$filters" "--txt") ;;
+        "--filter-doc") filters=$(list_add "$filters" "--doc") ;;
+        "--filter-img") filters=$(list_add "$filters" "--img") ;;
+        "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
+        *)
+            if [ -d "$arg" ]
+            then
+                directories=$(list_add "$directories" "$arg")
+            fi
+            ;;
+    esac
+done
+
+file=$(get_file "$directories" "$filters")
+
+if [ -n "$file" ]
+then
+    open_file "$file"
+fi
+
