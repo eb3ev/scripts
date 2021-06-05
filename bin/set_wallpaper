@@ -62,8 +62,8 @@ do
         monitors=""
     else
         monitor_arg="--output $monitor"
-        monitors=$(echo "$monitors" | rm_line "Span")
-        monitors=$(echo "$monitors" | rm_line "$monitor")
+        monitors=$(rm_line "Span" "$monitors")
+        monitors=$(rm_line "$monitor" "$monitors")
     fi
 
     wallpaper_arg=$(get_wallpaper)

@@ -1,7 +1,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 
 prepend_line () {
-    if [ -n "$2" ]
+    if [ -w "$2" ]
     then
         if [ $(wc -l < "$2") -eq 0 ]
         then
@@ -9,42 +9,57 @@ prepend_line () {
         else
             sed -i "1i\\$1" "$2"
         fi
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | sed "1i\\$1"
     else
         sed "1i\\$1"
     fi
 }
 
 append_line () {
-    if [ -n "$2" ]
+    if [ -w "$2" ]
     then
         echo "$1" >> "$2"
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | sed "\$a\\$1"
     else
         sed "\$a\\$1"
     fi
 }
 
 rm_line () {
-    if [ -n "$2" ]
+    if [ -w "$2" ]
     then
         sed -i "/^$(enc 1 "$1")\$/d" "$2"
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | sed "/^$(enc 1 "$1")\$/d"
     else
         sed "/^$(enc 1 "$1")\$/d"
     fi
 }
 
 to_top () {
-    if [ -n "$2" ]
+    if [ -w "$2" ]
     then
         rm_line "$1" "$2" && prepend_line "$1" "$2"
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | rm_line "$1" | prepend_line
     else
         rm_line "$1" | prepend_line
     fi
 }
 
 to_bottom () {
-    if [ -n "$2" ]
+    if [ -w "$2" ]
     then
         rm_line "$1" "$2" && append_line "$1" "$2"
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | rm_line "$1" | append_line
     else
         rm_line "$1" | append_line
     fi
