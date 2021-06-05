@@ -70,14 +70,14 @@ do
 done
 
 create_setter_script () {
-    if [ $(wc -l 2>/dev/null < "$wallpaper_setter") -gt 2 ] || [ "$(head -n 1 "$wallpaper_setter" 2>/dev/null)" != '#!/bin/sh' ]
+    rm -f "$wallpaper_setter" && mkscript "$wallpaper_setter"
+    
+    if [ -x "$wallpaper_setter" ]
     then
-        rm -f "$wallpaper_setter"
+        echo "true"
+    else
+        echo "false"
     fi
-
-    mkscript "$wallpaper_setter"
-
-    echo "true"
 }
 
 if [ "$(create_setter_script)" = "true" ]
