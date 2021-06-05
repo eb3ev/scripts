@@ -41,8 +41,14 @@ get_wallpaper () {
 }
 
 args=""
-for _ in "$monitors"
+num_monitors=$(echo "$monitors" | wc -l)
+for _ in $(seq 1 $num_monitors)
 do
+    if [ -z "$monitors" ]
+    then
+        break
+    fi
+
     monitor=$(echo "$monitors" | menu 2 " ")
 
     if [ -z "$monitor" ]
@@ -56,6 +62,7 @@ do
         monitors=""
     else
         monitor_arg="--output $monitor"
+        monitors=$(echo "$monitors" | rm_line "Span")
         monitors=$(echo "$monitors" | rm_line "$monitor")
     fi
 

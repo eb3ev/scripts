@@ -10,7 +10,7 @@ prepend_line () {
             sed -i "1i\\$1" "$2"
         fi
     else
-        sed -n "1i\\$1"
+        sed "1i\\$1"
     fi
 }
 
@@ -19,7 +19,7 @@ append_line () {
     then
         echo "$1" >> "$2"
     else
-        sed -n "\$a\\$1"
+        sed "\$a\\$1"
     fi
 }
 
@@ -28,7 +28,7 @@ rm_line () {
     then
         sed -i "/^$(enc 1 "$1")\$/d" "$2"
     else
-        sed -n "/^$(enc 1 "$1")\$/d"
+        sed "/^$(enc 1 "$1")\$/d"
     fi
 }
 
