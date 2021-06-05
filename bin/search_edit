@@ -10,14 +10,14 @@ find_cmd () {
     then
         if [ -n "$(command -v fd)" ]
         then
-            for dir in "$@"
+            for dir in "$1"
             do
-                vals=$(list_add "$vals" "$(fd . "$dir" -H -I -t f)")
+                vals=$(list_add "$vals" "$(fd . "$(printf "$dir")" -H -I -t f)")
             done
         else
-            for dir in "$@"
+            for dir in "$1"
             do
-                vals=(list_add "$vals" "$(find "$dir" -type f)")
+                vals=(list_add "$vals" "$(find "$(printf "$dir")" -type f)")
             done
         fi
     else
@@ -32,6 +32,24 @@ find_cmd () {
     echo "$vals"
 }
 
+get_file () {
+    if [ -n "$1" ]
+    then
+        find_cmd "$1" | menu 1 "Edit"
+    else
+        find_cmd | menu 1 "Edit"
+    fi
+}
+
+edit_file () {
+    if [ "$1" = "true" ]
+    then
+        term_edit "$2"
+    else
+        $editor "$2"
+    fi
+}
+
 new_window="false"
 directories=""
 
@@ -42,31 +60,14 @@ do
         new_window="true"
     elif [ -d "$arg" ]
     then
-        if [ -z "$directories" ]
-        then
-            directories="$arg"
-        else
-            directories=$"$directories\n$arg"
-        fi
+        directories=$(list_add "$directories" "$arg")
     fi
 done
 
-if [ "$new_window" = "true" ]
-then
-    editor_cmd="term_edit"
-else
-    editor_cmd="$editor"
-fi
-
-if [ -n "$directories" ]
-then
-    file=$(find_cmd $directories | menu 1 "Edit")
-else
-    file=$(find_cmd | menu 1 "Edit")
-fi
+file=$(get_file "$directories")
 
 if [ -n "$file" ]
 then
-    $editor_cmd "$file"
+    edit_file "$new_window" "$file"
 fi
 
