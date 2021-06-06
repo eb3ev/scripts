@@ -10,11 +10,7 @@ new_window="false"
 require_sudo="false"
 
 get_file () {
-    files=$(find_cmd "$1")
-
-    files=$(echo "$files" | filter $2)
-
-    echo "$files" | menu 1 "${override_prompt:-Open}"
+    find_cmd "$1" | filter $2 | menu 1 "${override_prompt:-Open}"
 }
 
 open_file () {

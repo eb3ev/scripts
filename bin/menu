@@ -104,7 +104,7 @@ term_window_menu () {
     echo "$value"
 }
 
-config="${override_menu_config:-$(cat "$menurc" 2>/dev/null)}"
+config="${override_menu:-$(cat "$menurc" 2>/dev/null)}"
 
 case "$config" in
     "top_window") top_window_menu "$1" "$2" ;;

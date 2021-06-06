@@ -18,23 +18,34 @@ do
     esac
 done
 
-if [ -z "$vals" ]
+if [ -n "$vals" ]
 then
-    read -d '' vals
-fi
-
-if [ -n "$args" ]
-then
-    for arg in "$args"
-    do
-        case "$1" in
-            "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
-            "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
-            "--img") echo "$vals" | $filter/files/filter_img.awk ;;
-            "--vid") echo "$vals" | $filter/files/filter_vid.awk ;;
-        esac
-    done
+    if [ -n "$args" ]
+    then
+        for arg in "$args"
+        do
+            case "$1" in
+                "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
+                "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
+                "--img") echo "$vals" | $filter/files/filter_img.awk ;;
+                "--vid") echo "$vals" | $filter/files/filter_vid.awk ;;
+            esac
+        done
+    fi
 else
-    echo "$vals"
+    if [ -n "$args" ]
+    then
+        for arg in "$args"
+        do
+            case "$1" in
+                "--txt") $filter/files/filter_txt.awk ;;
+                "--doc") $filter/files/filter_doc.awk ;;
+                "--img") $filter/files/filter_img.awk ;;
+                "--vid") $filter/files/filter_vid.awk ;;
+            esac
+        done
+    else
+        cat
+    fi
 fi
 
