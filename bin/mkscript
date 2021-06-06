@@ -1,8 +1,22 @@
 #!/bin/sh
 
-if [ ! -e "$1" ]
+create_script_file () {
+    if [ ! -e "$1" ]
+    then
+        echo '#!/bin/sh' > "$1"
+        chmod +x "$1"
+    fi
+}
+
+if [ -n "$1" ]
 then
-    echo '#!/bin/sh' > "$1"
-    chmod +x "$1"
+    for file in "$@"
+    do
+        create_script_file "$file"
+    done
+else
+    read -p "Filename: " fname
+    
+    create_script_file "$fname"
 fi
 
