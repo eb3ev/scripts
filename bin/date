@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+
+date=$(date "+%A %d %B %Y")
+
+notify-send "Date" "$date" &
+
