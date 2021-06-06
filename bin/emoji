@@ -9,7 +9,7 @@ if [ -n "$emoji_key" ]
 then
     emoji=$(echo "$emoji_key" | get_column " " "1")
 
-    echo "$emoji" | xclip -selection clipboard
+    echo -n "$emoji" | xclip -selection clipboard
 
     notify-send "Copied" "$emoji"
 fi
