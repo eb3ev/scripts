@@ -11,7 +11,7 @@ vals=""
 for arg in "$@"
 do
     case "$arg" in
-        "--awk-regex"|"--sed-regex")
+        "--awk-regex"|"--sed-regex"|"--html")
             args=$(list_add "$args" "$arg")
             ;;
         *) vals=$(list_add "$vals" "$arg") ;;
