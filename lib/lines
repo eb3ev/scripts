@@ -3,7 +3,7 @@
 prepend_line () {
     if [ -w "$2" ]
     then
-        if [ $(wc -l < "$2") -eq 0 ]
+        if [ -s "$2" ]
         then
             echo "$1" >> "$2"
         else
