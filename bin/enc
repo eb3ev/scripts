@@ -18,17 +18,32 @@ do
     esac
 done
 
-if [ -z "$vals" ]
+if [ -n "$vals" ]
 then
-    read -d '' vals
+    if [ -n "$args" ]
+    then
+        for arg in "$args"
+        do
+            case "$1" in
+                "--awk-regex") echo "$vals" | $encode/enc_awk_regex.sed ;;
+                "--sed-regex") echo "$vals" | $encode/enc_sed_regex.sed ;;
+                "--html") echo "$vals" | $encode/enc_html.sed ;;
+            esac
+        done
+    fi
+else
+    if [ -n "$args" ]
+    then
+        for arg in "$args"
+        do
+            case "$1" in
+                "--awk-regex") $encode/enc_awk_regex.sed ;;
+                "--sed-regex") $encode/enc_sed_regex.sed ;;
+                "--html") $encode/enc_html.sed ;;
+            esac
+        done
+    else
+        cat
+    fi
 fi
-
-for arg in "$args"
-do
-    case "$1" in
-        "--awk-regex") echo "$vals" | $encode/enc_awk_regex.sed ;;
-        "--sed-regex") echo "$vals" | $encode/enc_sed_regex.sed ;;
-        "--html") echo "$vals" | $encode/enc_html.sed ;;
-    esac
-done
 
