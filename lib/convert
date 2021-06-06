@@ -1,0 +1,36 @@
+num_to_ordinal () {
+    case "$1" in
+       "01") echo "First" ;;
+       "02") echo "Second" ;;
+       "03") echo "Third" ;;
+       "04") echo "Fourth" ;;
+       "05") echo "Fifth" ;;
+       "06") echo "Sixth" ;;
+       "07") echo "Seventh" ;;
+       "08") echo "Eight" ;;
+       "09") echo "Ninth" ;;
+       "10") echo "Tenth" ;;
+       "11") echo "Eleventh" ;;
+       "12") echo "Twelvth" ;;
+       "13") echo "Thirteenth" ;;
+       "14") echo "Fourteenth" ;;
+       "15") echo "Fifteeth" ;;
+       "16") echo "Sixteenth" ;;
+       "17") echo "Seventeenth" ;;
+       "18") echo "Eighteenth" ;;
+       "19") echo "Nineteenth" ;;
+       "20") echo "Twentieth" ;;
+       "21") echo "Twenty-first" ;;
+       "22") echo "Twenty-second" ;;
+       "23") echo "Twenty-third" ;;
+       "24") echo "Twenty-fourth" ;;
+       "25") echo "Twenty-fifth" ;;
+       "26") echo "Twenty-sixth" ;;
+       "27") echo "Twenty-seventh" ;;
+       "28") echo "Twenty-eight" ;;
+       "29") echo "Twenty-ninth" ;;
+       "30") echo "Thirtieth" ;;
+       "31") echo "Thirty-first" ;;
+    esac
+}
+
