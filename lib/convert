@@ -1,14 +1,14 @@
 num_to_ordinal () {
     case "$1" in
-       "01") echo "First" ;;
-       "02") echo "Second" ;;
-       "03") echo "Third" ;;
-       "04") echo "Fourth" ;;
-       "05") echo "Fifth" ;;
-       "06") echo "Sixth" ;;
-       "07") echo "Seventh" ;;
-       "08") echo "Eight" ;;
-       "09") echo "Ninth" ;;
+       "1"|"01") echo "First" ;;
+       "2"|"02") echo "Second" ;;
+       "3"|"03") echo "Third" ;;
+       "4"|"04") echo "Fourth" ;;
+       "5"|"05") echo "Fifth" ;;
+       "6"|"06") echo "Sixth" ;;
+       "7"|"07") echo "Seventh" ;;
+       "8"|"08") echo "Eight" ;;
+       "9"|"09") echo "Ninth" ;;
        "10") echo "Tenth" ;;
        "11") echo "Eleventh" ;;
        "12") echo "Twelvth" ;;
@@ -20,17 +20,17 @@ num_to_ordinal () {
        "18") echo "Eighteenth" ;;
        "19") echo "Nineteenth" ;;
        "20") echo "Twentieth" ;;
-       "21") echo "Twenty-first" ;;
-       "22") echo "Twenty-second" ;;
-       "23") echo "Twenty-third" ;;
-       "24") echo "Twenty-fourth" ;;
-       "25") echo "Twenty-fifth" ;;
-       "26") echo "Twenty-sixth" ;;
-       "27") echo "Twenty-seventh" ;;
-       "28") echo "Twenty-eight" ;;
-       "29") echo "Twenty-ninth" ;;
+       "21") echo "Twenty-$(num_to_ordinal 1)" ;;
+       "22") echo "Twenty-$(num_to_ordinal 2)" ;;
+       "23") echo "Twenty-$(num_to_ordinal 3)" ;;
+       "24") echo "Twenty-$(num_to_ordinal 4)" ;;
+       "25") echo "Twenty-$(num_to_ordinal 5)" ;;
+       "26") echo "Twenty-$(num_to_ordinal 6)" ;;
+       "27") echo "Twenty-$(num_to_ordinal 7)" ;;
+       "28") echo "Twenty-$(num_to_ordinal 8)" ;;
+       "29") echo "Twenty-$(num_to_ordinal 9)" ;;
        "30") echo "Thirtieth" ;;
-       "31") echo "Thirty-first" ;;
+       "31") echo "Thirty-$(num_to_ordinal 1)" ;;
     esac
 }
 

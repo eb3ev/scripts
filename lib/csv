@@ -21,3 +21,4 @@ get_column () {
         awk -F "$1" "{print \$$2}"
     fi
 }
+
