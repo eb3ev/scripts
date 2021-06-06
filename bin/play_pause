@@ -1,0 +1,30 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+
+players=$(playerctl -l)
+
+if [ -n "$players" ]
+then
+    if [ $(echo "$players" | wc -l) -eq 1 ]
+    then
+        playerctl --player="$players" play-pause
+    else
+        pause_all="  Pause All"
+        play_all="  Play All"
+
+        players=$(printf "$players\n$pause_all\n$play_all")
+
+        player=$(echo "$players" | menu 2 " ")
+
+        if [ -n "$player" ]
+        then
+            case "$player" in
+                "$pause_all") playerctl -a pause ;;
+                "$play_all") playerctl -a play ;;
+                *) playerctl --player="$player" play-pause ;;
+            esac
+        fi
+    fi
+fi
+
