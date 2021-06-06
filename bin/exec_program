@@ -22,7 +22,7 @@ fi
 sync_file_file "$program_history" "$programs"
 
 case "$1" in
-    "-s"|"--sudo")
+    "--sudo")
         program="$(menu 4 "Launch" < "$program_history")"
         require_sudo="true"
         ;;
