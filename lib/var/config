@@ -18,4 +18,7 @@ wallpaper_setter="${XDG_CONFIG_HOME:-$HOME/.config}/set_wallpaper"
 
 wallpapers_dir="/usr/share/wallpapers"
 
+wallpaper_presets="${WALLPAPER_PRESETS:-$HOME/linux/lib/wallpaper_presets}"
+
 browserrc="${XDG_CONFIG_HOME:-$HOME/.config}/browserrc"
+

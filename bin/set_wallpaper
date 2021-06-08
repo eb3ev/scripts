@@ -5,12 +5,7 @@
 . "$lib/csv"
 . "$lib/lines"
 
-monitors=$(xrandr | awk '/ connected/ {print $1}')
-
-monitors=$(printf "$monitors\nSpan")
-
-monitor_arg=""
-pos=""
+use_presets="false"
 
 get_pos () {
     pos_opt=$(printf 'Zoom\nCenter\nStretch\nMaximize' | menu 2 "漣")
@@ -40,57 +35,105 @@ get_wallpaper () {
     fi
 }
 
-args=""
-num_monitors=$(echo "$monitors" | wc -l)
-for _ in $(seq 1 $num_monitors)
-do
-    if [ -z "$monitors" ]
-    then
-        break
-    fi
-
-    monitor=$(echo "$monitors" | menu 2 " ")
-
-    if [ -z "$monitor" ]
-    then
-        exit 0
-    fi
-
-    if [ "$monitor" = "Span" ]
-    then
-        monitor_arg="--no-randr"
-        monitors=""
-    else
-        monitor_arg="--output $monitor"
-        monitors=$(rm_line "Span" "$monitors")
-        monitors=$(rm_line "$monitor" "$monitors")
-    fi
-
-    wallpaper_arg=$(get_wallpaper)
-
-    if [ -z "$wallpaper_arg" ]
-    then
-        exit 0
-    fi
-
-    args="$args $monitor_arg $wallpaper_arg"
-done
-
 create_setter_script () {
     rm -f "$wallpaper_setter" && mkscript "$wallpaper_setter"
     
     if [ -x "$wallpaper_setter" ]
     then
-        echo "true"
-    else
-        echo "false"
+        echo "$1" >> "$wallpaper_setter"
+        $wallpaper_setter
     fi
 }
 
-if [ "$(create_setter_script)" = "true" ]
-then
-    echo "xwallpaper$args" >> "$wallpaper_setter"
+set_wallpaper () {
+    monitors=$(xrandr | awk '/ connected/ {print $1}')
 
-    $wallpaper_setter
+    monitors=$(printf "$monitors\nSpan")
+
+    monitor_arg=""
+    pos=""
+
+    args=""
+    num_monitors=$(echo "$monitors" | wc -l)
+    for _ in $(seq 1 $num_monitors)
+    do
+        if [ -z "$monitors" ]
+        then
+            break
+        fi
+
+        monitor=$(echo "$monitors" | menu 2 " ")
+
+        if [ -z "$monitor" ]
+        then
+            exit 0
+        fi
+
+        if [ "$monitor" = "Span" ]
+        then
+            monitor_arg="--no-randr"
+            monitors=""
+        else
+            monitor_arg="--output $monitor"
+            monitors=$(rm_line "Span" "$monitors")
+            monitors=$(rm_line "$monitor" "$monitors")
+        fi
+
+        wallpaper_arg=$(get_wallpaper)
+
+        if [ -z "$wallpaper_arg" ]
+        then
+            exit 0
+        fi
+
+        args="$args $monitor_arg $wallpaper_arg"
+    done
+
+    echo "xwallpaper$args"
+}
+
+get_presets () {
+    keys "$wallpaper_presets" " ; " "!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$hostname") ; / {print \$1}"
+}
+
+set_preset_wallpaper () {
+    hostname=$(< /etc/hostname)
+
+    monitor_count=$(xrandr | awk '/ connected/' | wc -l)
+    
+    presets=$(get_presets)
+
+    if [ -z "$presets" ]
+    then
+        exit 0
+    fi
+    
+    preset=$(echo "$presets" | menu 2 "Presets")
+
+    if [ -n "$preset" ]
+    then
+        key="$preset ; $hostname"
+
+        value "$key" "$wallpaper_presets" 4
+    fi
+}
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--use-presets") use_presets="true" ;;
+    esac
+done
+
+if [ "$use_presets" = "true" ]
+then
+    set_cmd=$(set_preset_wallpaper)
+else
+    set_cmd=$(set_wallpaper)
+fi
+
+if [ -n "$set_cmd" ]
+then
+    create_setter_script "$set_cmd"
 fi
 
