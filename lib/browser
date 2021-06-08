@@ -1,5 +1,4 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
-. "$lib/var/config"
 . "$lib/csv"
 
 get_browser_list () {
@@ -25,21 +24,5 @@ get_new_win_cmd () {
 
 get_names () {
     get_column 1 "$lib/data/browsers"
-}
-
-get_rc () {
-    if [ -e "$browserrc" ]
-    then
-        < "$browserrc"
-    fi
-}
-
-installed () {
-    if [ -n "$(command -v "$1")" ]
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
 }
 
