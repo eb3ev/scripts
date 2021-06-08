@@ -3,21 +3,19 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 
-arg="$1"
-
 arg_check () {
-    case "$arg" in
+    case "$1" in
         "top_window"|"center_window"|"bottom_window"|"term"|"term_window")
             echo "true"
             ;;
         *)
-            echo "Invalid Option: $arg"
+            echo "Invalid Option: $1"
     esac
 }
 
-if [ "$(arg_check)" = "true" ]
+if [ "$(arg_check "$1")" = "true" ]
 then
-    if [ $(wc -l 2>/dev/null < "$menurc") -gt 0 ]
+    if [ -s "$menurc" ]
     then
         sed -i '1,$d' "$menurc"
     fi

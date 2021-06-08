@@ -17,3 +17,5 @@ term_fm="lf"
 wallpaper_setter="${XDG_CONFIG_HOME:-$HOME/.config}/set_wallpaper"
 
 wallpapers_dir="/usr/share/wallpapers"
+
+browserrc="${XDG_CONFIG_HOME:-$HOME/.config}/browserrc"

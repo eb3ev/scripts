@@ -1,0 +1,45 @@
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/csv"
+
+get_browser_list () {
+    #keys "$lib/data/browsers" ""
+    awk -F "" "{print}" "$lib/data/browsers"
+}
+
+get_name () {
+    value "$1" "$lib/data/browsers" 1
+}
+
+get_cmd () {
+    value "$1" "$lib/data/browsers" 2
+}
+
+get_new_tab_cmd () {
+    value "$1" "$lib/data/browsers" 3
+}
+
+get_new_win_cmd () {
+    value "$1" "$lib/data/browsers" 4
+}
+
+get_names () {
+    get_column 1 "$lib/data/browsers"
+}
+
+get_rc () {
+    if [ -e "$browserrc" ]
+    then
+        < "$browserrc"
+    fi
+}
+
+installed () {
+    if [ -n "$(command -v "$1")" ]
+    then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+

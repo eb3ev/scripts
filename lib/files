@@ -1,8 +1,9 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/program"
 . "$lib/lines"
 
 find_cmd () {
-    if [ -n "$(command -v fd)" ]
+    if [ "$(installed fd)" = "true" ]
     then
         use_fd="true"
     else

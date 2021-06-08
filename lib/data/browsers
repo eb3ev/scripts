@@ -1,0 +1,4 @@
+Firefox ; firefox ; firefox -new-tab ; firefox -new-window
+Qutebrowser ; qutebrowser ; qutebrowser --target tab ; qutebrowser --target window
+Chromium ; chromium ; chromium ; chromium --new-window
+Brave ; brave ; brave ; brave --new-window

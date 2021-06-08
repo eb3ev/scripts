@@ -8,17 +8,32 @@ keys () {
 
 value () {
     key=$(enc --awk-regex "$1")
-    delim="${3:- ; }"
-    value_index="${4:-2}"
+    value_index="${3:-2}"
+    delim="${4:- ; }"
     awk -F "$delim" "/^$key$(enc --awk-regex "$delim")/ {print \$$value_index}" "$2"
 }
 
 get_column () {
-    if [ -n "$3" ]
+    if [ -r "$2" ]
     then
-        awk -F "$1" "{print \$$2}" "$3"
+        awk -F "${3:- ; }" "{print \$$1}" "$2"
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | awk -F "${3:- ; }" "{print \$$1}"
     else
-        awk -F "$1" "{print \$$2}"
+        awk -F "${2:- ; }" "{print \$$1}"
+    fi
+}
+
+get_row () {
+    if [ -r "$2" ]
+    then
+        sed -n "$1 p" "$2"
+    elif [ $# -gt 0 ]
+    then
+        echo "$2" | sed -n "$1 p"
+    else
+        sed -n "$1 p"
     fi
 }
 

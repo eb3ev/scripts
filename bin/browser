@@ -1,0 +1,54 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/lines"
+. "$lib/program"
+. "$lib/browser"
+
+run="true"
+new_window="false"
+new_tab="false"
+
+args=""
+query=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--new-window") new_window="true" ;;
+        "--new-tab") new_tab="true" ;;
+        "--print-cmd") run="false" ;;
+        *) query=$(list_add "$query" "$arg") ;;
+    esac
+done
+
+browser=$(cat "$browserrc" 2>/dev/null)
+
+browser_cmd=$(get_cmd "$browser")
+
+if [ "$(installed "$browser_cmd")" = "true" ]
+then
+    if [ "$new_window" = true ]
+    then
+        browser_cmd=$(get_new_win_cmd "$browser")
+    elif [ "$new_tab" = true ]
+    then
+        browser_cmd=$(get_new_tab_cmd "$browser")
+    fi
+else
+    browser_cmd="xdg-open"
+fi
+
+if [ -n "$query" ]
+then
+    browser_cmd="$browser_cmd $query"
+fi
+
+if [ "$run" = "true" ]
+then
+    eval "$browser_cmd"
+else
+    echo "$browser_cmd"
+fi
+
