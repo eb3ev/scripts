@@ -11,6 +11,7 @@ run="true"
 new_window="false"
 new_tab="false"
 use_clipboard="false"
+diff_browser="false"
 
 args=""
 queries=""
@@ -22,11 +23,22 @@ do
         "--new-tab") new_tab="true" ;;
         "--print-cmd") run="false" ;;
         "--use-clipboard") use_clipboard="true" ;;
+        "--use-diff") diff_browser="true" ;;
         *) queries=$(list_add "$queries" "$arg") ;;
     esac
 done
 
-browser=$(cat "$browserrc" 2>/dev/null)
+if [ "$diff_browser" = "true" ]
+then
+    browser=$(installed_browsers | menu 2 "Browser")
+
+    if [ -z "$browser" ]
+    then
+        exit 0
+    fi
+else
+    browser=$(cat "$browserrc" 2>/dev/null)
+fi
 
 browser_cmd=$(get_cmd "$browser")
 

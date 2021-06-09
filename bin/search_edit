@@ -14,7 +14,7 @@ get_file () {
 
     if [ "$use_filter" = "true" ]
     then
-        files=$(echo "$files" | filter --txt-files)
+        files=$(echo "$files" | filter --use-pipe --txt-files)
     fi
 
     echo "$files" | menu 1 "Edit"

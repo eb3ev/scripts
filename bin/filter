@@ -5,6 +5,8 @@
 
 filter="$lib/filter"
 
+use_pipe="false"
+
 args=""
 vals=""
 
@@ -14,26 +16,13 @@ do
         "--txt"|"--doc"|"--img"|"--vid"|"--url")
             args=$(list_add "$args" "$arg")
             ;;
+        "--use-pipe") use_pipe="true" ;;
         *) vals=$(list_add "$vals" "$arg") ;;
     esac
 done
 
-if [ -n "$vals" ]
+if [ "$use_pipe" = "true" ]
 then
-    if [ -n "$args" ]
-    then
-        for arg in "$args"
-        do
-            case "$1" in
-                "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
-                "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
-                "--img") echo "$vals" | $filter/files/filter_img.awk ;;
-                "--vid") echo "$vals" | $filter/files/filter_vid.awk ;;
-                "--url") echo "$vals" | $filter/filter_url.awk ;;
-            esac
-        done
-    fi
-else
     if [ -n "$args" ]
     then
         for arg in "$args"
@@ -48,6 +37,20 @@ else
         done
     else
         cat
+    fi
+else
+    if [ -n "$args" ]
+    then
+        for arg in "$args"
+        do
+            case "$1" in
+                "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
+                "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
+                "--img") echo "$vals" | $filter/files/filter_img.awk ;;
+                "--vid") echo "$vals" | $filter/files/filter_vid.awk ;;
+                "--url") echo "$vals" | $filter/filter_url.awk ;;
+            esac
+        done
     fi
 fi
 

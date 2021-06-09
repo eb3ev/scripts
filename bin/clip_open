@@ -3,8 +3,25 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/clipboard"
 
+diff_browser="false"
+new_tab="false"
+new_window="false"
+
 open_url () {
-    browser "$1"
+    args=""
+    if [ "$diff_browser" = "true" ]
+    then
+        args="$args --use-diff"
+    fi
+    if [ "$new_tab" = "true" ]
+    then
+        args="$args --new-tab"
+    fi
+    if [ "$new_window" = "true" ]
+    then
+        args="$args --new-window"
+    fi
+    browser $args "$1"
 }
 
 open_dir () {
@@ -15,6 +32,15 @@ invalid () {
     echo "Invalid: $1"
     notify-send "Invalid" "$1"
 }
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--new-tab") new_tab="true" ;;
+        "--new-window") new_window="true" ;;
+        "--diff-browser") diff_browser="true" ;;
+    esac
+done
 
 clipboard=$(get_clipboard)
 
@@ -27,6 +53,7 @@ then
 else
     type=""
 fi
+
 
 case "$type" in
     "url") open_url "$clipboard" ;;

@@ -10,7 +10,7 @@ new_window="false"
 require_sudo="false"
 
 get_file () {
-    find_cmd "$1" | filter $2 | menu 1 "${override_prompt:-Open}"
+    find_cmd "$1" | filter --use-pipe $2 | menu 1 "${override_prompt:-Open}"
 }
 
 open_file () {

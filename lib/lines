@@ -96,7 +96,7 @@ rm_list_dups () {
 }
 
 concat_list () {
-    printf "$1\n$2"
+    echo -e "$1\n$2"
 }
 
 list_add () {
@@ -135,7 +135,7 @@ sync_file_file () {
 sync_file_list () {
     rm_file_dups "$1"
 
-    uniq=$(printf "$2\n$(< "$1")" | sort | uniq -u)
+    uniq=$(echo -e "$2\n$(< "$1")" | sort | uniq -u)
 
     for line in $uniq
     do
@@ -158,7 +158,7 @@ sync_file_list () {
 sync_list_list () {
     new_list=$(rm_list_dups "$1")
 
-    uniq=$(printf "$2\n$new_list" | sort | uniq -u)
+    uniq=$(echo -e "$2\n$new_list" | sort | uniq -u)
 
     for line in $uniq
     do
