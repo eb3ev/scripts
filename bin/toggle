@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+
+toggle () {
+    if [ -z "$(pgrep -x "$1")" ]
+    then
+        notify-send "$1" "On" &
+        eval "$1 $2"
+    else
+        killall "$1" && notify-send "$1" "Off"
+    fi
+}
+
+if [ -n "$1" ]
+then
+    toggle "$1" "$2"
+else
+    program=$(exec_program --print-cmd)
+
+    if [ -z "$program" ]
+    then
+        exit 0
+    fi
+
+    toggle "$program"
+fi
+
