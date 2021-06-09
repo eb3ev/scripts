@@ -5,6 +5,8 @@
 
 encode="$lib/encode"
 
+use_pipe="false"
+
 args=""
 vals=""
 
@@ -14,24 +16,13 @@ do
         "--awk-regex"|"--sed-regex"|"--html")
             args=$(list_add "$args" "$arg")
             ;;
+        "--use-pipe") use_pipe="true" ;;
         *) vals=$(list_add "$vals" "$arg") ;;
     esac
 done
 
-if [ -n "$vals" ]
+if [ "$use_pipe" = "true" ]
 then
-    if [ -n "$args" ]
-    then
-        for arg in "$args"
-        do
-            case "$1" in
-                "--awk-regex") echo "$vals" | $encode/enc_awk_regex.sed ;;
-                "--sed-regex") echo "$vals" | $encode/enc_sed_regex.sed ;;
-                "--html") echo "$vals" | $encode/enc_html.sed ;;
-            esac
-        done
-    fi
-else
     if [ -n "$args" ]
     then
         for arg in "$args"
@@ -44,6 +35,18 @@ else
         done
     else
         cat
+    fi
+else
+    if [ -n "$args" ]
+    then
+        for arg in "$args"
+        do
+            case "$1" in
+                "--awk-regex") echo "$vals" | $encode/enc_awk_regex.sed ;;
+                "--sed-regex") echo "$vals" | $encode/enc_sed_regex.sed ;;
+                "--html") echo "$vals" | $encode/enc_html.sed ;;
+            esac
+        done
     fi
 fi
 

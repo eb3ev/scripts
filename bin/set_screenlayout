@@ -1,0 +1,49 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/csv"
+. "$lib/lines"
+
+create_setter_script () {
+    rm -f "$screenlayout_setter" && mkscript "$screenlayout_setter"
+    
+    if [ -x "$wallpaper_setter" ]
+    then
+        echo "sleep 0.5" >> "$screenlayout_setter"
+        echo "$1" >> "$screenlayout_setter"
+        $screenlayout_setter
+    fi
+}
+
+get_screenlayouts () {
+    monitor_count=$(xrandr | awk '/ connected/' | wc -l)
+    layouts=""
+    for count in $(seq 1 $monitor_count)
+    do
+        layouts=$(list_add "$layout" "$(keys "$screenlayouts" " ; " "!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$hostname") ; / {print \$1}")")
+    done
+
+    echo "$layouts"
+}
+
+hostname=$(< /etc/hostname)
+
+screenlayout=$(get_screenlayouts "$hostname" | menu 2 " ")
+
+if [ -n "$screenlayout" ]
+then
+    key="$screenlayout ; $hostname"
+
+    set_screenlayout_cmd=$(value "$key" "$screenlayouts" 4)
+    set_wallpaper_cmd=$(value "$key" "$screenlayouts" 5)
+
+    if [ "$1" = "--save" ]
+    then
+        create_setter_script "$set_screenlayout_cmd"
+    fi
+
+    eval "$set_screenlayout_cmd"
+    eval "$set_wallpaper_cmd"
+fi
+

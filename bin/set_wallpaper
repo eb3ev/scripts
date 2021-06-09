@@ -93,15 +93,15 @@ set_wallpaper () {
 }
 
 get_presets () {
-    keys "$wallpaper_presets" " ; " "!/^ *#/ && NF && / ; $2 ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}"
+    monitor_count=$(xrandr | awk '/ connected/' | wc -l)
+
+    keys "$wallpaper_presets" " ; " "!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}"
 }
 
 set_preset_wallpaper () {
     hostname=$(< /etc/hostname)
 
-    monitor_count=$(xrandr | awk '/ connected/' | wc -l)
-    
-    presets=$(get_presets "$hostname" "$monitor_count")
+    presets=$(get_presets "$hostname")
 
     if [ -z "$presets" ]
     then
