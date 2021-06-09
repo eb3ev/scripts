@@ -5,6 +5,7 @@
 . "$lib/var/cache"
 . "$lib/lines"
 
+run="true"
 require_sudo="false"
 
 IFS=:
@@ -21,15 +22,20 @@ fi
 
 sync_file_file "$program_history" "$programs"
 
-case "$1" in
-    "--sudo")
-        program="$(menu 4 "Launch" < "$program_history")"
-        require_sudo="true"
-        ;;
-    *)
-        program=$(menu 2 "Launch" < "$program_history")
-        ;;
-esac
+for arg in "$@"
+do
+    case "$arg" in
+        "--sudo") require_sudo="true" ;;
+        "--print-cmd") run="false" ;;
+    esac
+done
+
+if [ "$require_sudo" = "true" ]
+then
+    program="$(menu 4 "Launch" < "$program_history")"
+else
+    program=$(menu 2 "Launch" < "$program_history")
+fi
 
 if [ -n "$program" ]
 then
@@ -37,9 +43,19 @@ then
 
     if [ "$require_sudo" = "true" ]
     then
-        SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $program
+        if [ "$run" = "true" ]
+        then
+            SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $program
+        else
+            echo "SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $program"
+        fi
     else
-        $program
+        if [ "$run" = "true" ]
+        then
+            $program
+        else
+            echo "$program"
+        fi
     fi
 fi
 
