@@ -5,9 +5,9 @@ prepend_line () {
     then
         if [ -s "$2" ]
         then
-            echo "$1" >> "$2"
-        else
             sed -i "1i\\$1" "$2"
+        else
+            echo "$1" >> "$2"
         fi
     elif [ $# -gt 0 ]
     then
