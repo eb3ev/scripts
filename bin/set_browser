@@ -19,7 +19,7 @@ get_available_browsers () {
         fi
     done
 
-    get_names "$new_browser_list"
+    echo "$new_browser_list"
 }
 
 new_browser=$(get_available_browsers | menu 2 "Browsers")
