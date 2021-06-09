@@ -9,9 +9,10 @@
 run="true"
 new_window="false"
 new_tab="false"
+use_clipboard="false"
 
 args=""
-query=""
+queries=""
 
 for arg in "$@"
 do
@@ -19,7 +20,8 @@ do
         "--new-window") new_window="true" ;;
         "--new-tab") new_tab="true" ;;
         "--print-cmd") run="false" ;;
-        *) query=$(list_add "$query" "$arg") ;;
+        "--use-clipboard") use_clipboard="true" ;;
+        *) queries=$(list_add "$queries" "$arg") ;;
     esac
 done
 
@@ -40,15 +42,35 @@ else
     browser_cmd="xdg-open"
 fi
 
-if [ -n "$query" ]
+if [ "$use_clipboard" = true ]
 then
-    browser_cmd="$browser_cmd $query"
+    url=$(xclip -selection clipboard -o 2>/dev/null)
+
+    case "$url" in
+        http*|www*) queries=$(list_add "$queries" "$url") ;;
+    esac
 fi
 
 if [ "$run" = "true" ]
 then
-    eval "$browser_cmd"
+    if [ -n "$queries" ]
+    then
+        for query in $queries
+        do
+            eval "$browser_cmd $query"
+        done
+    else
+        eval "$browser_cmd"
+    fi
 else
-    echo "$browser_cmd"
+    if [ -n "$queries" ]
+    then
+        for query in $queries
+        do
+            echo "$browser_cmd $query"
+        done
+    else
+        echo "$browser_cmd"
+    fi
 fi
 
