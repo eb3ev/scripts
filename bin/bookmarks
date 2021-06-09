@@ -20,12 +20,18 @@ get_url () {
 }
 
 open_bookmark () {
-    $browser_cmd "$1"
+    if [ -n "$1" ]
+    then
+        $browser_cmd "$1"
+    fi
 }
 
 copy_bookmark () {
-    echo -n "$1" | xclip -selection clipboard
-    notify-send "Copied" "$1"
+    if [ -n "$1" ]
+    then
+        echo -n "$1" | xclip -selection clipboard
+        notify-send "Copied" "$1"
+    fi
 }
 
 args=""
