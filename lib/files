@@ -35,3 +35,12 @@ find_cmd () {
     echo "$vals"
 }
 
+set_value () {
+    if [ -s "$2" ]
+    then
+        sed -i '1,$d' "$2"
+    fi
+
+    echo "$1" >> "$2"
+}
+

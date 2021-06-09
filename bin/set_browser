@@ -3,6 +3,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 . "$lib/lines"
+. "$lib/files"
 . "$lib/program"
 . "$lib/browser"
 
@@ -25,11 +26,6 @@ new_browser=$(get_available_browsers | menu 2 "Browsers")
 
 if [ -n "$new_browser" ]
 then
-    if [ -s "$browserrc" ]
-    then
-        sed -i '1,$d' "$browserrc"
-    fi
-
-    echo "$new_browser" >> "$browserrc"
+    set_value "$new_browser" "$browserrc"
 fi
 

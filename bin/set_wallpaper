@@ -108,7 +108,7 @@ set_preset_wallpaper () {
         exit 0
     fi
     
-    preset=$(echo "$presets" | menu 2 "Presets")
+    preset=$(echo "$presets" | menu 2 "   Presets")
 
     if [ -n "$preset" ]
     then

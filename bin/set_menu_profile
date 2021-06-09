@@ -2,6 +2,9 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
+. "$lib/files"
+
+arg="$1"
 
 arg_check () {
     case "$1" in
@@ -15,11 +18,6 @@ arg_check () {
 
 if [ "$(arg_check "$1")" = "true" ]
 then
-    if [ -s "$menurc" ]
-    then
-        sed -i '1,$d' "$menurc"
-    fi
-
-    echo "$arg" >> "$menurc"
+    set_value "$arg" "$menurc"
 fi
 
