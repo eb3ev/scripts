@@ -2,27 +2,9 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
-. "$lib/lines"
-. "$lib/files"
-. "$lib/program"
 . "$lib/browser"
 
-get_available_browsers () {
-    browser_list=$(get_names)
-    for browser in $browser_list
-    do
-        browser_cmd=$(get_cmd "$browser")
-
-        if [ "$(installed "$browser_cmd")" = "true" ]
-        then
-            new_browser_list=$(list_add "$new_browser_list" "$browser")
-        fi
-    done
-
-    echo "$new_browser_list"
-}
-
-new_browser=$(get_available_browsers | menu 2 "Browsers")
+new_browser=$(installed_browsers | menu 2 "Browsers")
 
 if [ -n "$new_browser" ]
 then
