@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+. "$lib/clipboard"
+
+clipboard=$(get_clipboard)
+
+if [ -n "$(filter --url "$clipboard")" ]
+then
+    bookmark_name=$(echo -n | override_menu='bottom_window' menu 1 "Name ($clipboard)")
+
+    if [ -n "$bookmark_name" ]
+    then
+        echo "$bookmark_name ; $clipboard" >> "$bookmarks"
+
+        notify-send "New bookmark" "$bookmark_name: $clipboard"
+    fi
+else
+    notify-send "Invalid link" "$clipboard"
+fi
