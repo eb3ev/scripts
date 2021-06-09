@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. "${SCRIPTS_RC:-$HOME/scripts}/scriptsrc"
+. "$lib/var/config"
+
+turn_off_secondary_monitors () {
+    monitors=$(xrandr | awk '/ connected/ && !/ connected primary/ {print $1}')
+
+    args=""
+
+    for monitor in "$monitors"
+    do
+        args="$args --output $monitor --off"
+    done
+
+    if [ -n "$args" ]
+    then
+        eval "xrandr$args"
+    fi
+}
+
+refresh_screenlayout () {
+    $screenlayout_setter
+    $wallpaper_setter
+}
+
+turn_off_secondary_monitors && refresh_screenlayout
+
