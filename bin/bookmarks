@@ -4,10 +4,46 @@
 . "$lib/var/config"
 . "$lib/csv"
 
-bookmark_key=$(keys "$bookmarks" " ; " "!/^ *#/ && NF && !/^Group/ {print \$1}" | menu 2 "")
+copy="false"
+browser_cmd="xdg-open"
 
-if [ -n "$bookmark_key" ]
+get_bookmarks () {
+    keys "$bookmarks"
+}
+
+get_bookmark () {
+    get_bookmarks | menu 2 ""
+}
+
+get_url () {
+    value "$1" "$bookmarks"
+}
+
+open_bookmark () {
+    $browser_cmd "$1"
+}
+
+copy_bookmark () {
+    echo -n "$1" | xclip -selection clipboard
+    notify-send "Copied" "$1"
+}
+
+args=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--copy") copy="true" ;;
+        *) browser_cmd="$arg" ;;
+    esac
+done
+
+bookmark_key=$(get_bookmark)
+
+if [ "$copy" = "true" ]
 then
-    ${1:-xdg-open} "$(value "$bookmark_key" "$bookmarks")"
+    copy_bookmark "$(get_url "$bookmark_key")"
+else
+    open_bookmark "$(get_url "$bookmark_key")"
 fi
 
