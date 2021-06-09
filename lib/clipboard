@@ -2,7 +2,14 @@
 . "$lib/lines"
 
 get_clipboard () {
-    xclip -selection clipboard -o 2>/dev/null
+    case "$1" in
+        "--primary")
+            xclip -selection primary -o 2>/dev/null
+            ;;
+        *)
+            xclip -selection clipboard -o 2>/dev/null
+            ;;
+    esac
 }
 
 set_clipboard () {

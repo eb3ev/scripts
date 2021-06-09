@@ -3,6 +3,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 . "$lib/lines"
+. "$lib/clipboard"
 . "$lib/program"
 . "$lib/browser"
 
@@ -44,11 +45,12 @@ fi
 
 if [ "$use_clipboard" = true ]
 then
-    url=$(xclip -selection clipboard -o 2>/dev/null)
+    clipboard=$(get_clipboard)
 
-    case "$url" in
-        http*|www*) queries=$(list_add "$queries" "$url") ;;
-    esac
+    if [ -n "$(filter --url "$clipboard")" ]
+    then
+        queries=$(list_add "$queries" "$clipboard")
+    fi
 fi
 
 if [ "$run" = "true" ]

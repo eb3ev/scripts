@@ -3,6 +3,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 . "$lib/csv"
+. "$lib/clipboard"
 
 copy="false"
 browser_cmd="xdg-open"
@@ -29,7 +30,7 @@ open_bookmark () {
 copy_bookmark () {
     if [ -n "$1" ]
     then
-        echo -n "$1" | xclip -selection clipboard
+        set_clipboard "$1"
         notify-send "Copied" "$1"
     fi
 }

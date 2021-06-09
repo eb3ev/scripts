@@ -12,8 +12,8 @@ then
             term_exec "$term_fm '$arg'" &
         elif [ "$arg" = "--use-clipboard" ]
         then
-            dir=$(xclip -selection clipboard -o 2>/dev/null)
-            dir1=$(xclip -selection primary -o 2>/dev/null)
+            dir=$(get_clipboard)
+            dir1=$(get_clipboard --primary)
             echo "$dir"
 
             if [ -d "$dir" ]

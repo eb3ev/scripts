@@ -2,6 +2,7 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/csv"
+. "$lib/clipboard"
 
 emoji_key=$(keys "$lib/data/emojis" "" "!/^ *#/ && NF" | menu 3 "Emojis")
 
@@ -9,7 +10,7 @@ if [ -n "$emoji_key" ]
 then
     emoji=$(echo "$emoji_key" | get_column " " "1")
 
-    echo -n "$emoji" | xclip -selection clipboard
+    set_clipboard "$emoji"
 
     notify-send "Copied" "$emoji"
 fi
