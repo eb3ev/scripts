@@ -27,7 +27,7 @@ then
     then
         for arg in "$args"
         do
-            case "$1" in
+            case "$arg" in
                 "--txt") $filter/files/filter_txt.awk ;;
                 "--doc") $filter/files/filter_doc.awk ;;
                 "--img") $filter/files/filter_img.awk ;;
@@ -43,7 +43,7 @@ else
     then
         for arg in "$args"
         do
-            case "$1" in
+            case "$arg" in
                 "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
                 "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
                 "--img") echo "$vals" | $filter/files/filter_img.awk ;;
