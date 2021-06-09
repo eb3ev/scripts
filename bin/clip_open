@@ -1,0 +1,36 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/clipboard"
+
+open_url () {
+    browser "$1"
+}
+
+open_dir () {
+    term_fm "$1"
+}
+
+invalid () {
+    echo "Invalid: $1"
+    notify-send "Invalid" "$1"
+}
+
+clipboard=$(get_clipboard)
+
+if [ -n "$(filter --url "$clipboard")" ]
+then
+    type="url"
+elif [ -d "$clipboard" ]
+then
+    type="dir"
+else
+    type=""
+fi
+
+case "$type" in
+    "url") open_url "$clipboard" ;;
+    "dir") open_dir "$clipboard" ;;
+    *) invalid "$clipboard" ;;
+esac
+

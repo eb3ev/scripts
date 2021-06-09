@@ -1,0 +1,27 @@
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/lines"
+
+get_clipboard () {
+    xclip -selection clipboard -o 2>/dev/null
+}
+
+set_clipboard () {
+    trailing_new_line="false"
+    args=""
+    clipboard=""
+
+    for arg in "$@"
+    do
+        case "$arg" in
+            "--trailing-new-line") args=$(list_add "$args" "$arg") ;;
+            *) clipboard=$(list_add "$clipboard" "$arg") ;;
+        esac
+    done
+
+    if [ "$trailing_new_line" = "true" ]
+    then
+        echo "$clipboard" | xclip -selection clipboard
+    else
+        echo -n "$clipboard" | xclip -selection clipboard
+    fi
+}

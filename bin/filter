@@ -11,7 +11,7 @@ vals=""
 for arg in "$@"
 do
     case "$arg" in
-        "--txt"|"--doc"|"--img"|"--vid")
+        "--txt"|"--doc"|"--img"|"--vid"|"--url")
             args=$(list_add "$args" "$arg")
             ;;
         *) vals=$(list_add "$vals" "$arg") ;;
@@ -29,6 +29,7 @@ then
                 "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;
                 "--img") echo "$vals" | $filter/files/filter_img.awk ;;
                 "--vid") echo "$vals" | $filter/files/filter_vid.awk ;;
+                "--url") echo "$vals" | $filter/filter_url.awk ;;
             esac
         done
     fi
@@ -42,6 +43,7 @@ else
                 "--doc") $filter/files/filter_doc.awk ;;
                 "--img") $filter/files/filter_img.awk ;;
                 "--vid") $filter/files/filter_vid.awk ;;
+                "--url") $filter/filter_url.awk ;;
             esac
         done
     else
