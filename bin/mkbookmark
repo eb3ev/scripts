@@ -14,8 +14,8 @@ then
     then
         echo "$bookmark_name ; $clipboard" >> "$bookmarks"
 
-        notify-send "New bookmark" "$bookmark_name: $clipboard"
+        notify-send "New bookmark" "$bookmark_name ($clipboard)"
     fi
 else
-    notify-send "Invalid link" "$clipboard"
+    notify-send "Invalid URL" "$clipboard"
 fi
