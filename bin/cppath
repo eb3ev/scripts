@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/clipboard"
+
+copy () {
+    set_clipboard "$1"
+    notify "$1"
+}
+
+notify () {
+    echo "Copied: \"$1\""
+    notify-send "Copied" "$1"
+}
+
+if [ -n "$1" ]
+then
+    if [ -e "$1" ]
+    then
+        copy "$(readlink -f "$1")"
+    else
+        echo "Invalid Path: "$1""
+        notify-send "Invalid Path" "$1"
+    fi
+else
+    copy "$(pwd)"
+fi
+
