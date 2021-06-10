@@ -1,0 +1,42 @@
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+. "$lib/lines"
+. "$lib/csv"
+
+get_def_sink () {
+    pactl info | awk -F ": " '/Default Sink/ {print $2}'
+}
+
+get_sinks () {
+    sinks=$(pactl list sinks | awk -F ": " '/Name|Description/ {print $2}')
+    num_sinks=$(($(echo "$sinks" | wc -l) / 2))
+
+    new_sinks=""
+    for i in $(seq 1 $num_sinks)
+    do
+        sink_id=$(get_row $i "$sinks")
+        sink_name=$(get_row $((i+1)) "$sinks")
+
+        new_sinks=$(list_add "$new_sinks" "$sink_name;$sink_id")
+    done
+
+    if [ "$1" = "--exclude-default" ]
+    then
+        def_sink=$(echo "$new_sinks" | grep "$(get_def_sink)") 
+        new_sinks=$(rm_line "$def_sink" "$new_sinks")
+    fi
+
+    echo "$new_sinks"
+}
+
+get_sink_names () {
+    get_column 1 "${1:-$(get_sinks)}" ";"
+}
+
+get_sink_id () {
+    value "$1" "${2:-$(get_sinks)}" 2 ";"
+}
+
+set_def_sink () {
+    pactl set-default-sink "$1"
+}
+
