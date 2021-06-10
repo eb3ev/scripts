@@ -2,10 +2,12 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
+. "$lib/var/cache"
 . "$lib/csv"
 . "$lib/clipboard"
 
 copy="false"
+use_history="false"
 browser_cmd="xdg-open"
 
 get_bookmarks () {
@@ -14,6 +16,17 @@ get_bookmarks () {
 
 get_bookmark () {
     get_bookmarks | menu 2 ""
+}
+
+get_bookmark_history () {
+    if [ ! -e "$bookmark_history" ]
+    then
+        get_bookmarks > "$bookmark_history"
+    fi
+
+    sync_file_list "$bookmark_history" "$(get_bookmarks)"
+
+    menu 2 "" < "$bookmark_history"
 }
 
 get_url () {
@@ -41,16 +54,27 @@ for arg in "$@"
 do
     case "$arg" in
         "--copy") copy="true" ;;
+        "--use-history") use_history="true" ;;
         *) browser_cmd="$arg" ;;
     esac
 done
 
-bookmark_key=$(get_bookmark)
+if [ "$use_history" = true ]
+then
+    bookmark_key=$(get_bookmark_history)
+else
+    bookmark_key=$(get_bookmark)
+fi
 
 if [ "$copy" = "true" ]
 then
     copy_bookmark "$(get_url "$bookmark_key")"
 else
+    if [ "$use_history" = "true" ]
+    then
+        to_top "$bookmark_key" "$bookmark_history"
+    fi
+
     open_bookmark "$(get_url "$bookmark_key")"
 fi
 
