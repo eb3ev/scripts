@@ -21,11 +21,12 @@ get_screenlayouts () {
     layouts=""
     for count in $(seq 1 $monitor_count)
     do
-        layouts=$(list_add "$layout" "$(keys "$screenlayouts" " ; " "!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$hostname") ; / {print \$1}")")
+        layouts=$(list_add "$layouts" "$(keys "$screenlayouts" " ; " "!/^ *#/ && NF && / ; $count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}")")
     done
 
     echo "$layouts"
 }
+
 
 hostname=$(< /etc/hostname)
 
