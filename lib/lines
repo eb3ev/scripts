@@ -30,14 +30,15 @@ append_line () {
 }
 
 rm_line () {
+    regex=$(enc --sed-regex "$1")
     if [ -w "$2" ]
     then
-        sed -i "/^$(enc --sed-regex "$1")\$/d" "$2"
-    elif [ $# -gt 0 ]
+        sed -i "/^$regex\$/d" "$2"
+    elif [ $# -eq 2 ]
     then
-        echo "$2" | sed "/^$(enc --sed-regex "$1")\$/d"
+        echo "$2" | sed "/^$regex\$/d"
     else
-        sed "/^$(enc --sed-regex "$1")\$/d"
+        sed "/^$regex$/d"
     fi
 }
 
@@ -114,6 +115,8 @@ sync_file_file () {
 
     uniq=$(cat "$1" "$2" | sort | uniq -u)
 
+    IFS="
+"
     for line in $uniq
     do
         if [ -z "$(grep -x "$line" "$1")" ]
@@ -129,6 +132,7 @@ sync_file_file () {
             to_top "$line" "$1"
         fi
     done
+    unset IFS
 }
 
 # Syncs the file list to the main list.
@@ -137,8 +141,12 @@ sync_file_list () {
 
     uniq=$(echo -e "$2\n$(< "$1")" | sort | uniq -u)
 
+    IFS="
+"
     for line in $uniq
     do
+        echo 1
+        echo $line
         if [ -z "$(grep -x "$line" "$1")" ]
         then
             prepend_line "$line" "$1"
@@ -152,6 +160,7 @@ sync_file_list () {
             to_top "$line" "$1"
         fi
     done
+    unset IFS
 }
 
 # Syncs the list to the main list.
@@ -160,6 +169,8 @@ sync_list_list () {
 
     uniq=$(echo -e "$2\n$new_list" | sort | uniq -u)
 
+    IFS="
+"
     for line in $uniq
     do
         if [ -z "$(echo "$new_list" | grep -x "$line")" ]
@@ -175,6 +186,7 @@ sync_list_list () {
             new_list=$(echo "$new_list" | to_top "$line")
         fi
     done
+    unset IFS
 
     echo "$new_list"
 }

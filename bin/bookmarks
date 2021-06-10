@@ -29,6 +29,7 @@ get_bookmark_history () {
     menu 2 "" < "$bookmark_history"
 }
 
+#get_bookmark_history
 get_url () {
     value "$1" "$bookmarks"
 }
