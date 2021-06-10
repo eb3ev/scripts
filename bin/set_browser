@@ -2,6 +2,7 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
+. "$lib/files"
 . "$lib/browser"
 
 new_browser=$(installed_browsers | menu 2 "Browsers")
