@@ -3,22 +3,56 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/cache"
 . "$lib/lines"
+. "$lib/clipboard"
 
-scripts_list=$(ls -F1 "$bin" | awk '/\*$/' | sed 's/\*$//g')
+run="true"
+use_history="false"
 
-if [ ! -e "$scripts_history" ]
+get_scripts_list () {
+    ls -F1 "$bin" | awk '/\*$/' | sed 's/\*$//g'
+}
+
+get_scripts_history () {
+    scripts_list=$(get_scripts_list)
+
+    if [ ! -e "$scripts_history" ]
+    then
+        echo "$scripts_list" > "$scripts_history"
+    fi
+
+    sync_file_list "$scripts_history" "$scripts_list"
+
+    cat "scripts_history"
+}
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--sudo") require_sudo="true" ;;
+        "--use-history") use_history="true" ;;
+        "--print-cmd") run="false" ;;
+    esac
+done
+
+if [ "$use_history" = "true" ]
 then
-    echo "$scripts_list" > "$scripts_history"
+    script=$(get_scripts_history | menu 2 "Run")
+else
+    script=$(get_scripts_list | menu 2 "Run")
 fi
-
-sync_file_list "$scripts_history" "$scripts_list"
-
-script=$(menu 2 "Run" < "$scripts_history")
 
 if [ -n "$script" ]
 then
-    to_top "$script" "$scripts_history"
+    if [ "$use_history" = "true" ]
+    then
+        to_top "$script" "$scripts_history"
+    fi
     
-    $bin/$script
+    if [ "$run" = "true" ]
+    then
+        $bin/$script
+    else
+        echo "$bin/$script"
+    fi
 fi
 
