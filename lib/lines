@@ -119,15 +119,15 @@ sync_file_file() {
 "
     for line in $uniq
     do
-        if [ -z "$(grep -x "$line" "$1")" ]
+        if [ -z "$(grep -x -- "$line" "$1")" ]
         then
             prepend_line "$line" "$1"
-        elif [ -z "$(grep -x "$line" "$2")" ]
+        elif [ -z "$(grep -x -- "$line" "$2")" ]
         then
             rm_line "$line" "$1"
         fi
 
-        if [ $(grep -x "$line" "$1" | wc -l) -gt 1 ]
+        if [ $(grep -x -- "$line" "$1" | wc -l) -gt 1 ]
         then
             to_top "$line" "$1"
         fi
@@ -145,17 +145,15 @@ sync_file_list() {
 "
     for line in $uniq
     do
-        echo 1
-        echo $line
-        if [ -z "$(grep -x "$line" "$1")" ]
+        if [ -z "$(grep -x -- "$line" "$1")" ]
         then
             prepend_line "$line" "$1"
-        elif [ -z "$(echo "$2" | grep -x "$line")" ]
+        elif [ -z "$(echo "$2" | grep -x -- "$line")" ]
         then
             rm_line "$line" "$1"
         fi
 
-        if [ $(grep -x "$line" "$1" | wc -l) -gt 1 ]
+        if [ $(grep -x -- "$line" "$1" | wc -l) -gt 1 ]
         then
             to_top "$line" "$1"
         fi
@@ -173,15 +171,15 @@ sync_list_list() {
 "
     for line in $uniq
     do
-        if [ -z "$(echo "$new_list" | grep -x "$line")" ]
+        if [ -z "$(echo "$new_list" | grep -x -- "$line")" ]
         then
             new_list=$(echo "$new_list" | prepend_line "$line")
-        elif [ -z "$(echo "$2" | grep -x "$line")" ]
+        elif [ -z "$(echo "$2" | grep -x -- "$line")" ]
         then
             new_list=$(echo "$new_list" | rm_line "$line")
         fi
 
-        if [ $(grep -x "$line" "$1" | wc -l) -gt 1 ]
+        if [ $(grep -x -- "$line" "$1" | wc -l) -gt 1 ]
         then
             new_list=$(echo "$new_list" | to_top "$line")
         fi
@@ -192,6 +190,6 @@ sync_list_list() {
 }
 
 esc_spaces() {
-    printf $(echo "$1" | sed 's/\\ / /g;s/ /\\ /g')
+    echo "$1" | sed 's/\\ / /g;s/ /\\ /g'
 }
 
