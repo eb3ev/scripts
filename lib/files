@@ -2,7 +2,7 @@
 . "$lib/program"
 . "$lib/lines"
 
-find_cmd () {
+find_cmd() {
     if [ "$(installed fd)" = "true" ]
     then
         use_fd="true"
@@ -35,7 +35,7 @@ find_cmd () {
     echo "$vals"
 }
 
-set_value () {
+set_value() {
     if [ -s "$2" ]
     then
         sed -i '1,$d' "$2"

@@ -2,7 +2,7 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 
-restart_program () {
+restart_program() {
     killall "$1" 2>/dev/null && eval "$1" &
 }
 

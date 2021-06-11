@@ -6,7 +6,7 @@
 . "$lib/csv"
 . "$lib/lines"
 
-create_histfile () {
+create_histfile() {
     if [ -e "$search_history" ]
     then
         histsize="${search_histsize:-1000}"

@@ -9,7 +9,7 @@ run="true"
 require_sudo="false"
 use_history="false"
 
-get_program_history () {
+get_program_history() {
     if [ ! -e "$program_history" ]
     then
         cp "$programs" "$program_history"

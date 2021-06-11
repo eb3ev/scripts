@@ -9,7 +9,7 @@ use_filter="false"
 new_window="false"
 require_sudo="false"
 
-get_file () {
+get_file() {
     files=$(find_cmd "$1")
 
     if [ "$use_filter" = "true" ]
@@ -20,7 +20,7 @@ get_file () {
     echo "$files" | menu 1 "Edit"
 }
 
-edit_file () {
+edit_file() {
     if [ "$new_window" = "true" ]
     then
         if [ "$require_sudo" = "true" ]

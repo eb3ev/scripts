@@ -1,6 +1,6 @@
 #!/bin/sh
 
-create_script_file () {
+create_script_file() {
     if [ ! -e "$1" ]
     then
         echo '#!/bin/sh' > "$1"

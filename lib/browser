@@ -3,27 +3,27 @@
 . "$lib/program"
 . "$lib/lines"
 
-get_name () {
+get_name() {
     value "$1" "$lib/data/browsers" 1
 }
 
-get_cmd () {
+get_cmd() {
     value "$1" "$lib/data/browsers" 2
 }
 
-get_new_tab_cmd () {
+get_new_tab_cmd() {
     value "$1" "$lib/data/browsers" 3
 }
 
-get_new_win_cmd () {
+get_new_win_cmd() {
     value "$1" "$lib/data/browsers" 4
 }
 
-get_names () {
+get_names() {
     get_column 1 "$lib/data/browsers"
 }
 
-installed_browsers () {
+installed_browsers() {
     browser_list=$(get_names)
 
     for browser in $browser_list

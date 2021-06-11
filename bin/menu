@@ -3,7 +3,7 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 
-window_menu () {
+window_menu() {
     case "$1" in
         0) eval "$base_dmenu $param0" ;;
         1) eval "$base_dmenu $param1" ;;
@@ -15,7 +15,7 @@ window_menu () {
     esac
 }
 
-default_menu () {
+default_menu() {
     base_dmenu="dmenu"
     param0=""
     param1=""
@@ -27,7 +27,7 @@ default_menu () {
     window_menu "$1" "$2"
 }
 
-top_window_menu () {
+top_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-11' -i -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
     param0="\$2"
     param1="-p \"\$2\""
@@ -39,7 +39,7 @@ top_window_menu () {
     window_menu "$1" "$2"
 }
 
-center_window_menu () {
+center_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-14' -nb '#000000' -sb '#000000' \
         -pb '#000000' -i -c -l 5 -mn 1 -h 32 -bw 1 -bc '#FFFFFF'"
     param0="\$2"
@@ -52,7 +52,7 @@ center_window_menu () {
     window_menu "$1" "$2"
 }
 
-bottom_window_menu () {
+bottom_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-11' -i -b -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
     param0="\$2"
     param1="-p \"\$2\""
@@ -64,7 +64,7 @@ bottom_window_menu () {
     window_menu "$1" "$2"
 }
 
-term_menu () {
+term_menu() {
     FZF_DEFAULT_OPTS='
         --cycle
         --margin 8%,4%,8%
@@ -81,7 +81,7 @@ term_menu () {
     fzf
 }
 
-term_window_menu () {
+term_window_menu() {
     read -d '' input
 
     tmp_file=$(mktemp)

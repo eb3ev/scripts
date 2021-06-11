@@ -1,6 +1,6 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 
-prepend_line () {
+prepend_line() {
     if [ -w "$2" ]
     then
         if [ -s "$2" ]
@@ -17,7 +17,7 @@ prepend_line () {
     fi
 }
 
-append_line () {
+append_line() {
     if [ -w "$2" ]
     then
         echo "$1" >> "$2"
@@ -29,7 +29,7 @@ append_line () {
     fi
 }
 
-rm_line () {
+rm_line() {
     regex=$(enc --sed-regex "$1")
     if [ -w "$2" ]
     then
@@ -42,7 +42,7 @@ rm_line () {
     fi
 }
 
-to_top () {
+to_top() {
     if [ -w "$2" ]
     then
         rm_line "$1" "$2" && prepend_line "$1" "$2"
@@ -54,7 +54,7 @@ to_top () {
     fi
 }
 
-to_bottom () {
+to_bottom() {
     if [ -w "$2" ]
     then
         rm_line "$1" "$2" && append_line "$1" "$2"
@@ -66,7 +66,7 @@ to_bottom () {
     fi
 }
 
-rm_file_dups () {
+rm_file_dups() {
     dups=$(sort "$1" | uniq -D)
 
     while [ -n "$dups" ]
@@ -79,7 +79,7 @@ rm_file_dups () {
     done
 }
 
-rm_list_dups () {
+rm_list_dups() {
     dups=$(echo "$1" | sort | uniq -D)
 
     new_list=""
@@ -96,11 +96,11 @@ rm_list_dups () {
     echo "$new_list"
 }
 
-concat_list () {
+concat_list() {
     echo -e "$1\n$2"
 }
 
-list_add () {
+list_add() {
     if [ -z "$1" ]
     then
         echo "$2"
@@ -110,7 +110,7 @@ list_add () {
 }
 
 # Syncs the file list to the main file list.
-sync_file_file () {
+sync_file_file() {
     rm_file_dups "$1" 
 
     uniq=$(cat "$1" "$2" | sort | uniq -u)
@@ -136,7 +136,7 @@ sync_file_file () {
 }
 
 # Syncs the file list to the main list.
-sync_file_list () {
+sync_file_list() {
     rm_file_dups "$1"
 
     uniq=$(echo -e "$2\n$(< "$1")" | sort | uniq -u)
@@ -164,7 +164,7 @@ sync_file_list () {
 }
 
 # Syncs the list to the main list.
-sync_list_list () {
+sync_list_list() {
     new_list=$(rm_list_dups "$1")
 
     uniq=$(echo -e "$2\n$new_list" | sort | uniq -u)
@@ -191,7 +191,7 @@ sync_list_list () {
     echo "$new_list"
 }
 
-esc_spaces () {
+esc_spaces() {
     printf $(echo "$1" | sed 's/\\ / /g;s/ /\\ /g')
 }
 

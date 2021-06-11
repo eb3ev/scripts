@@ -7,7 +7,7 @@ diff_browser="false"
 new_tab="false"
 new_window="false"
 
-open_url () {
+open_url() {
     args=""
     if [ "$diff_browser" = "true" ]
     then
@@ -24,11 +24,11 @@ open_url () {
     browser $args "$1"
 }
 
-open_dir () {
+open_dir() {
     term_fm "$1"
 }
 
-invalid () {
+invalid() {
     echo "Invalid: $1"
     notify-send "Invalid" "$1"
 }

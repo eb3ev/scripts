@@ -1,12 +1,12 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 
-keys () {
+keys() {
     delim="${2:- ; }"
     filter="${3:-"!/^ *#/ && NF {print \$1}"}"
     awk -F "$delim" "$filter" "$1"
 }
 
-value () {
+value() {
     key=$(enc --awk-regex "$1")
     value_index="${3:-2}"
     delim="${4:- ; }"
@@ -18,7 +18,7 @@ value () {
     fi
 }
 
-get_column () {
+get_column() {
     if [ -r "$2" ]
     then
         awk -F "${3:- ; }" "{print \$$1}" "$2"
@@ -30,7 +30,7 @@ get_column () {
     fi
 }
 
-get_row () {
+get_row() {
     if [ -r "$2" ]
     then
         sed -n "$1 p" "$2"

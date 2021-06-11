@@ -2,11 +2,11 @@
 . "$lib/lines"
 . "$lib/csv"
 
-get_def_sink () {
+get_def_sink() {
     pactl info | awk -F ": " '/Default Sink/ {print $2}'
 }
 
-get_sinks () {
+get_sinks() {
     sinks=$(pactl list sinks | awk -F ": " '/Name|Description/ {print $2}')
     num_sinks=$(($(echo "$sinks" | wc -l) / 2))
 
@@ -28,15 +28,15 @@ get_sinks () {
     echo "$new_sinks"
 }
 
-get_sink_names () {
+get_sink_names() {
     get_column 1 "${1:-$(get_sinks)}" ";"
 }
 
-get_sink_id () {
+get_sink_id() {
     value "$1" "${2:-$(get_sinks)}" 2 ";"
 }
 
-set_def_sink () {
+set_def_sink() {
     pactl set-default-sink "$1"
 }
 

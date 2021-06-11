@@ -5,7 +5,7 @@
 . "$lib/csv"
 . "$lib/lines"
 
-create_setter_script () {
+create_setter_script() {
     rm -f "$screenlayout_setter" && mkscript "$screenlayout_setter"
     
     if [ -x "$wallpaper_setter" ]
@@ -16,7 +16,7 @@ create_setter_script () {
     fi
 }
 
-get_screenlayouts () {
+get_screenlayouts() {
     monitor_count=$(xrandr | awk '/ connected/' | wc -l)
     layouts=""
     for count in $(seq 1 $monitor_count)

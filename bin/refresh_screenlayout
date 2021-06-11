@@ -3,7 +3,7 @@
 . "${SCRIPTS_RC:-$HOME/scripts}/scriptsrc"
 . "$lib/var/config"
 
-turn_off_secondary_monitors () {
+turn_off_secondary_monitors() {
     monitors=$(xrandr | awk '/ connected/ && !/ connected primary/ {print $1}')
 
     args=""
@@ -19,7 +19,7 @@ turn_off_secondary_monitors () {
     fi
 }
 
-refresh_screenlayout () {
+refresh_screenlayout() {
     $screenlayout_setter
     $wallpaper_setter
 }

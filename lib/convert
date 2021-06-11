@@ -1,4 +1,4 @@
-num_to_ordinal () {
+num_to_ordinal() {
     case "$1" in
        "1"|"01") echo "First" ;;
        "2"|"02") echo "Second" ;;

@@ -11,19 +11,19 @@ use_history="false"
 use_groups="false"
 browser_cmd="xdg-open"
 
-get_bookmarks () {
+get_bookmarks() {
     keys "$bookmarks"
 }
 
-get_bookmark_groups () {
+get_bookmark_groups() {
     ls -F1 "$bookmark_groups" | awk '!/\*$|\/$/'
 }
 
-get_bookmark () {
+get_bookmark() {
     get_bookmarks | menu 2 ""
 }
 
-get_bookmark_history () {
+get_bookmark_history() {
     if [ ! -e "$bookmark_history" ]
     then
         get_bookmarks > "$bookmark_history"
@@ -34,22 +34,22 @@ get_bookmark_history () {
     menu 2 "" < "$bookmark_history"
 }
 
-get_url () {
+get_url() {
     value "$1" "$bookmarks"
 }
 
-get_group_urls () {
+get_group_urls() {
     cat "$bookmark_groups/$1" 2>/dev/null
 }
 
-open_bookmark () {
+open_bookmark() {
     if [ -n "$1" ]
     then
         $browser_cmd "$1"
     fi
 }
 
-open_bookmark_group () {
+open_bookmark_group() {
     urls=$(get_group_urls "$1")
 
     for url in $urls
@@ -58,7 +58,7 @@ open_bookmark_group () {
     done
 }
 
-copy_bookmark () {
+copy_bookmark() {
     if [ -n "$1" ]
     then
         set_clipboard "$1"

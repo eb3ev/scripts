@@ -2,7 +2,7 @@
 
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 
-toggle () {
+toggle() {
     if [ -z "$(pgrep -x "$1")" ]
     then
         notify-send "$1" "On" &

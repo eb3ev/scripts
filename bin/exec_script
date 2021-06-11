@@ -9,11 +9,11 @@ run="true"
 require_sudo="false"
 use_history="false"
 
-get_scripts_list () {
+get_scripts_list() {
     ls -F1 "$bin" | awk '/\*$/' | sed 's/\*$//g'
 }
 
-get_scripts_history () {
+get_scripts_history() {
     scripts_list=$(get_scripts_list)
 
     if [ ! -e "$scripts_history" ]

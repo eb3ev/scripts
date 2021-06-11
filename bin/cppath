@@ -3,12 +3,12 @@
 . "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
 . "$lib/clipboard"
 
-copy () {
+copy() {
     set_clipboard "$1"
     notify "$1"
 }
 
-notify () {
+notify() {
     echo "Copied: \"$1\""
     notify-send "Copied" "$1"
 }
