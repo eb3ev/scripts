@@ -6,6 +6,7 @@
 . "$lib/clipboard"
 
 run="true"
+require_sudo="false"
 use_history="false"
 
 get_scripts_list () {
@@ -22,7 +23,7 @@ get_scripts_history () {
 
     sync_file_list "$scripts_history" "$scripts_list"
 
-    cat "scripts_history"
+    cat "$scripts_history"
 }
 
 for arg in "$@"
@@ -34,11 +35,20 @@ do
     esac
 done
 
+script_list=$()
+
 if [ "$use_history" = "true" ]
 then
-    script=$(get_scripts_history | menu 2 "Run")
+    script_list=$(get_scripts_history)
 else
-    script=$(get_scripts_list | menu 2 "Run")
+    script_list=$(get_scripts_list)
+fi
+
+if [ "$require_sudo" = "true" ]
+then
+    script=$(echo "$script_list" | menu 4 "Run")
+else
+    script=$(echo "$script_list" | menu 2 "Run")
 fi
 
 if [ -n "$script" ]
@@ -48,11 +58,21 @@ then
         to_top "$script" "$scripts_history"
     fi
     
-    if [ "$run" = "true" ]
+    if [ "$require_sudo" = "true" ]
     then
-        $bin/$script
+        if [ "$run" = "true" ]
+        then
+            SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $bin/$script
+        else
+            echo "SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $bin/$script"
+        fi
     else
-        echo "$bin/$script"
+        if [ "$run" = "true" ]
+        then
+            $bin/$script
+        else
+            echo "$bin/$script"
+        fi
     fi
 fi
 
