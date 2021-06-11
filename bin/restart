@@ -1,7 +1,23 @@
 #!/bin/sh
 
-for arg in "$@"
-do
-    killall "$arg" 2>/dev/null && eval "$arg" &
-done
+. "${SCRIPTS_DIR:-$HOME/scripts}/scriptsrc"
+
+restart_program () {
+    killall "$1" 2>/dev/null && eval "$1" &
+}
+
+if [ $# -gt 0 ]
+then
+    for arg in "$@"
+    do
+        restart_program "$arg"
+    done
+else
+    program=$(exec_program --print-cmd)
+
+    if [ -n "$program" ]
+    then
+        restart_program "$program"
+    fi
+fi
 
