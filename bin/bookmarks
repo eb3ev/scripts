@@ -8,10 +8,15 @@
 
 copy="false"
 use_history="false"
+use_groups="false"
 browser_cmd="xdg-open"
 
 get_bookmarks () {
     keys "$bookmarks"
+}
+
+get_bookmark_groups () {
+    ls -F1 "$bookmark_groups" | awk '!/\*$|\/$/'
 }
 
 get_bookmark () {
@@ -29,9 +34,12 @@ get_bookmark_history () {
     menu 2 "" < "$bookmark_history"
 }
 
-#get_bookmark_history
 get_url () {
     value "$1" "$bookmarks"
+}
+
+get_group_urls () {
+    cat "$bookmark_groups/$1" 2>/dev/null
 }
 
 open_bookmark () {
@@ -39,6 +47,15 @@ open_bookmark () {
     then
         $browser_cmd "$1"
     fi
+}
+
+open_bookmark_group () {
+    urls=$(get_group_urls "$1")
+
+    for url in $urls
+    do
+        open_bookmark "$url"
+    done
 }
 
 copy_bookmark () {
@@ -56,26 +73,39 @@ do
     case "$arg" in
         "--copy") copy="true" ;;
         "--use-history") use_history="true" ;;
+        "--use-groups") use_groups="true" ;;
         *) browser_cmd="$arg" ;;
     esac
 done
 
-if [ "$use_history" = true ]
+if [ "$use_groups" = "true" ]
 then
-    bookmark_key=$(get_bookmark_history)
-else
-    bookmark_key=$(get_bookmark)
-fi
+    bookmark_key=$(get_bookmark_groups | menu 2 "Groups")
 
-if [ "$copy" = "true" ]
-then
-    copy_bookmark "$(get_url "$bookmark_key")"
-else
-    if [ "$use_history" = "true" ]
+    if [ "$copy" = "true" ]
     then
-        to_top "$bookmark_key" "$bookmark_history"
+        copy_bookmark "$(get_group_urls "$bookmark_key")"
+    else
+        open_bookmark_group "$bookmark_key"
+    fi
+else
+    if [ "$use_history" = true ]
+    then
+        bookmark_key=$(get_bookmark_history)
+    else
+        bookmark_key=$(get_bookmark)
     fi
 
-    open_bookmark "$(get_url "$bookmark_key")"
+    if [ "$copy" = "true" ]
+    then
+        copy_bookmark "$(get_url "$bookmark_key")"
+    else
+        if [ "$use_history" = "true" ]
+        then
+            to_top "$bookmark_key" "$bookmark_history"
+        fi
+
+        open_bookmark "$(get_url "$bookmark_key")"
+    fi
 fi
 
