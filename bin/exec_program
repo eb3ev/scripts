@@ -7,6 +7,18 @@
 
 run="true"
 require_sudo="false"
+use_history="false"
+
+get_program_history () {
+    if [ ! -e "$program_history" ]
+    then
+        cp "$programs" "$program_history"
+    fi
+
+    sync_file_file "$program_history" "$programs"
+
+    cat "$program_history" 2>/dev/null
+}
 
 IFS=:
 if stest -dqr -n "$programs" $PATH
@@ -15,26 +27,27 @@ then
 fi
 unset IFS
 
-if [ ! -e "$program_history" ]
-then
-    cp "$programs" "$program_history"
-fi
-
-sync_file_file "$program_history" "$programs"
-
 for arg in "$@"
 do
     case "$arg" in
         "--sudo") require_sudo="true" ;;
+        "--use-history") use_history="true" ;;
         "--print-cmd") run="false" ;;
     esac
 done
 
+if [ "$use_history" = "true" ]
+then
+    program_list=$(get_program_history)
+else
+    program_list=$(< "$programs")
+fi
+
 if [ "$require_sudo" = "true" ]
 then
-    program="$(menu 4 "Launch" < "$program_history")"
+    program=$(echo "$program_list" | menu 4 "Launch")
 else
-    program=$(menu 2 "Launch" < "$program_history")
+    program=$(echo "$program_list" | menu 2 "Launch")
 fi
 
 if [ -n "$program" ]
