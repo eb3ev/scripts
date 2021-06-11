@@ -8,7 +8,7 @@ emoji_key=$(keys "$lib/data/emojis" "" "!/^ *#/ && NF" | menu 3 "Emojis")
 
 if [ -n "$emoji_key" ]
 then
-    emoji=$(echo "$emoji_key" | get_column " " "1")
+    emoji=$(get_column "1" "$emoji_key" " ")
 
     set_clipboard "$emoji"
 

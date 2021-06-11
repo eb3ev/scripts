@@ -9,11 +9,11 @@ prepend_line() {
         else
             echo "$1" >> "$2"
         fi
-    elif [ $# -gt 0 ]
+    elif [ "$1" = "--use-pipe" ]
     then
-        echo "$2" | sed "1i\\$1"
+        sed "1i\\$2"
     else
-        sed "1i\\$1"
+        echo "$2" | sed "1i\\$1"
     fi
 }
 
@@ -21,11 +21,11 @@ append_line() {
     if [ -w "$2" ]
     then
         echo "$1" >> "$2"
-    elif [ $# -gt 0 ]
+    elif [ "$1" = "--use-pipe" ]
     then
-        echo "$2" | sed "\$a\\$1"
+        sed "\$a\\$2"
     else
-        sed "\$a\\$1"
+        echo "$2" | sed "\$a\\$1"
     fi
 }
 
@@ -46,11 +46,11 @@ to_top() {
     if [ -w "$2" ]
     then
         rm_line "$1" "$2" && prepend_line "$1" "$2"
-    elif [ $# -gt 0 ]
+    elif [ "$1" = "--use-pipe" ]
     then
-        echo "$2" | rm_line "$1" | prepend_line
+        rm_line "$2" | prepend_line --use-pipe
     else
-        rm_line "$1" | prepend_line
+        echo "$2" | rm_line "$1" | prepend_line --use-pipe
     fi
 }
 
@@ -58,11 +58,11 @@ to_bottom() {
     if [ -w "$2" ]
     then
         rm_line "$1" "$2" && append_line "$1" "$2"
-    elif [ $# -gt 0 ]
+    elif [ "$1" = "--use-pipe" ]
     then
-        echo "$2" | rm_line "$1" | append_line
+        rm_line "$2" | append_line --use-pipe
     else
-        rm_line "$1" | append_line
+        echo "$2" | rm_line "$1" | append_line --use-pipe
     fi
 }
 
@@ -88,7 +88,7 @@ rm_list_dups() {
     do
         dup=$(echo "$dups" | head -n 1)
 
-        new_list=$(to_bottom "$dup")
+        new_list=$(to_bottom "$dup" "$new_list")
 
         dups=$(echo "$new_list" | sort | uniq -D)
     done
@@ -173,7 +173,7 @@ sync_list_list() {
     do
         if [ -z "$(echo "$new_list" | grep -x -- "$line")" ]
         then
-            new_list=$(echo "$new_list" | prepend_line "$line")
+            new_list=$(echo "$new_list" | prepend_line --use-pipe "$line")
         elif [ -z "$(echo "$2" | grep -x -- "$line")" ]
         then
             new_list=$(echo "$new_list" | rm_line "$line")
@@ -181,7 +181,7 @@ sync_list_list() {
 
         if [ $(grep -x -- "$line" "$1" | wc -l) -gt 1 ]
         then
-            new_list=$(echo "$new_list" | to_top "$line")
+            new_list=$(to_top "$line" "$new_list")
         fi
     done
     unset IFS

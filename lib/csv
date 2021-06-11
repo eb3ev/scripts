@@ -22,11 +22,11 @@ get_column() {
     if [ -r "$2" ]
     then
         awk -F "${3:- ; }" "{print \$$1}" "$2"
-    elif [ $# -ge 2 ]
+    elif [ "$1" = "--use-pipe" ]
     then
-        echo "$2" | awk -F "${3:- ; }" "{print \$$1}"
+        awk -F "${3:- ; }" "{print \$$2}"
     else
-        awk -F "${2:- ; }" "{print \$$1}"
+        echo "$2" | awk -F "${3:- ; }" "{print \$$1}"
     fi
 }
 
