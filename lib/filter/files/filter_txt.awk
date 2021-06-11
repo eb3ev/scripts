@@ -1,6 +1,7 @@
 #!/bin/awk -f
 
-/\.vim$|\
+/\
+\.vim$|\
 \.go$|\
 \.mod$|\
 \.sum$|\
@@ -14,7 +15,7 @@ config$|\
 \.awk$|\
 \.sed$|\
 \.fish$|\
-fish_variables$|\
+fish|\
 \.conf$|\
 \.txt$|\
 \.service$|\
@@ -38,21 +39,31 @@ rc$|\
 \.rasi$|\
 \.toml$|\
 \.lock$|\
-\.zsh$|\
 \.rs$|\
 \.d$|\
 \.ini$|\
+\.Xresources$|\
 \.dirs$|\
 \.locale$|\
 \.cfg$|\
-\.profile$|\
-\.zprofile$|\
-\.zshenv$|\
-\.scm$|\
-rc$|\
+profile$|\
 \.log$|\
-\/bookmarks\/|\
-search_history$|\
-\/\.scripts\/|\
+\.scm$|\
+\.zsh$|\
+\.lua$|\
+zsh\/|\
+\.list$|\
+\.dirs$|\
+zprofile$|\
+zshrc$|\
+\.gradle$|\
+\.bat$|\
+\.properties$|\
+\.pro$|\
+zshenv$|\
+scripts\/|\
+rc|\
+history$|\
+bookmarks\/|\
 \[Ll][Ii][Cc][Ee][Nn][Cc][Ee]$\
-/ && !/\/\.git\// && !/\/git.bck\// && !/\/\.src\//
+/ && !/\.git\//
