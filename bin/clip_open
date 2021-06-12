@@ -28,6 +28,10 @@ open_dir() {
     term_fm "$1"
 }
 
+open_file() {
+    xdg-open "$1"
+}
+
 invalid() {
     echo "Invalid: $1"
     notify-send "Invalid" "$1"
@@ -50,14 +54,17 @@ then
 elif [ -d "$clipboard" ]
 then
     type="dir"
+elif [ -e "$clipboard" ]
+then
+    type="file"
 else
     type=""
 fi
 
-
 case "$type" in
     "url") open_url "$clipboard" ;;
     "dir") open_dir "$clipboard" ;;
+    "file") open_file "$clipboard" ;;
     *) invalid "$clipboard" ;;
 esac
 
