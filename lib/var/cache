@@ -6,3 +6,5 @@ program_history="${XDG_CACHE_HOME:-$HOME/.cache}/program_history"
 
 bookmark_history="${XDG_CACHE_HOME:-$HOME/.cache}/bookmark_history"
 
+emoji_history="${XDG_CACHE_HOME:-$HOME/.cache}/emoji_history"
+

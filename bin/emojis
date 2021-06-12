@@ -1,13 +1,46 @@
 #!/bin/sh
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/var/cache"
 . "$lib/csv"
 . "$lib/clipboard"
 
-emoji_key=$(menu 3 "Emojis" < "$lib/data/emojis")
+emojis="$lib/data/emojis"
+
+use_history="false"
+
+get_emoji_history () {
+    if [ ! -e "$emoji_history" ]
+    then
+        cp "$emojis" "$emoji_history"
+    fi
+
+    sync_file_file "$emoji_history" "$emojis"
+
+    cat "$emoji_history" 2>/dev/null
+}
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--use-history") use_history="true" ;;
+    esac
+done
+
+if [ "$use_history" = "true" ]
+then
+    emoji_key=$(get_emoji_history | menu 3 "Emojis")
+else
+    emoji_key=$(menu 3 "Emojis" < "$emojis")
+fi
 
 if [ -n "$emoji_key" ]
 then
+    if [ "$use_history" = "true" ]
+    then
+        to_top "$emoji_key" "$emoji_history"
+    fi
+
     emoji=$(get_column "1" "$emoji_key" " ")
 
     set_clipboard "$emoji"
