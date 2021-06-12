@@ -4,7 +4,7 @@
 . "$lib/csv"
 . "$lib/clipboard"
 
-emoji_key=$(keys "$lib/data/emojis" "" "!/^ *#/ && NF" | menu 3 "Emojis")
+emoji_key=$(menu 3 "Emojis" < "$lib/data/emojis")
 
 if [ -n "$emoji_key" ]
 then
