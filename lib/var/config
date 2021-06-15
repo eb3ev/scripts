@@ -10,6 +10,8 @@ programs="${PROGRAM_LIST:-$HOME/.cache/dmenu_run}"
 
 term_cmd="alacritty -e"
 
+term_working_dir="alacritty --working-directory"
+
 editor="nvim"
 
 sudo_editor="sudoedit"

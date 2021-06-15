@@ -1,9 +1,11 @@
 #!/bin/sh
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/var/config"
 . "$lib/clipboard"
 
 diff_browser="false"
+open_term="false"
 new_tab="false"
 new_window="false"
 
@@ -25,7 +27,12 @@ open_url() {
 }
 
 open_dir() {
-    term_fm "$1"
+    if [ "$open_term" = "true" ]
+    then
+        eval "${override_term_cmd:-$term_working_dir} '$1'"
+    else
+        term_fm "$1"
+    fi
 }
 
 open_file() {
@@ -42,6 +49,7 @@ do
     case "$arg" in
         "--new-tab") new_tab="true" ;;
         "--new-window") new_window="true" ;;
+        "--open-term") open_term="true" ;;
         "--diff-browser") diff_browser="true" ;;
     esac
 done
