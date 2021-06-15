@@ -18,9 +18,9 @@ find_cmd() {
         do
             if [ "$use_fd" = "true" ]
             then
-                vals=$(list_add "$vals" "$(fd . "$(printf "$dir")" -H -I -t f)")
+                vals=$(list_add "$vals" "$(fd . "$(echo -e "$dir")" -H -I -t f)")
             else
-                vals=$(list_add "$vals" "$(find "$(printf "$dir")" -type f)")
+                vals=$(list_add "$vals" "$(find "$(echo -e "$dir")" -type f)")
             fi
         done
     else
