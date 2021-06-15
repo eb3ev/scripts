@@ -1,0 +1,51 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/mount"
+. "$lib/lines"
+
+android_identifier=" "
+removable_identifier="  "
+
+mounted_devs=""
+
+sync_mounted_devs
+
+IFS="
+"
+for mounted in $(cat "$mounted_dev_cache" 2>/dev/null)
+do
+    dev_name=$(get_column 1 "$mounted")
+
+    case "$mounted" in
+        *" ; android ; "*) identifier="$android_identifier" ;;
+        *" ; removable ; "*) identifier="$removable_identifier" ;;
+    esac
+
+    mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$identifier" "$dev_name")")
+done
+
+if [ -z "$mounted_devs" ]
+then
+    notify-send "Alert" "No unmountable devices"
+    exit 0
+fi
+
+dev=$(echo "$mounted_devs" | menu 2 "Unmount")
+
+if [ -n "$dev" ]
+then
+    case "$dev" in
+        "$android_identifier"*)
+            dev="${dev##*$android_identifier}"
+            unmount_android "$dev"
+            ;;
+        "$removable_identifier"*)
+            dev="${dev##*$removable_identifier}"
+            unmount_removable "$dev"
+            ;;
+    esac
+
+    notify-send "Unmounted" "$dev"
+fi
+

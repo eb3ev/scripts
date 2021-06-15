@@ -1,0 +1,172 @@
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/lines"
+. "$lib/csv"
+. "$lib/clipboard"
+. "$lib/var/config"
+. "$lib/var/cache"
+
+get_removable_devs() {
+    sync_mounted_devs
+    lsblk -lnpo NAME,RM,TYPE,MOUNTPOINT | awk '$2==1 && $3=="part" && $4=="" {print $1}'
+}
+
+get_removable_dev_names() {
+    sync_mounted_devs
+    lsblk -lnpo NAME,SIZE,RM,TYPE,MOUNTPOINT | awk '$3==1 && $4=="part" && $5=="" {print "「"$2"」"$1}'
+}
+
+is_android_mounted() {
+    if [ -n "$(grep "simple-mtpfs $1" "/etc/mtab")" ]
+    then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+is_removable_mounted() {
+    if [ -n "$(grep "$1" "/etc/mtab")" ]
+    then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+sync_mounted_devs() {
+    IFS="
+"
+    for mounted in $(cat "$mounted_dev_cache" 2>/dev/null)
+    do
+        case "$mounted" in
+            *" ; android ; "*)
+                mount_point=$(get_column 3 "$mounted")
+
+                if [ "$(is_android_mounted "$mount_point")" = "false" ]
+                then
+                    rm_line "$mounted" "$mounted_dev_cache"
+                fi
+                ;;
+            *" ; removable ; "*)
+                dev_name=$(get_column 1 "$mounted")
+                if [ "$(is_removable_mounted ${dev_name##*」})" = "false" ]
+                then
+                    rm_line "$mounted" "$mounted_dev_cache"
+                fi
+        esac
+    done
+    unset IFS
+}
+
+get_android_devs() {
+    android_devs=$(simple-mtpfs -l 2>/dev/null | awk -F ": " '{print $2";"$1}')
+
+    if [ "$1" = "--exclude-mounted" ]
+    then
+        sync_mounted_devs
+
+        IFS="
+"
+        for dev in $android_devs
+        do
+            dev_name=$(get_column 1 "$dev" ";")
+            if [ -n "$(grep -- "$dev_name" "$mounted_dev_cache" 2>/dev/null)" ]
+            then
+                android_devs=$(rm_line "$dev" "$android_devs")
+            fi
+        done
+        unset IFS
+    fi
+
+    echo "$android_devs"
+}
+
+get_android_dev_names() {
+    if [ "$1" = "--exclude-mounted" ]
+    then
+        android_devs=$(get_android_devs --exclude-mounted)
+    else
+        android_devs=$(get_android_devs)
+    fi
+
+    get_column 1 "$android_devs" ";"
+}
+
+get_android_id() {
+    value "$1" "$2" 2 ";"
+}
+
+get_mount_point() {
+    if [ ! -d "$mount_pts_dir" ]
+    then
+        mkdir -p "$mount_pts_dir"
+    fi
+
+    base_mount_pt_name="${1:-dev}"
+
+    mount_pt=""
+
+    for dir in "$mount_pts_dir"/*
+    do
+        case "${dir##*/}" in
+            "$base_mount_pt_name"*)
+                if [ -z "$(ls -A "$dir" 2>/dev/null)" ]
+                then
+                    mount_pt="$dir"
+                    break
+                else
+                    i="${dir##*/$base_mount_pt_name}"
+                    i=$((i + 1))
+                fi
+                ;;
+        esac
+    done
+
+    if [ ! -d "$mount_pt" ]
+    then
+        mount_pt="$mount_pts_dir/$base_mount_pt_name${i:-}"
+
+        mkdir -p "$mount_pt"
+    fi
+
+    echo "$mount_pt"
+}
+
+mount_removable() {
+    mount_pt=$(udisksctl mount -b "${1##*」}" 2>/dev/null | awk '{print $4}')
+
+    echo "$1 ; removable ; $mount_pt" >> "$mounted_dev_cache"
+
+    echo "$mount_pt"
+}
+
+unmount_removable() {
+    mount_pt=$(value "$1" "$mounted_dev_cache" 3 " ; ")
+
+    udisksctl unmount -b "${1##*」}" 2>/dev/null
+
+    rm_line "$1 ; removable ; $mount_pt" "$mounted_dev_cache"
+}
+
+mount_android() {
+    android_id=$(get_android_id "$1" "$(get_android_devs)")
+    mount_pt="${2:-$(get_mount_point)}"
+
+    simple-mtpfs --device $android_id "$mount_pt" || return
+
+    if [ "$(is_android_mounted "$mount_pt")" = "true" ]
+    then
+        echo "$1 ; android ; $mount_pt" >> "$mounted_dev_cache"
+    fi
+
+    echo "$mount_pt"
+}
+
+unmount_android() {
+    mount_pt=$(value "$1" "$mounted_dev_cache" 3 " ; ")
+
+    fusermount -u "$mount_pt"
+
+    rm_line "$1 ; android ; $mount_pt" "$mounted_dev_cache"
+}
+

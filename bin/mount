@@ -1,0 +1,55 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/mount"
+. "$lib/lines"
+
+android_identifier=" "
+removable_identifier="  "
+
+android_devs=$(get_android_dev_names --exclude-mounted)
+if [ -n "$android_devs" ]
+then
+    android_devs=$(prepend_to_lines "$android_identifier" "$android_devs")
+fi
+
+removable_devs=$(get_removable_dev_names)
+if [ -n "$removable_devs" ]
+then
+    removable_devs=$(prepend_to_lines "$removable_identifier" "$removable_devs")
+fi
+
+mountable_devs=$(list_add "$mountable_devs" "$android_devs")
+mountable_devs=$(list_add "$mountable_devs" "$removable_devs")
+
+if [ -z "$mountable_devs" ]
+then
+    notify-send "Alert" "No mountable devices"
+    exit 0
+fi
+
+dev=$(echo "$mountable_devs" | menu 2 "Mount")
+
+if [ -n "$dev" ]
+then
+    case "$dev" in
+        "$android_identifier"*)
+            dev="${dev##*$android_identifier}"
+            mount_pt=$(mount_android "$dev")
+            if [ -z "$mount_pt" ]
+            then
+                notify-send "Alert" "Allow phone access"
+                $bin/mount
+                exit 0
+            fi
+            ;;
+        "$removable_identifier"*)
+            dev="${dev##*$removable_identifier}"
+            mount_pt=$(mount_removable "$dev")
+            ;;
+    esac
+
+    set_clipboard "$mount_pt"
+    notify-send "Mounted" "$dev"
+fi
+

@@ -8,3 +8,4 @@ bookmark_history="${XDG_CACHE_HOME:-$HOME/.cache}/bookmark_history"
 
 emoji_history="${XDG_CACHE_HOME:-$HOME/.cache}/emoji_history"
 
+mounted_dev_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mounted_devs"

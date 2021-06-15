@@ -1,5 +1,29 @@
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 
+prepend_to_lines() {
+    if [ -w "$2" ]
+    then
+        sed -i "s/^/$1/" "$2"
+    elif [ "$1" = "--use-pipe" ]
+    then
+        sed "s/^/$1/"
+    else
+        echo "$2" | sed "s/^/$1/"
+    fi
+}
+
+append_to_lines() {
+    if [ -w "$2" ]
+    then
+        sed -i "s/$/$1/" "$2"
+    elif [ "$1" = "--use-pipe" ]
+    then
+        sed "s/$/$1/"
+    else
+        echo "$2" | sed "s/$/$1/"
+    fi
+}
+
 prepend_line() {
     if [ -w "$2" ]
     then
