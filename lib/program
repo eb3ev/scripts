@@ -1,3 +1,5 @@
+#!/bin/sh
+
 installed() {
     if [ -n "$(command -v "$1")" ]
     then

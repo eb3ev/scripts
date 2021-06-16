@@ -1,3 +1,5 @@
+#!/bin/sh
+
 num_to_ordinal() {
     case "$1" in
        "1"|"01") echo "First" ;;

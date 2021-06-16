@@ -1,3 +1,5 @@
+#!/bin/sh
+
 get_arg_value() {
     echo "${2##$1}" | sed "s/^[\"']//;s/[\"']$//"
 }

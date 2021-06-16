@@ -1,3 +1,5 @@
+#!/bin/sh
+
 menurc="${XDG_CONFIG_HOME:-$HOME/.config}/menurc"
 
 bookmarks="${BOOKMARKS:-$HOME/linux/lib/bookmarks/bookmarks}"

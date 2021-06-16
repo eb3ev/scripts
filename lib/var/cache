@@ -1,3 +1,5 @@
+#!/bin/sh
+
 scripts_history="${XDG_CACHE_HOME:-$HOME/.cache}/scripts_history"
 
 search_history="${XDG_CACHE_HOME:-$HOME/.cache}/search_history"

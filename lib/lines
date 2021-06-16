@@ -1,3 +1,5 @@
+#!/bin/sh
+
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 . "$lib/args"
 
