@@ -39,7 +39,7 @@ then
             if [ -z "$mount_pt" ]
             then
                 notify-send "Alert" "Allow phone access"
-                $bin/mount
+                $0
                 exit 0
             fi
             ;;
