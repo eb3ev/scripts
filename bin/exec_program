@@ -9,6 +9,8 @@ run="true"
 require_sudo="false"
 use_history="false"
 
+prompt="Launch"
+
 get_program_history() {
     if [ ! -e "$program_history" ]
     then
@@ -33,6 +35,10 @@ do
         "--sudo") require_sudo="true" ;;
         "--use-history") use_history="true" ;;
         "--print-cmd") run="false" ;;
+        "--prompt="*) 
+            prompt="${arg##--prompt=}"
+            prompt=$(echo "$prompt" | sed "s/^[\"']//;s/[\"']$//")
+            ;;
     esac
 done
 
@@ -45,9 +51,9 @@ fi
 
 if [ "$require_sudo" = "true" ]
 then
-    program=$(echo "$program_list" | menu 4 "Launch")
+    program=$(echo "$program_list" | menu 4 "$prompt")
 else
-    program=$(echo "$program_list" | menu 2 "Launch")
+    program=$(echo "$program_list" | menu 2 "$prompt")
 fi
 
 if [ -n "$program" ]

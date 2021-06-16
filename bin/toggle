@@ -16,7 +16,7 @@ if [ -n "$1" ]
 then
     toggle "$1" "$2"
 else
-    program=$(exec_program --print-cmd)
+    program=$(exec_program --print-cmd --prompt="Toggle")
 
     if [ -z "$program" ]
     then
