@@ -4,23 +4,23 @@
 . "$lib/lines"
 
 get_name() {
-    value --key="$1" --file="$lib/data/browsers" --index=1
+    value "$1" --file="$lib/data/browsers" --index=1
 }
 
 get_cmd() {
-    value --key="$1" --file="$lib/data/browsers" --index=2
+    value "$1" --file="$lib/data/browsers" --index=2
 }
 
 get_new_tab_cmd() {
-    value --key="$1" --file="$lib/data/browsers" --index=3
+    value "$1" --file="$lib/data/browsers" --index=3
 }
 
 get_new_win_cmd() {
-    value --key="$1" --file="$lib/data/browsers" --index=4
+    value "$1" --file="$lib/data/browsers" --index=4
 }
 
 get_names() {
-    get_column 1 "$lib/data/browsers"
+    get_column 1 --file="$lib/data/browsers"
 }
 
 installed_browsers() {

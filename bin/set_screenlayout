@@ -36,8 +36,8 @@ if [ -n "$screenlayout" ]
 then
     key="$screenlayout ; $hostname"
 
-    set_screenlayout_cmd=$(value --key="$key" --file="$screenlayouts" --index=4)
-    set_wallpaper_cmd=$(value --key="$key" --file="$screenlayouts" --index=5)
+    set_screenlayout_cmd=$(value "$key" --file="$screenlayouts" --index=4)
+    set_wallpaper_cmd=$(value "$key" --file="$screenlayouts" --index=5)
 
     if [ "$1" = "--save" ]
     then

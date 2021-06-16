@@ -75,8 +75,8 @@ set_wallpaper() {
             monitors=""
         else
             monitor_arg="--output $monitor"
-            monitors=$(rm_line "Span" "$monitors")
-            monitors=$(rm_line "$monitor" "$monitors")
+            monitors=$(rm_line "Span" --list="$monitors")
+            monitors=$(rm_line "$monitor" --list="$monitors")
         fi
 
         wallpaper_arg=$(get_wallpaper)
@@ -114,7 +114,7 @@ set_preset_wallpaper() {
     then
         key="$preset ; $hostname"
 
-        value --key="$key" --file="$wallpaper_presets" --index=4
+        value "$key" --file="$wallpaper_presets" --index=4
     fi
 }
 

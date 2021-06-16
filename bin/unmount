@@ -22,7 +22,7 @@ do
         *" ; removable ; "*) identifier="$removable_identifier" ;;
     esac
 
-    mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$identifier" "$dev_name")")
+    mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$identifier" --list="$dev_name")")
 done
 
 if [ -z "$mounted_devs" ]

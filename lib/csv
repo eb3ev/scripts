@@ -16,8 +16,8 @@ keys() {
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
             "--pattern="*) pattern=$(get_arg_value "--pattern=" "$arg") ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
+            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
             "--use-pipe") use_pipe="true" ;;
-            *) list="$arg" ;;
         esac
     done
 
@@ -27,7 +27,8 @@ keys() {
     elif [ -r "$file" ]
     then
         awk -F "$delim" "$pattern" "$file"
-    else
+    elif [ -n "$list" ]
+    then
         echo "$list" | awk -F "$delim" "$pattern"
     fi
 }
@@ -36,6 +37,8 @@ value() {
     use_pipe="false"
     delim=" ; "
     index=2
+
+    key=""
 
     file=""
     list=""
@@ -53,9 +56,9 @@ value() {
                 fi
                 ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--key="*) key=$(get_arg_value "--key=" "$arg") ;;
+            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
             "--use-pipe") use_pipe="true" ;;
-            *) list="$arg" ;;
+            *) key="$arg" ;;
         esac
     done
 
@@ -67,7 +70,8 @@ value() {
     elif [ -r "$file" ]
     then
         awk -F "$delim" "/^$key$delim/ {print \$$index}" "$file"
-    else
+    elif [ -n "$list" ]
+    then
         echo "$list" | awk -F "$delim" "/^$key$delim/ {print \$$index}"
     fi
 }
@@ -75,6 +79,7 @@ value() {
 get_column() {
     use_pipe="false"
     delim=" ; "
+
     index=1
 
     file=""
@@ -84,19 +89,17 @@ get_column() {
     do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--index="*)
-                new_index=$(get_arg_value "--delim=" "$arg")
-
-                if [ "$new_index" -ge 1 2>/dev/null ]
-                then
-                    index=$new_index
-                fi
-                ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
+            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
             "--use-pipe") use_pipe="true" ;;
-            *) list="$arg" ;;
+            *) index="$arg" ;;
         esac
     done
+
+    if [ ! "$index" -ge 1 2>/dev/null ]
+    then
+        index=1
+    fi
 
     if [ "$use_pipe" = "true" ]
     then
@@ -104,7 +107,8 @@ get_column() {
     elif [ -r "$file" ]
     then
         awk -F "$delim" "{print \$$index}" "$file"
-    else
+    elif [ -n "$list" ]
+    then
         echo "$list" | awk -F "$delim" "{print \$$index}"
     fi
 }
@@ -112,6 +116,7 @@ get_column() {
 get_row() {
     use_pipe="false"
     delim=" ; "
+
     index=1
 
     file=""
@@ -121,19 +126,17 @@ get_row() {
     do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--index="*)
-                new_index=$(get_arg_value "--delim=" "$arg")
-
-                if [ "$new_index" -ge 1 2>/dev/null ]
-                then
-                    index=$new_index
-                fi
-                ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
+            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
             "--use-pipe") use_pipe="true" ;;
-            *) list="$arg" ;;
+            *) index="$arg" ;;
         esac
     done
+
+    if [ ! "$index" -ge 1 2>/dev/null ]
+    then
+        index=$1
+    fi
 
     if [ "$use_pipe" = "true" ]
     then
@@ -141,7 +144,8 @@ get_row() {
     elif [ -r "$file" ]
     then
         sed -n "$index p" "$file"
-    else
+    elif [ -n "$list" ]
+    then
         echo "$list" | sed -n "$index p"
     fi
 }

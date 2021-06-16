@@ -13,8 +13,8 @@ get_sinks() {
     new_sinks=""
     for i in $(seq 1 $num_sinks)
     do
-        sink_id=$(get_row --index=$i "$sinks")
-        sink_name=$(get_row --index=$((i+1)) "$sinks")
+        sink_id=$(get_row $i --list="$sinks")
+        sink_name=$(get_row $((i+1)) --list="$sinks")
 
         new_sinks=$(list_add "$new_sinks" "$sink_name;$sink_id")
     done
@@ -22,18 +22,18 @@ get_sinks() {
     if [ "$1" = "--exclude-default" ]
     then
         def_sink=$(echo "$new_sinks" | grep -F -- "$(get_def_sink)") 
-        new_sinks=$(rm_line "$def_sink" "$new_sinks")
+        new_sinks=$(rm_line "$def_sink" --list="$new_sinks")
     fi
 
     echo "$new_sinks"
 }
 
 get_sink_names() {
-    get_column 1 "${1:-$(get_sinks)}" ";"
+    get_column 1 --list="${1:-$(get_sinks)}" --delim=";"
 }
 
 get_sink_id() {
-    value --key="$1" "${2:-$(get_sinks)}" --index=2 --delim=";"
+    value "$1" --list="${2:-$(get_sinks)}" --index=2 --delim=";"
 }
 
 set_def_sink() {

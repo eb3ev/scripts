@@ -55,7 +55,7 @@ if [ -n "$script" ]
 then
     if [ "$use_history" = "true" ]
     then
-        to_top "$script" "$scripts_history"
+        to_top "$script" --file="$scripts_history"
     fi
     
     if [ "$require_sudo" = "true" ]

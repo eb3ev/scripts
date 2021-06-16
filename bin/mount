@@ -10,13 +10,13 @@ removable_identifier="  "
 android_devs=$(get_android_dev_names --exclude-mounted)
 if [ -n "$android_devs" ]
 then
-    android_devs=$(prepend_to_lines "$android_identifier" "$android_devs")
+    android_devs=$(prepend_to_lines "$android_identifier" --list="$android_devs")
 fi
 
 removable_devs=$(get_removable_dev_names)
 if [ -n "$removable_devs" ]
 then
-    removable_devs=$(prepend_to_lines "$removable_identifier" "$removable_devs")
+    removable_devs=$(prepend_to_lines "$removable_identifier" --list="$removable_devs")
 fi
 
 mountable_devs=$(list_add "$mountable_devs" "$android_devs")

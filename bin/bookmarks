@@ -35,7 +35,7 @@ get_bookmark_history() {
 }
 
 get_url() {
-    value --key="$1" --file="$bookmarks"
+    value "$1" --file="$bookmarks"
 }
 
 get_group_urls() {
@@ -102,7 +102,7 @@ else
     else
         if [ "$use_history" = "true" ]
         then
-            to_top "$bookmark_key" "$bookmark_history"
+            to_top "$bookmark_key" --file="$bookmark_history"
         fi
 
         open_bookmark "$(get_url "$bookmark_key")"

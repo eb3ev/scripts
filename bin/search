@@ -28,11 +28,11 @@ then
         
         if [ -n "$query" ]
         then
-            to_top "$query" "$search_history"
+            to_top "$query" --file="$search_history"
 
             query=$(enc --html "$query")
 
-            ${1:-xdg-open} "$(value --key="$search_engine_key" --file="$search_engines")$query"
+            ${1:-xdg-open} "$(value "$search_engine_key" --file="$search_engines")$query"
         fi
     fi
 fi

@@ -58,7 +58,7 @@ if [ -n "$program" ]
 then
     if [ "$use_history" = "true" ]
     then
-        to_top "$program" "$program_history"
+        to_top "$program" --file="$program_history"
     fi
 
     if [ "$require_sudo" = "true" ]

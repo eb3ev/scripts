@@ -38,10 +38,10 @@ if [ -n "$emoji_key" ]
 then
     if [ "$use_history" = "true" ]
     then
-        to_top "$emoji_key" "$emoji_history"
+        to_top "$emoji_key" --file="$emoji_history"
     fi
 
-    emoji=$(get_column --index=1 "$emoji_key" --delim=" ")
+    emoji=$(get_column 1 --list="$emoji_key" --delim=" ")
 
     set_clipboard "$emoji"
 
