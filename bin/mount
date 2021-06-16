@@ -4,7 +4,7 @@
 . "$lib/mount"
 . "$lib/lines"
 
-android_identifier=" "
+android_identifier="  "
 removable_identifier="  "
 
 android_devs=$(get_android_dev_names --exclude-mounted)
@@ -50,6 +50,6 @@ then
     esac
 
     set_clipboard "$mount_pt"
-    notify-send "Mounted" "$dev"
+    notify-send "Mounted $dev" "to $mount_pt"
 fi
 

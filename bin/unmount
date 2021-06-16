@@ -4,7 +4,7 @@
 . "$lib/mount"
 . "$lib/lines"
 
-android_identifier=" "
+android_identifier="  "
 removable_identifier="  "
 
 mounted_devs=""
@@ -38,14 +38,16 @@ then
     case "$dev" in
         "$android_identifier"*)
             dev="${dev##*$android_identifier}"
+            mount_pt=$(value "$dev" "$mounted_dev_cache" 3)
             unmount_android "$dev"
             ;;
         "$removable_identifier"*)
             dev="${dev##*$removable_identifier}"
+            mount_pt=$(value "$dev" "$mounted_dev_cache" 3)
             unmount_removable "$dev"
             ;;
     esac
 
-    notify-send "Unmounted" "$dev"
+    notify-send "Unmounted $dev" "from $mount_pt"
 fi
 

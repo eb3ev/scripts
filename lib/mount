@@ -150,7 +150,7 @@ unmount_removable() {
 
 mount_android() {
     android_id=$(get_android_id "$1" "$(get_android_devs)")
-    mount_pt="${2:-$(get_mount_point)}"
+    mount_pt="${2:-$(get_mount_point "android")}"
 
     simple-mtpfs --device $android_id "$mount_pt" || return
 
