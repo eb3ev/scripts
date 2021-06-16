@@ -4,20 +4,21 @@
 . "$lib/var/config"
 . "$lib/files"
 
-arg="$1"
+opts=$(echo -e "top_window\ncenter_window\nbottom_window\nterm\nterm_window")
 
 arg_check() {
-    case "$1" in
-        "top_window"|"center_window"|"bottom_window"|"term"|"term_window")
-            echo "true"
-            ;;
-        *)
-            echo "Invalid Option: $1"
-    esac
+    if [ -n "$(echo "$opts" | grep -Fx -- "$1")" ]
+    then
+        echo "true"
+    else
+        echo "false"
+    fi
 }
 
-if [ "$(arg_check "$1")" = "true" ]
+opt="${1:-$(echo "$opts" | menu 2 "Profiles")}"
+
+if [ "$(arg_check "$opt")" = "true" ]
 then
-    set_value "$arg" "$menurc"
+    set_value "$opt" "$menurc"
 fi
 

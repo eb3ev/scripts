@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/program"
 
 toggle() {
     if [ -z "$(pgrep -x "$1")" ]
@@ -12,17 +13,10 @@ toggle() {
     fi
 }
 
-if [ -n "$1" ]
+program="${1:-$(exec_program --print-cmd --promt="Toggle")}"
+
+if [ "$(installed "$program")" = "true" ]
 then
-    toggle "$1" "$2"
-else
-    program=$(exec_program --print-cmd --prompt="Toggle")
-
-    if [ -z "$program" ]
-    then
-        exit 0
-    fi
-
-    toggle "$program"
+    toggle "$program" "$2"
 fi
 
