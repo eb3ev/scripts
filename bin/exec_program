@@ -4,6 +4,7 @@
 . "$lib/var/config"
 . "$lib/var/cache"
 . "$lib/lines"
+. "$lib/args"
 
 run="true"
 require_sudo="false"
@@ -35,10 +36,7 @@ do
         "--sudo") require_sudo="true" ;;
         "--use-history") use_history="true" ;;
         "--print-cmd") run="false" ;;
-        "--prompt="*) 
-            prompt="${arg##--prompt=}"
-            prompt=$(echo "$prompt" | sed "s/^[\"']//;s/[\"']$//")
-            ;;
+        "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
     esac
 done
 
