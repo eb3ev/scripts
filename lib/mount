@@ -16,7 +16,7 @@ get_removable_dev_names() {
 }
 
 is_android_mounted() {
-    if [ -n "$(grep "simple-mtpfs $1" "/etc/mtab")" ]
+    if [ -n "$(grep -F "simple-mtpfs $1" "/etc/mtab")" ]
     then
         echo "true"
     else
@@ -25,7 +25,7 @@ is_android_mounted() {
 }
 
 is_removable_mounted() {
-    if [ -n "$(grep "$1" "/etc/mtab")" ]
+    if [ -n "$(grep -F -- "$1" "/etc/mtab")" ]
     then
         echo "true"
     else
@@ -70,7 +70,7 @@ get_android_devs() {
         for dev in $android_devs
         do
             dev_name=$(get_column 1 "$dev" ";")
-            if [ -n "$(grep -- "$dev_name" "$mounted_dev_cache" 2>/dev/null)" ]
+            if [ -n "$(grep -F -- "$dev_name" "$mounted_dev_cache" 2>/dev/null)" ]
             then
                 android_devs=$(rm_line "$dev" "$android_devs")
             fi

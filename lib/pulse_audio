@@ -21,7 +21,7 @@ get_sinks() {
 
     if [ "$1" = "--exclude-default" ]
     then
-        def_sink=$(echo "$new_sinks" | grep "$(get_def_sink)") 
+        def_sink=$(echo "$new_sinks" | grep -F -- "$(get_def_sink)") 
         new_sinks=$(rm_line "$def_sink" "$new_sinks")
     fi
 
