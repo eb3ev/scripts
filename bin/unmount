@@ -15,7 +15,7 @@ IFS="
 "
 for mounted in $(cat "$mounted_dev_cache" 2>/dev/null)
 do
-    dev_name=$(get_column 1 "$mounted")
+    dev_name=$(get_column --index=1 "$mounted")
 
     case "$mounted" in
         *" ; android ; "*) identifier="$android_identifier" ;;
@@ -38,12 +38,12 @@ then
     case "$dev" in
         "$android_identifier"*)
             dev="${dev##*$android_identifier}"
-            mount_pt=$(value "$dev" "$mounted_dev_cache" 3)
+            mount_pt=$(value --key="$dev" --file="$mounted_dev_cache" --index=3)
             unmount_android "$dev"
             ;;
         "$removable_identifier"*)
             dev="${dev##*$removable_identifier}"
-            mount_pt=$(value "$dev" "$mounted_dev_cache" 3)
+            mount_pt=$(value --key="$dev" --file="$mounted_dev_cache" --index=3)
             unmount_removable "$dev"
             ;;
     esac

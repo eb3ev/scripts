@@ -95,7 +95,7 @@ set_wallpaper() {
 get_presets() {
     monitor_count=$(xrandr | awk '/ connected/' | wc -l)
 
-    keys "$wallpaper_presets" " ; " "!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}"
+    keys --file="$wallpaper_presets" --pattern="!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}"
 }
 
 set_preset_wallpaper() {
@@ -114,7 +114,7 @@ set_preset_wallpaper() {
     then
         key="$preset ; $hostname"
 
-        value "$key" "$wallpaper_presets" 4
+        value --key="$key" --file="$wallpaper_presets" --index=4
     fi
 }
 

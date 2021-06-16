@@ -4,19 +4,19 @@
 . "$lib/lines"
 
 get_name() {
-    value "$1" "$lib/data/browsers" 1
+    value --key="$1" --file="$lib/data/browsers" --index=1
 }
 
 get_cmd() {
-    value "$1" "$lib/data/browsers" 2
+    value --key="$1" --file="$lib/data/browsers" --index=2
 }
 
 get_new_tab_cmd() {
-    value "$1" "$lib/data/browsers" 3
+    value --key="$1" --file="$lib/data/browsers" --index=3
 }
 
 get_new_win_cmd() {
-    value "$1" "$lib/data/browsers" 4
+    value --key="$1" --file="$lib/data/browsers" --index=4
 }
 
 get_names() {

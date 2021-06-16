@@ -50,7 +50,7 @@ IFS="
 "
 for file in $(cat "$old_files" 2>/dev/null)
 do
-    new_file=$(get_row $i "$new_files" 2>/dev/null)
+    new_file=$(get_row --index=$i --file="$new_files" 2>/dev/null)
     mv -n -- "$file" "$new_file" 2>/dev/null
     i=$((i + 1))
 done

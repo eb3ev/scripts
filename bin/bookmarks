@@ -12,7 +12,7 @@ use_groups="false"
 browser_cmd="xdg-open"
 
 get_bookmarks() {
-    keys "$bookmarks"
+    keys --file="$bookmarks"
 }
 
 get_bookmark_groups() {
@@ -35,7 +35,7 @@ get_bookmark_history() {
 }
 
 get_url() {
-    value "$1" "$bookmarks"
+    value --key="$1" --file="$bookmarks"
 }
 
 get_group_urls() {
@@ -106,6 +106,7 @@ else
         fi
 
         open_bookmark "$(get_url "$bookmark_key")"
+
     fi
 fi
 

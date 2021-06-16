@@ -17,7 +17,7 @@ create_histfile() {
     echo "true"
 } 
 
-search_engine_key=$(keys "$search_engines" | menu 2 "")
+search_engine_key=$(keys --file="$search_engines" | menu 2 "")
 
 if [ -n "$search_engine_key" ]
 then
@@ -32,7 +32,7 @@ then
 
             query=$(enc --html "$query")
 
-            ${1:-xdg-open} "$(value "$search_engine_key" "$search_engines")$query"
+            ${1:-xdg-open} "$(value --key="$search_engine_key" --file="$search_engines")$query"
         fi
     fi
 fi

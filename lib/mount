@@ -40,7 +40,7 @@ sync_mounted_devs() {
     do
         case "$mounted" in
             *" ; android ; "*)
-                mount_point=$(get_column 3 "$mounted")
+                mount_point=$(get_column --index=3 "$mounted")
 
                 if [ "$(is_android_mounted "$mount_point")" = "false" ]
                 then
@@ -48,7 +48,7 @@ sync_mounted_devs() {
                 fi
                 ;;
             *" ; removable ; "*)
-                dev_name=$(get_column 1 "$mounted")
+                dev_name=$(get_column --index=1 "$mounted")
                 if [ "$(is_removable_mounted ${dev_name##*」})" = "false" ]
                 then
                     rm_line "$mounted" "$mounted_dev_cache"
@@ -69,7 +69,7 @@ get_android_devs() {
 "
         for dev in $android_devs
         do
-            dev_name=$(get_column 1 "$dev" ";")
+            dev_name=$(get_column --index=1 "$dev" --delim=";")
             if [ -n "$(grep -F -- "$dev_name" "$mounted_dev_cache" 2>/dev/null)" ]
             then
                 android_devs=$(rm_line "$dev" "$android_devs")
@@ -89,11 +89,11 @@ get_android_dev_names() {
         android_devs=$(get_android_devs)
     fi
 
-    get_column 1 "$android_devs" ";"
+    get_column --index=1 "$android_devs" --delim=";"
 }
 
 get_android_id() {
-    value "$1" "$2" 2 ";"
+    value --key="$1" "$2" --index=2 --delim=";"
 }
 
 get_mount_point() {
@@ -141,7 +141,7 @@ mount_removable() {
 }
 
 unmount_removable() {
-    mount_pt=$(value "$1" "$mounted_dev_cache" 3 " ; ")
+    mount_pt=$(value --key="$1" --file="$mounted_dev_cache" --index=3 --delim=" ; ")
 
     udisksctl unmount -b "${1##*」}" 2>/dev/null
 
@@ -163,7 +163,7 @@ mount_android() {
 }
 
 unmount_android() {
-    mount_pt=$(value "$1" "$mounted_dev_cache" 3 " ; ")
+    mount_pt=$(value --key="$1" --file="$mounted_dev_cache" --index=3 --delim=" ; ")
 
     fusermount -u "$mount_pt"
 

@@ -41,7 +41,7 @@ then
         to_top "$emoji_key" "$emoji_history"
     fi
 
-    emoji=$(get_column "1" "$emoji_key" " ")
+    emoji=$(get_column --index=1 "$emoji_key" --delim=" ")
 
     set_clipboard "$emoji"
 
