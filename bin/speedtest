@@ -1,0 +1,19 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/csv"
+
+speedtest_result=$(speedtest --simple --secure 2>/dev/null | awk -F ": " '{print $2}') 
+
+if [ -z "$speedtest_result" ]
+then
+    notify-send "Error" "No Connection"
+    exit 0
+fi
+
+ping=$(get_row 1 "$speedtest_result")
+down=$(get_row 2 "$speedtest_result")
+up=$(get_row 3 "$speedtest_result")
+
+notify-send "Speedtest" "$ping   $down   $up"
+
