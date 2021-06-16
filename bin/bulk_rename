@@ -1,0 +1,60 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/var/config"
+. "$lib/lines"
+. "$lib/csv"
+
+require_sudo="false"
+files=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--sudo") require_sudo="true" ;;
+        *)
+            if [ -e "${arg##*/}" ]
+            then
+                files=$(list_add "$files" "$arg")
+            fi
+            ;;
+    esac
+done
+
+if [ -z "$files" ]
+then
+    files=$(ls -1 2>/dev/null)
+fi
+
+if [ -z "$files" ]
+then
+    exit 0
+fi
+
+old_files=$(mktemp)
+new_files=$(mktemp)
+
+IFS="
+"
+for file in $files
+do
+    echo "${file##*/}" >> "$old_files"
+    echo "${file##*/}" >> "$new_files"
+done
+unset IFS
+
+"${EDITOR:-$editor}" "$new_files"
+
+i=1
+IFS="
+"
+for file in $(cat "$old_files" 2>/dev/null)
+do
+    new_file=$(get_row $i "$new_files" 2>/dev/null)
+    mv -n -- "$file" "$new_file" 2>/dev/null
+    i=$((i + 1))
+done
+unset IFS
+
+rm -f -- "$old_files" "$new_files"
+
