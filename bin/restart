@@ -13,7 +13,7 @@ then
         restart_program "$arg"
     done
 else
-    program=$(exec_program --print-cmd)
+    program=$(exec_program --print-cmd --prompt="Restart")
 
     if [ -n "$program" ]
     then
