@@ -9,3 +9,12 @@ installed() {
     fi
 }
 
+sync_program_file() {
+    IFS=:
+    if stest -dqr -n "$1" $PATH
+    then
+        stest -flx $PATH | sort -u > "$1"
+    fi
+    unset IFS
+}
+

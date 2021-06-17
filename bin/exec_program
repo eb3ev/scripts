@@ -4,6 +4,7 @@
 . "$lib/var/config"
 . "$lib/var/cache"
 . "$lib/lines"
+. "$lib/program"
 . "$lib/args"
 
 run="true"
@@ -23,13 +24,6 @@ get_program_history() {
     cat "$program_history" 2>/dev/null
 }
 
-IFS=:
-if stest -dqr -n "$programs" $PATH
-then
-    stest -flx $PATH | sort -u > "$programs"
-fi
-unset IFS
-
 for arg in "$@"
 do
     case "$arg" in
@@ -39,6 +33,8 @@ do
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
     esac
 done
+
+sync_program_file "$program"
 
 if [ "$use_history" = "true" ]
 then
