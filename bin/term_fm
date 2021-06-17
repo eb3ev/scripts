@@ -14,7 +14,6 @@ then
         then
             dir=$(get_clipboard)
             dir1=$(get_clipboard --primary)
-            echo "$dir"
 
             if [ -d "$dir" ]
             then
