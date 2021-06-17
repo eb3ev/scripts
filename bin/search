@@ -6,6 +6,8 @@
 . "$lib/csv"
 . "$lib/lines"
 
+use_history="false"
+
 create_histfile() {
     if [ -e "$search_history" ]
     then
@@ -17,23 +19,37 @@ create_histfile() {
     echo "true"
 } 
 
+for arg in "$@"
+do
+    case "$arg" in
+        "--use-history") use_history="true" ;;
+    esac
+done
+
 search_engine_key=$(keys --file="$search_engines" | menu 2 "")
 
 if [ -n "$search_engine_key" ]
 then
-    if [ "$(create_histfile)" = "true" ]
+    if [ "$use_history" = "true" ]
     then
-        query=$(menu 1 "$search_engine_key" < "$search_history")
+        if [ "$(create_histfile)" = "true" ]
+        then
+            query=$(menu 1 "$search_engine_key" < "$search_history")
+        fi
+    else
+        query=$(printf "" | menu 1 "$search_engine_key")
+    fi
 
-        
-        if [ -n "$query" ]
+    if [ -n "$query" ]
+    then
+        if [ "$use_history" = "true" ]
         then
             to_top "$query" --file="$search_history"
-
-            query=$(enc --html "$query")
-
-            ${1:-xdg-open} "$(value "$search_engine_key" --file="$search_engines")$query"
         fi
+
+        query=$(enc --html "$query")
+
+        ${1:-xdg-open} "$(value "$search_engine_key" --file="$search_engines")$query"
     fi
 fi
 
