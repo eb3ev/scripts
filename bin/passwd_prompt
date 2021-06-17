@@ -2,5 +2,5 @@
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 
-echo -n | menu 5
+printf "" | menu 5
 

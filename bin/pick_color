@@ -19,6 +19,6 @@ then
 
     notify-send "Color" "$hex    $rgb"
 
-    echo -n "$hex" | xclip -selection clipboard
+    printf -- "$hex" | xclip -selection clipboard
 fi
 

@@ -4,34 +4,37 @@
 . "$lib/lines"
 
 get_clipboard() {
+    selection="clipboard"
+
     case "$1" in
-        "--primary")
-            xclip -selection primary -o 2>/dev/null
-            ;;
-        *)
-            xclip -selection clipboard -o 2>/dev/null
-            ;;
+        "--primary") selection="primary" ;;
+        "--secondary") selection="secondary" ;;
     esac
+
+    xclip -selection "$selection" -o 2>/dev/null
 }
 
 set_clipboard() {
+    selection="clipboard"
     trailing_new_line="false"
-    args=""
+
     clipboard=""
 
     for arg in "$@"
     do
         case "$arg" in
-            "--trailing-new-line") args=$(list_add "$args" "$arg") ;;
+            "--primary") selection="primary" ;;
+            "--secondary") selection="secondary" ;;
+            "--trailing-new-line") trailing_new_line="true" ;;
             *) clipboard=$(list_add "$clipboard" "$arg") ;;
         esac
     done
 
     if [ "$trailing_new_line" = "true" ]
     then
-        echo "$clipboard" | xclip -selection clipboard
+        echo "$clipboard" | xclip -selection "$selection"
     else
-        echo -n "$clipboard" | xclip -selection clipboard
+        printf -- "$clipboard" | xclip -selection "$selection"
     fi
 }
 

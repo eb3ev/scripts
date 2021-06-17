@@ -28,6 +28,8 @@ get_names() {
 installed_browsers() {
     browser_list=$(get_names)
 
+    IFS="
+"
     for browser in $browser_list
     do
         browser_cmd=$(get_cmd "$browser")
@@ -37,6 +39,7 @@ installed_browsers() {
             new_browser_list=$(list_add "$new_browser_list" "$browser")
         fi
     done
+    unset IFS
 
     echo "$new_browser_list"
 }
