@@ -25,9 +25,9 @@ if [ "$use_pipe" = "true" ]
 then
     if [ -n "$args" ]
     then
-        for arg in "$args"
+        for arg in $args
         do
-            case "$1" in
+            case "$arg" in
                 "--awk-regex") $encode/enc_awk_regex.sed ;;
                 "--sed-regex") $encode/enc_sed_regex.sed ;;
                 "--html") $encode/enc_html.sed ;;
@@ -39,14 +39,16 @@ then
 else
     if [ -n "$args" ]
     then
-        for arg in "$args"
+        for arg in $args
         do
-            case "$1" in
+            case "$arg" in
                 "--awk-regex") echo "$vals" | $encode/enc_awk_regex.sed ;;
                 "--sed-regex") echo "$vals" | $encode/enc_sed_regex.sed ;;
                 "--html") echo "$vals" | $encode/enc_html.sed ;;
             esac
         done
+    else
+        echo "$vals"
     fi
 fi
 

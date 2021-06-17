@@ -2,5 +2,5 @@
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 
-$bin/bookmarks --use-groups --copy
+bookmarks --use-groups --copy
 

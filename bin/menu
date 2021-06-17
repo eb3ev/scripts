@@ -100,7 +100,7 @@ term_window_menu() {
         --color marker:#FFFFFF,spinner:#FFFFFF,header:#FFFFFF,border:-1
     '
     term_exec --no-fork "echo \"$input\" | FZF_DEFAULT_OPTS=\"$FZF_DEFAULT_OPTS\" fzf > \"$tmp_file\""
-    value=$(< "$tmp_file")
+    value=$(cat "$tmp_file" 2>/dev/null)
     echo "$value"
 }
 

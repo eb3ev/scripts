@@ -44,7 +44,7 @@ if [ "$use_history" = "true" ]
 then
     program_list=$(get_program_history)
 else
-    program_list=$(< "$programs")
+    program_list=$(cat "$programs" 2>/dev/null)
 fi
 
 if [ "$require_sudo" = "true" ]

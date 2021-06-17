@@ -49,20 +49,18 @@ value() {
     do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--index="*)
-                new_index=$(get_arg_value "--delim=" "$arg")
-
-                if [ "$new_index" -ge 1 2>/dev/null ]
-                then
-                    index=$new_index
-                fi
-                ;;
+            "--index="*) index=$(get_arg_value "--index=" "$arg") ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
             "--use-pipe") use_pipe="true" ;;
             *) key="$arg" ;;
         esac
     done
+
+    if [ ! "$index" -ge 1 ] 2>/dev/null
+    then
+        index=1
+    fi
 
     key=$(enc --awk-regex "$key")
 
@@ -98,7 +96,7 @@ get_column() {
         esac
     done
 
-    if [ ! "$index" -ge 1 2>/dev/null ]
+    if [ ! "$index" -ge 1 ] 2>/dev/null
     then
         index=1
     fi
@@ -135,7 +133,7 @@ get_row() {
         esac
     done
 
-    if [ ! "$index" -ge 1 2>/dev/null ]
+    if [ ! "$index" -ge 1 ] 2>/dev/null
     then
         index=$1
     fi

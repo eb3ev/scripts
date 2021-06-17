@@ -2,5 +2,5 @@
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 
-$bin/bookmarks --copy
+bookmarks --copy
 

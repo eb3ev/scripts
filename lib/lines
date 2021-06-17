@@ -251,7 +251,7 @@ rm_list_dups() {
 }
 
 concat_list() {
-    echo -e "$1\n$2"
+    printf -- "$1\n$2"
 }
 
 list_add() {
@@ -273,15 +273,15 @@ sync_file_file() {
 "
     for line in $uniq
     do
-        if [ -z "$(grep -Fx -- "$line" "$1")" ]
+        if ! grep -Fqx -- "$line" "$1"
         then
             prepend_line "$line" --file="$1"
-        elif [ -z "$(grep -Fx -- "$line" "$2")" ]
+        elif ! grep -Fqx -- "$line" "$2"
         then
             rm_line "$line" --file="$1"
         fi
 
-        if [ $(grep -Fx -- "$line" "$1" | wc -l) -gt 1 ]
+        if [ $(grep -Fqx -- "$line" "$1" | wc -l) -gt 1 ]
         then
             to_top "$line" --file="$1"
         fi
@@ -293,21 +293,21 @@ sync_file_file() {
 sync_file_list() {
     rm_file_dups "$1"
 
-    uniq=$(echo -e "$2\n$(< "$1")" | sort | uniq -u)
+    uniq=$(printf -- "$2\n$(cat "$1" 2>/dev/null)" | sort | uniq -u)
 
     IFS="
 "
     for line in $uniq
     do
-        if [ -z "$(grep -Fx -- "$line" "$1")" ]
+        if ! grep -Fqx -- "$line" "$1"
         then
             prepend_line "$line" --file="$1"
-        elif [ -z "$(echo "$2" | grep -Fx -- "$line")" ]
+        elif ! echo "$2" | grep -Fqx -- "$line"
         then
             rm_line "$line" --file="$1"
         fi
 
-        if [ $(grep -Fx -- "$line" "$1" | wc -l) -gt 1 ]
+        if [ $(grep -Fqx -- "$line" "$1" | wc -l) -gt 1 ]
         then
             to_top "$line" --file="$1"
         fi
@@ -319,21 +319,21 @@ sync_file_list() {
 sync_list_list() {
     new_list=$(rm_list_dups "$1")
 
-    uniq=$(echo -e "$2\n$new_list" | sort | uniq -u)
+    uniq=$(printf "$2\n$new_list" | sort | uniq -u)
 
     IFS="
 "
     for line in $uniq
     do
-        if [ -z "$(echo "$new_list" | grep -Fx -- "$line")" ]
+        if ! echo "$new_list" | grep -Fqx -- "$line"
         then
             new_list=$(prepend_line "$line" --list="$new_list")
-        elif [ -z "$(echo "$2" | grep -Fx -- "$line")" ]
+        elif ! echo "$2" | grep -Fqx -- "$line"
         then
             new_list=$(rm_line "$line" --list="$new_list")
         fi
 
-        if [ $(grep -Fx -- "$line" "$1" | wc -l) -gt 1 ]
+        if [ $(grep -Fqx -- "$line" "$1" | wc -l) -gt 1 ]
         then
             new_list=$(to_top "$line" --list="$new_list")
         fi

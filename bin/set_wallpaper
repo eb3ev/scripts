@@ -99,7 +99,7 @@ get_presets() {
 }
 
 set_preset_wallpaper() {
-    hostname=$(< /etc/hostname)
+    hostname=$(cat /etc/hostname 2>/dev/null)
 
     presets=$(get_presets "$hostname")
 

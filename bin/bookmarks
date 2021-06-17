@@ -66,8 +66,6 @@ copy_bookmark() {
     fi
 }
 
-args=""
-
 for arg in "$@"
 do
     case "$arg" in

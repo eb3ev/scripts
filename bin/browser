@@ -13,7 +13,6 @@ new_tab="false"
 use_clipboard="false"
 diff_browser="false"
 
-args=""
 queries=""
 
 for arg in "$@"

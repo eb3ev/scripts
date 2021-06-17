@@ -28,7 +28,7 @@ get_screenlayouts() {
 }
 
 
-hostname=$(< /etc/hostname)
+hostname=$(cat /etc/hostname 2>/dev/null)
 
 screenlayout=$(get_screenlayouts "$hostname" | menu 2 " ")
 

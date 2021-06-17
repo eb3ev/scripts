@@ -11,11 +11,9 @@ mounted_devs=""
 
 sync_mounted_devs
 
-IFS="
-"
-for mounted in $(cat "$mounted_dev_cache" 2>/dev/null)
+while read mounted
 do
-    dev_name=$(get_column --index=1 "$mounted")
+    dev_name=$(get_column 1 --list="$mounted")
 
     case "$mounted" in
         *" ; android ; "*) identifier="$android_identifier" ;;
@@ -23,7 +21,7 @@ do
     esac
 
     mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$identifier" --list="$dev_name")")
-done
+done 2>/dev/null < "$mounted_dev_cache"
 
 if [ -z "$mounted_devs" ]
 then

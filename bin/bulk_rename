@@ -6,12 +6,14 @@
 . "$lib/csv"
 
 require_sudo="false"
+include_hidden="false"
 files=""
 
 for arg in "$@"
 do
     case "$arg" in
         "--sudo") require_sudo="true" ;;
+        "--include-hidden") include_hidden="true" ;;
         *)
             if [ -e "${arg##*/}" ]
             then
@@ -23,7 +25,12 @@ done
 
 if [ -z "$files" ]
 then
-    files=$(ls -1 2>/dev/null)
+    if [ "$include_hidden" = "true" ]
+    then
+        files=$(ls -A1 2>/dev/null)
+    else
+        files=$(ls -1 2>/dev/null)
+    fi
 fi
 
 if [ -z "$files" ]
@@ -46,15 +53,12 @@ unset IFS
 "${EDITOR:-$editor}" "$new_files"
 
 i=1
-IFS="
-"
-for file in $(cat "$old_files" 2>/dev/null)
+while read file
 do
     new_file=$(get_row $i --file="$new_files" 2>/dev/null)
     mv -n -- "$file" "$new_file" 2>/dev/null
     i=$((i + 1))
-done
-unset IFS
+done 2>/dev/null < "$old_files"
 
 rm -f -- "$old_files" "$new_files"
 
