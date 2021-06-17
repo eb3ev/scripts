@@ -18,10 +18,3 @@ sync_program_file() {
     unset IFS
 }
 
-mkfile() {
-    if [ -e "$1" ]
-    then
-        mkdir -p "${1%/*}" && touch "$1"
-    fi
-}
-

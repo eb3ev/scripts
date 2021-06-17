@@ -46,3 +46,10 @@ set_value() {
     echo "$1" >> "$2"
 }
 
+mkfile() {
+    if [ -e "$1" ]
+    then
+        mkdir -p "${1%/*}" && touch "$1"
+    fi
+}
+
