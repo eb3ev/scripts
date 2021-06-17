@@ -82,7 +82,14 @@ term_menu() {
 }
 
 term_window_menu() {
-    read -d '' input
+    while read input
+    do
+        list="$list$input
+"
+    done
+
+    list=${list%%
+}
 
     tmp_file=$(mktemp)
 
@@ -99,8 +106,12 @@ term_window_menu() {
         --color info:#D0D0D0,prompt:#FFFFFF,pointer:#FFFFFF,hl+:#FFFFFF
         --color marker:#FFFFFF,spinner:#FFFFFF,header:#FFFFFF,border:-1
     '
-    term_exec --no-fork "echo \"$input\" | FZF_DEFAULT_OPTS=\"$FZF_DEFAULT_OPTS\" fzf > \"$tmp_file\""
+    term_exec --no-fork "echo \"$list\" | FZF_DEFAULT_OPTS=\"$FZF_DEFAULT_OPTS\" fzf > \"$tmp_file\""
+
     value=$(cat "$tmp_file" 2>/dev/null)
+
+    rm -f -- "$tmp_file"
+
     echo "$value"
 }
 

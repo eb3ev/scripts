@@ -8,7 +8,7 @@ turn_off_secondary_monitors() {
 
     args=""
 
-    for monitor in "$monitors"
+    for monitor in $monitors
     do
         args="$args --output $monitor --off"
     done

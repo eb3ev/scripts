@@ -251,7 +251,8 @@ rm_list_dups() {
 }
 
 concat_list() {
-    printf -- "$1\n$2"
+    echo "$1
+$2"
 }
 
 list_add() {
@@ -259,7 +260,8 @@ list_add() {
     then
         echo "$2"
     else
-        concat_list "$1" "$2"
+        echo "$1
+$2"
     fi
 }
 
