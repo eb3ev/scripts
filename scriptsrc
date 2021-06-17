@@ -1,3 +1,5 @@
+#!/bin/sh
+
 scripts_dir="${SCRIPTS_DIR:-$HOME/scripts}"
 
 lib="$scripts_dir/lib"
