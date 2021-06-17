@@ -36,12 +36,12 @@ then
     case "$dev" in
         "$android_identifier"*)
             dev="${dev##*$android_identifier}"
-            mount_pt=$(value --key="$dev" --file="$mounted_dev_cache" --index=3)
+            mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)
             unmount_android "$dev"
             ;;
         "$removable_identifier"*)
             dev="${dev##*$removable_identifier}"
-            mount_pt=$(value --key="$dev" --file="$mounted_dev_cache" --index=3)
+            mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)
             unmount_removable "$dev"
             ;;
     esac
