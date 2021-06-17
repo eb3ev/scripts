@@ -1,9 +1,13 @@
 #!/bin/sh
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/program"
 
 restart_program() {
-    killall "$1" 2>/dev/null && eval "$1" &
+    if [ "$(installed "$1")" = "true" ]
+    then
+        killall "$1" 2>/dev/null && eval "$1" &
+    fi
 }
 
 if [ $# -gt 0 ]
