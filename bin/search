@@ -23,6 +23,7 @@ for arg in "$@"
 do
     case "$arg" in
         "--use-history") use_history="true" ;;
+        *) browser_cmd="$arg" ;;
     esac
 done
 
@@ -49,7 +50,7 @@ then
 
         query=$(enc --html "$query")
 
-        ${1:-xdg-open} "$(value "$search_engine_key" --file="$search_engines")$query"
+        ${browser_cmd:-xdg-open} "$(value "$search_engine_key" --file="$search_engines")$query"
     fi
 fi
 
