@@ -4,13 +4,16 @@
 . "$lib/var/config"
 . "$lib/lines"
 . "$lib/files"
+. "$lib/args"
 
 use_filter="false"
 new_window="false"
 require_sudo="false"
 
+prompt="Open"
+
 get_file() {
-    find_cmd "$1" | filter --use-pipe $2 | menu 1 "${override_prompt:-Open}"
+    find_cmd "$1" | filter --use-pipe $2 | menu 1 "$prompt"
 }
 
 open_file() {
@@ -33,6 +36,7 @@ do
         "--filter-doc") filters=$(list_add "$filters" "--doc") ;;
         "--filter-img") filters=$(list_add "$filters" "--img") ;;
         "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
+        "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         *)
             if [ -d "$arg" ]
             then

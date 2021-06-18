@@ -74,5 +74,5 @@ else
     fi
 fi
 
-eval override_prompt="Edit" override_cmd="$run_cmd" search_open $filter $directories
+eval override_cmd="$run_cmd" search_open --prompt="Edit" $filter $directories
 
