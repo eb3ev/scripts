@@ -49,10 +49,17 @@ set_value() {
     echo "$1" >> "$2"
 }
 
-mkfile() {
-    if [ -e "$1" ]
+create_file() {
+    if [ ! -e "$1" ]
     then
-        mkdir -p "${1%/*}" && touch "$1"
+        mkdir -p "${1%/*}" && printf "" > "$1"
+    fi
+}
+
+create_script_file() {
+    if [ ! -e "$1" ]
+    then
+        mkdir -p "${1%/*}" && echo '#!/bin/sh' > "$1" && chmod +x "$1"
     fi
 }
 
