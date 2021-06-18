@@ -54,16 +54,13 @@ unset IFS
 
 uniq=$(cat "$old_files" "$old_files" "$new_files" | sort | uniq -u)
 
-IFS="
-"
-for new_file in $uniq
+i=1
+while read old_file
 do
-    i=$(index_of "$new_file" --file="$new_files")
+    new_file=$(get_row $i --file="$new_files" 2>/dev/null)
 
-    if [ $i -ge 1 ] 2>/dev/null
+    if echo "$uniq" | grep -Fqx -- "$new_file"
     then
-        old_file=$(get_row $i --file="$old_files" 2>/dev/null)
-
         if [ "$require_sudo" = "true" ]
         then
             sudo mv -n -- "$old_file" "$new_file" 2>/dev/null
@@ -71,8 +68,9 @@ do
             mv -n -- "$old_file" "$new_file" 2>/dev/null
         fi
     fi
-done
-unset IFS
+
+    i=$((i + 1))
+done 2>/dev/null < "$old_files"
 
 rm -f -- "$old_files" "$new_files"
 
