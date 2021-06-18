@@ -52,20 +52,27 @@ unset IFS
 
 "${EDITOR:-$editor}" "$new_files"
 
-i=1
-while read file
+uniq=$(cat "$old_files" "$old_files" "$new_files" | sort | uniq -u)
+
+IFS="
+"
+for new_file in $uniq
 do
-    new_file=$(get_row $i --file="$new_files" 2>/dev/null)
+    i=$(index_of "$new_file" --file="$new_files")
 
-    if [ "$require_sudo" = "true" ]
+    if [ $i -ge 1 ] 2>/dev/null
     then
-        sudo mv -n -- "$file" "$new_file" 2>/dev/null
-    else
-        mv -n -- "$file" "$new_file" 2>/dev/null
-    fi
+        old_file=$(get_row $i --file="$old_files" 2>/dev/null)
 
-    i=$((i + 1))
-done 2>/dev/null < "$old_files"
+        if [ "$require_sudo" = "true" ]
+        then
+            sudo mv -n -- "$old_file" "$new_file" 2>/dev/null
+        else
+            mv -n -- "$old_file" "$new_file" 2>/dev/null
+        fi
+    fi
+done
+unset IFS
 
 rm -f -- "$old_files" "$new_files"
 

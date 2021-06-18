@@ -345,6 +345,36 @@ sync_list_list() {
     echo "$new_list"
 }
 
+index_of() {
+    use_pipe="false"
+
+    line=""
+
+    file=""
+    list=""
+
+    for arg in "$@"
+    do
+        case "$arg" in
+            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
+            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
+            "--use-pipe") use_pipe="true" ;;
+            *) line="$arg" ;;
+        esac
+    done
+
+    if [ "$use_pipe" = "true" ]
+    then
+        awk "/^$line$/ {print NR}" | head -n 1 
+    elif [ -r "$file" ]
+    then
+        awk "/^$line$/ {print NR}" "$file" | head -n 1 
+    elif [ -n "$list" ]
+    then
+        echo "$list" | awk "/^$line$/ {print NR}" | head -n 1 
+    fi
+}
+
 esc_spaces() {
     echo "$1" | sed 's/\\ / /g;s/ /\\ /g'
 }
