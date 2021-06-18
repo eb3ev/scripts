@@ -52,14 +52,22 @@ set_value() {
 create_file() {
     if [ ! -e "$1" ]
     then
-        mkdir -p "${1%/*}" && printf "" > "$1"
+        case "$1" in
+            *"/"*) mkdir -p "${1%/*}" ;;
+        esac
+
+        printf "" > "$1"
     fi
 }
 
 create_script_file() {
     if [ ! -e "$1" ]
     then
-        mkdir -p "${1%/*}" && echo '#!/bin/sh' > "$1" && chmod +x "$1"
+        case "$1" in
+            *"/"*) mkdir -p "${1%/*}" ;;
+        esac
+
+        echo '#!/bin/sh' > "$1" && chmod +x "$1"
     fi
 }
 
