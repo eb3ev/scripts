@@ -283,7 +283,7 @@ sync_file_file() {
             rm_line "$line" --file="$1"
         fi
 
-        if [ $(grep -Fqx -- "$line" "$1" | wc -l) -gt 1 ]
+        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]
         then
             to_top "$line" --file="$1"
         fi
@@ -309,7 +309,7 @@ sync_file_list() {
             rm_line "$line" --file="$1"
         fi
 
-        if [ $(grep -Fqx -- "$line" "$1" | wc -l) -gt 1 ]
+        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]
         then
             to_top "$line" --file="$1"
         fi
@@ -335,7 +335,7 @@ sync_list_list() {
             new_list=$(rm_line "$line" --list="$new_list")
         fi
 
-        if [ $(grep -Fqx -- "$line" "$1" | wc -l) -gt 1 ]
+        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]
         then
             new_list=$(to_top "$line" --list="$new_list")
         fi

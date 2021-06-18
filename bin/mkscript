@@ -15,7 +15,9 @@ then
         create_script_file "$file"
     done
 else
-    read -p "Filename: " fname
+    printf "Filename: "
+
+    read fname
     
     create_script_file "$fname"
 fi
