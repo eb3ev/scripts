@@ -34,7 +34,7 @@ set_clipboard() {
     then
         echo "$clipboard" | xclip -selection "$selection"
     else
-        printf -- "$clipboard" | xclip -selection "$selection"
+        printf "%s" "$clipboard" | xclip -selection "$selection"
     fi
 }
 

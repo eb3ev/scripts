@@ -4,7 +4,12 @@
 . "$lib/var/config"
 . "$lib/files"
 
-opts=$(printf 'top_window\ncenter_window\nbottom_window\nterm\nterm_window')
+opts="\
+top_window
+center_window
+bottom_window
+term
+term_window"
 
 arg_check() {
     if echo "$opts" | grep -Fqx -- "$1"

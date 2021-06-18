@@ -13,7 +13,10 @@ then
         pause_all="  Pause All"
         play_all="  Play All"
 
-        players=$(printf "$players\n$pause_all\n$play_all")
+        players="\
+$players
+$pause_all
+$play_all"
 
         player=$(echo "$players" | menu 2 " ")
 

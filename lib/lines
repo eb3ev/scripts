@@ -295,7 +295,7 @@ sync_file_file() {
 sync_file_list() {
     rm_file_dups "$1"
 
-    uniq=$(printf -- "$2\n$(cat "$1" 2>/dev/null)" | sort | uniq -u)
+    uniq=$(list_add "$2" "$(cat "$1" 2>/dev/null)" | sort | uniq -u)
 
     IFS="
 "
@@ -321,7 +321,7 @@ sync_file_list() {
 sync_list_list() {
     new_list=$(rm_list_dups "$1")
 
-    uniq=$(printf "$2\n$new_list" | sort | uniq -u)
+    uniq=$(list_add "$2" "$new_list" | sort | uniq -u)
 
     IFS="
 "

@@ -7,8 +7,15 @@
 
 use_presets="false"
 
+pos_opts="\
+Zoom
+Center
+Stretch
+Maximize"
+
 get_pos() {
-    pos_opt=$(printf 'Zoom\nCenter\nStretch\nMaximize' | menu 2 "漣")
+
+    pos_opt=$(echo "$pos_opts" | menu 2 "漣")
 
     if [ -n "$pos_opt" ]
     then
@@ -48,7 +55,7 @@ create_setter_script() {
 set_wallpaper() {
     monitors=$(xrandr | awk '/ connected/ {print $1}')
 
-    monitors=$(printf "$monitors\nSpan")
+    monitors=$(list_add "$monitors" "Span")
 
     monitor_arg=""
     pos=""
