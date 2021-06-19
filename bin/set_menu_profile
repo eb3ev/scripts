@@ -20,7 +20,7 @@ arg_check() {
     fi
 }
 
-opt="${1:-$(echo "$opts" | menu 2 "Profiles")}"
+opt="${1:-$(echo "$opts" | menu -m --prompt="Profiles")}"
 
 if [ "$(arg_check "$opt")" = "true" ]
 then

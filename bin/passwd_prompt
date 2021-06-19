@@ -2,5 +2,5 @@
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 
-printf "" | override_menu="center_window" menu 5
+printf "" | override_menu="center_window" menu -h --prompt=" "
 

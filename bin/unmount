@@ -29,7 +29,7 @@ then
     exit 0
 fi
 
-dev=$(echo "$mounted_devs" | menu 2 "Unmount")
+dev=$(echo "$mounted_devs" | menu -m --prompt="Unmount")
 
 if [ -n "$dev" ]
 then

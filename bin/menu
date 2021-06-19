@@ -2,70 +2,82 @@
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 . "$lib/var/config"
+. "$lib/args"
 
-window_menu() {
-    case "$1" in
-        0) eval "$base_dmenu $param0" ;;
-        1) eval "$base_dmenu $param1" ;;
-        2) eval "$base_dmenu $param2" ;;
-        3) eval "$base_dmenu $param3" ;;
-        4) eval "$base_dmenu $param4" ;;
-        5) eval "$base_dmenu $param5" ;;
-        *) eval "$base_dmenu" ;;
-    esac
+use_fuzzy="false"
+use_alt="false"
+always_match="false"
+hidden="false"
+custom_args=""
+prompt=""
+
+exec_menu() {
+    eval "$1 $2"
 }
 
 default_menu() {
-    base_dmenu="dmenu"
-    param0=""
-    param1=""
-    param2=""
-    param3=""
-    param4=""
-    param5=""
+    exec_menu "dmenu"
+}
 
-    window_menu "$1" "$2"
+get_window_menu_args() {
+    args=""
+
+    if [ "$use_fuzzy" = "true" ]
+    then
+        args="$args -F"
+    fi
+    if [ "$use_alt" = "true" ]
+    then
+        args="$args -bw 4"
+    fi
+    if [ "$always_match" = "true" ]
+    then
+        args="$args -r"
+    fi
+    if [ "$hidden" = "true" ]
+    then
+        args="$args $1 -P"
+    fi
+    if [ -n "$prompt" ]
+    then
+        args="$args -p \"$prompt\""
+    fi
+
+    echo "$args $custom_args"
 }
 
 top_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-11' -i -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
-    param0="\$2"
-    param1="-p \"\$2\""
-    param2="-r -p \"\$2\""
-    param3="-F -r -p \"\$2\""
-    param4="-bw 4 -r -p \"\$2\""
-    param5="-P -p ' '"
 
-    window_menu "$1" "$2"
+    exec_menu "$base_dmenu" "$(get_window_menu_args)"
 }
 
 center_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-14' -nb '#000000' -sb '#000000' \
         -pb '#000000' -i -c -l 5 -mn 1 -h 32 -bw 1 -bc '#FFFFFF'"
-    param0="\$2"
-    param1="-p \"\$2\""
-    param2="-r -p \"\$2\""
-    param3="-F -r -p \"\$2\""
-    param4="-bw 4 -r -p \"\$2\""
-    param5="-l 0 -P -p ' '"
 
-    window_menu "$1" "$2"
+    exec_menu "$base_dmenu" "$(get_window_menu_args)"
 }
 
 bottom_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-11' -i -b -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
-    param0="\$2"
-    param1="-p \"\$2\""
-    param2="-r -p \"\$2\""
-    param3="-F -r -p \"\$2\""
-    param4="-bw 4 -r -p \"\$2\""
-    param5="-l 0 -P -p ' '"
 
-    window_menu "$1" "$2"
+    exec_menu "$base_dmenu" "$(get_window_menu_args "-l 0")"
+}
+
+get_term_menu_args() {
+    args=""
+
+    if [ -n "$prompt" ]
+    then
+        args="$args --prompt=\"$prompt\""
+    fi
+
+    echo "$args"
 }
 
 term_menu() {
-    fzf
+    exec_menu "fzf" "$(get_term_menu_args)"
 }
 
 term_window_menu() {
@@ -74,7 +86,7 @@ term_window_menu() {
 
     cat > "$tmp_list" 2>/dev/null
 
-    term_exec --no-fork "fzf > \"$tmp_result\" < \"$tmp_list\""
+    term_exec --no-fork "fzf $(get_term_menu_args) \" > \"$tmp_result\" < \"$tmp_list\""
 
     value=$(cat "$tmp_result" 2>/dev/null)
 
@@ -83,14 +95,36 @@ term_window_menu() {
     echo "$value"
 }
 
+for arg in "$@"
+do
+    case "$arg" in
+        "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
+        "--custom="*) custom_args=$(get_arg_value "--custom=" "$arg") ;;
+        "-"*)
+            case "$arg" in
+                *"f"*) use_fuzzy="true" ;;
+            esac
+            case "$arg" in
+                *"a"*) use_alt="true" ;;
+            esac
+            case "$arg" in
+                *"m"*) always_match="true" ;;
+            esac
+            case "$arg" in
+                *"h"*) hidden="true" ;;
+            esac
+            ;;
+    esac
+done
+
 config="${override_menu:-$(cat "$menurc" 2>/dev/null)}"
 
 case "$config" in
-    "top_window") top_window_menu "$1" "$2" ;;
-    "center_window") center_window_menu "$1" "$2" ;;
-    "bottom_window") bottom_window_menu "$1" "$2" ;;
-    "term_window") term_window_menu "$1" "$2" ;;
+    "top_window") top_window_menu ;;
+    "center_window") center_window_menu ;;
+    "bottom_window") bottom_window_menu ;;
+    "term_window") term_window_menu ;;
     "term") term_menu ;;
-    *) default_menu "$1" "$2" ;;
+    *) default_menu ;;
 esac
 

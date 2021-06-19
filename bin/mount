@@ -28,7 +28,7 @@ then
     exit 0
 fi
 
-dev=$(echo "$mountable_devs" | menu 2 "Mount")
+dev=$(echo "$mountable_devs" | menu -m --prompt="Mount")
 
 if [ -n "$dev" ]
 then

@@ -46,9 +46,9 @@ fi
 
 if [ "$require_sudo" = "true" ]
 then
-    script=$(echo "$script_list" | menu 4 "Run")
+    script=$(echo "$script_list" | menu -am --prompt="Run")
 else
-    script=$(echo "$script_list" | menu 2 "Run")
+    script=$(echo "$script_list" | menu -m --prompt="Run")
 fi
 
 if [ -n "$script" ]

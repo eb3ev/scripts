@@ -14,7 +14,7 @@ then
         echo "Invalid: $1"
     fi
 else
-    new_browser=$(installed_browsers | menu 2 "Browsers")
+    new_browser=$(installed_browsers | menu -m --prompt="Browsers")
 fi
 
 if [ -n "$new_browser" ]

@@ -27,7 +27,7 @@ do
     esac
 done
 
-search_engine_key=$(keys --file="$search_engines" | menu 2 "")
+search_engine_key=$(keys --file="$search_engines" | menu -m --prompt="")
 
 if [ -n "$search_engine_key" ]
 then
@@ -35,10 +35,10 @@ then
     then
         if [ "$(create_histfile)" = "true" ]
         then
-            query=$(menu 1 "$search_engine_key" < "$search_history")
+            query=$(menu --prompt="$search_engine_key" < "$search_history")
         fi
     else
-        query=$(printf "" | menu 1 "$search_engine_key")
+        query=$(printf "" | menu --prompt="$search_engine_key")
     fi
 
     if [ -n "$query" ]

@@ -20,7 +20,7 @@ get_bookmark_groups() {
 }
 
 get_bookmark() {
-    get_bookmarks | menu 2 ""
+    get_bookmarks | menu -m --prompt=""
 }
 
 get_bookmark_history() {
@@ -31,7 +31,7 @@ get_bookmark_history() {
 
     sync_file_list "$bookmark_history" "$(get_bookmarks)"
 
-    menu 2 "" < "$bookmark_history"
+    menu -m --prompt="" < "$bookmark_history"
 }
 
 get_url() {

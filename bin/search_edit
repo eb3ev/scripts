@@ -17,7 +17,7 @@ get_file() {
         files=$(echo "$files" | filter --use-pipe --txt-files)
     fi
 
-    echo "$files" | menu 1 "Edit"
+    echo "$files" | menu --prompt="Edit"
 }
 
 edit_file() {

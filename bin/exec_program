@@ -45,9 +45,9 @@ fi
 
 if [ "$require_sudo" = "true" ]
 then
-    program=$(echo "$program_list" | menu 4 "$prompt")
+    program=$(echo "$program_list" | menu -am --prompt="$prompt")
 else
-    program=$(echo "$program_list" | menu 2 "$prompt")
+    program=$(echo "$program_list" | menu -m --prompt="$prompt")
 fi
 
 if [ -n "$program" ]

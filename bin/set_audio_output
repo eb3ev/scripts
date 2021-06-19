@@ -11,7 +11,7 @@ then
     exit 0
 fi
 
-sink=$(get_sink_names "$sinks" | menu 2 "Output")
+sink=$(get_sink_names "$sinks" | menu -m --prompt="Output")
 
 if [ -n "$sink" ]
 then

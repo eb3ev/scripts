@@ -30,7 +30,7 @@ get_screenlayouts() {
 
 hostname=$(cat /etc/hostname 2>/dev/null)
 
-screenlayout=$(get_screenlayouts "$hostname" | menu 2 " ")
+screenlayout=$(get_screenlayouts "$hostname" | menu -m --prompt=" ")
 
 if [ -n "$screenlayout" ]
 then

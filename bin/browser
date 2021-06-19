@@ -29,7 +29,7 @@ done
 
 if [ "$diff_browser" = "true" ]
 then
-    browser=$(installed_browsers | menu 2 "Browser")
+    browser=$(installed_browsers | menu -m --prompt="Browser")
 
     if [ -z "$browser" ]
     then

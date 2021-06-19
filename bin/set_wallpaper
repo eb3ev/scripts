@@ -15,7 +15,7 @@ Maximize"
 
 get_pos() {
 
-    pos_opt=$(echo "$pos_opts" | menu 2 "漣")
+    pos_opt=$(echo "$pos_opts" | menu -m --prompt="漣")
 
     if [ -n "$pos_opt" ]
     then
@@ -29,7 +29,7 @@ get_pos() {
 }
 
 get_wallpaper() {
-    wallpaper=$(ls -F1 "$wallpapers_dir" | awk '!/\/$|\*$/' | menu 2 " ")
+    wallpaper=$(ls -F1 "$wallpapers_dir" | awk '!/\/$|\*$/' | menu -m --prompt=" ")
 
     if [ -n "$wallpaper" ]
     then
@@ -69,7 +69,7 @@ set_wallpaper() {
             break
         fi
 
-        monitor=$(echo "$monitors" | menu 2 " ")
+        monitor=$(echo "$monitors" | menu -m --prompt=" ")
 
         if [ -z "$monitor" ]
         then
@@ -115,7 +115,7 @@ set_preset_wallpaper() {
         exit 0
     fi
     
-    preset=$(echo "$presets" | menu 2 "   Presets")
+    preset=$(echo "$presets" | menu -m --prompt="   Presets")
 
     if [ -n "$preset" ]
     then

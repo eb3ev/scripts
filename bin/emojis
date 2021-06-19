@@ -29,9 +29,9 @@ done
 
 if [ "$use_history" = "true" ]
 then
-    emoji_key=$(get_emoji_history | menu 3 "Emojis")
+    emoji_key=$(get_emoji_history | menu -fm --prompt="Emojis")
 else
-    emoji_key=$(menu 3 "Emojis" < "$emojis")
+    emoji_key=$(menu -fm --prompt="Emojis" < "$emojis")
 fi
 
 if [ -n "$emoji_key" ]

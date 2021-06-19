@@ -18,7 +18,7 @@ $players
 $pause_all
 $play_all"
 
-        player=$(echo "$players" | menu 2 " ")
+        player=$(echo "$players" | menu -m --prompt=" ")
 
         if [ -n "$player" ]
         then
