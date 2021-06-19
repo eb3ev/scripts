@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$SCRIPTS_HOME/scriptsrc"
 
 get_hex_value() {
     echo "$1" | awk -F ' \\| ' '{print $2}' | sed 's/Hex: //g'

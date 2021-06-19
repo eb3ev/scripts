@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$SCRIPTS_HOME/scriptsrc"
 . "$lib/pulse_audio"
 
 sinks=$(get_sinks --exclude-default)

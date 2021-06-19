@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$SCRIPTS_HOME/scriptsrc"
 . "$lib/lines"
 . "$lib/args"
 . "$lib/archives"
@@ -11,9 +11,17 @@ for arg in "$@"
 do
     case "$arg" in
         "--dir="*) 
-            if [ -d "$(get_arg_value "--file=" "$arg")" ]
+            arg_value=$(get_arg_value "--dir=" "$arg")
+            if [ -d "$arg_value" ]
             then
-                args=$(list_add "$args" "arg")
+                args=$(list_add "$args" "$arg")
+            else
+                mkdir -p "$arg_value" 2>/dev/null
+
+                if [ -d "$arg_value" ]
+                then
+                    args=$(list_add "$args" "$arg")
+                fi
             fi
             ;;
         *)

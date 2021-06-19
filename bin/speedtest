@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$SCRIPTS_HOME/scriptsrc"
 . "$lib/csv"
 
 speedtest_result=$(speedtest --simple --secure 2>/dev/null | awk -F ": " '{print $2}') 
