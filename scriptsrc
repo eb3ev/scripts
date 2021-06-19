@@ -1,10 +1,8 @@
 #!/bin/sh
 
-scripts_dir="${SCRIPTS_DIR:-$HOME/scripts}"
+lib="$SCRIPTS_HOME/lib"
 
-lib="$scripts_dir/lib"
-
-bin="$scripts_dir/bin"
+bin="$SCRIPTS_HOME/bin"
 
 PATH="$PATH:$bin"
 
