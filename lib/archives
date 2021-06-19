@@ -1,0 +1,127 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/lines"
+. "$lib/args"
+
+extract() {
+    dir=""
+
+    files=""
+
+    for arg in "$@"
+    do
+        case "$arg" in
+            "--dir="*) 
+                arg_value=$(get_arg_value "--file=" "$arg")
+                if [ -d "$arg_value" ]
+                then
+                    dir="$arg_value"
+                fi
+                ;;
+            *)
+                if [ -f "$arg" ]
+                then
+                    files=$(list_add "$files" "$arg")
+                fi
+        esac
+    done
+
+    IFS="
+"
+    for file in $files
+    do
+        case "$file" in
+            *".tar.bz2")
+                if [ -d "$dir" ]
+                then
+                    tar xjf "$file" -C "$dir"
+                else
+                    tar xjf "$file"
+                fi
+                ;;
+            *".tar.gz")
+                if [ -d "$dir" ]
+                then
+                    tar xzf "$file" -C "$dir"
+                else
+                    tar xzf "$file"
+                fi
+                ;;
+            *".bz2")
+                bunzip2 "$file"
+                ;;
+            *".rar")
+                unrar x "$file"
+                ;;
+            *".gz")
+                gunzip "$file"
+                ;;
+            *".tar")
+                if [ -d "$dir" ]
+                then
+                    tar xf "$file" -C "$dir"
+                else
+                    tar xf "$file"
+                fi
+                ;;
+            *".tbz2")
+                if [ -d "$dir" ]
+                then
+                    tar xjf "$file" -C "$dir"
+                else
+                    tar xjf "$file"
+                fi
+                ;;
+            *".tgz")
+                if [ -d "$dir" ]
+                then
+                    tar xzf "$file" -C "$dir"
+                else
+                    tar xzf "$file"
+                fi
+                ;;
+            *".zip")
+                if [ -d "$dir" ]
+                then
+                    unzip "$file" -d "$dir"
+                else
+                    unzip "$file"
+                fi
+                ;;
+            *".Z")
+                uncompress "$file"
+                ;;
+            *".7z")
+                7z x "$file"
+                ;;
+            *".deb")
+                if [ -d "$dir" ]
+                then
+                    ar x --output "$dir" "$file"
+                else
+                    ar x "$file"
+                fi
+                ;;
+            *".tar.xz")
+                if [ -d "$dir" ]
+                then
+                    tar xf "$file" -C "$dir"
+                else
+                    tar xf "$file"
+                fi
+                ;;
+            *".tar.zst")
+                if [ -d "$dir" ]
+                then
+                    unzstd --output-dir-flat "$dir" "$file"
+                else
+                    unzstd "$file"
+                fi
+                ;;      
+            *) echo "Invalid: $file" ;;
+        esac
+    done
+    unset IFS
+}
+

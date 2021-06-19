@@ -1,0 +1,31 @@
+#!/bin/sh
+
+. "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
+. "$lib/lines"
+. "$lib/args"
+. "$lib/archives"
+
+args=""
+
+for arg in "$@"
+do
+    case "$arg" in
+        "--dir="*) 
+            if [ -d "$(get_arg_value "--file=" "$arg")" ]
+            then
+                args=$(list_add "$args" "arg")
+            fi
+            ;;
+        *)
+            if [ -f "$arg" ]
+            then
+                args=$(list_add "$args" "$arg")
+            fi
+    esac
+done
+
+IFS="
+"
+extract $args
+unset IFS
+
