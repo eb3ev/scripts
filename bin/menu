@@ -36,7 +36,7 @@ get_window_menu_args() {
     fi
     if [ "$hidden" = "true" ]
     then
-        args="$args $1 -P"
+        args="$args -P"
     fi
     if [ -n "$prompt" ]
     then
@@ -62,7 +62,7 @@ center_window_menu() {
 bottom_window_menu() {
     base_dmenu="dmenu -fn 'Noto Sans-11' -i -b -h 26 -mn 1 -bw 1 -bc '#FFFFFF'"
 
-    exec_menu "$base_dmenu" "$(get_window_menu_args "-l 0")"
+    exec_menu "$base_dmenu" "$(get_window_menu_args)"
 }
 
 get_term_menu_args() {
