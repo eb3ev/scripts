@@ -90,7 +90,7 @@ term_window_menu() {
 
     value=$(cat "$tmp_result" 2>/dev/null)
 
-    rm -f -- "$list" "$result"
+    rm -f -- "$tmp_list" "$tmp_result"
 
     echo "$value"
 }
