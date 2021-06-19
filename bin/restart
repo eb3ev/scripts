@@ -8,6 +8,8 @@ restart_program() {
     then
         killall "$1" 2>/dev/null && eval "$1" &
     fi
+
+    notify-send "Restarted" "$1"
 }
 
 if [ $# -gt 0 ]
