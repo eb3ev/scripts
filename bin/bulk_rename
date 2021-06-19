@@ -52,6 +52,11 @@ unset IFS
 
 "${EDITOR:-$editor}" "$new_files"
 
+if [ $(wc -l < "$old_files") -ne $(wc -l < "$new_files") ]
+then
+    exit 0
+fi
+
 if cmp --silent "$old_files" "$new_files"
 then
     exit 0
@@ -62,7 +67,7 @@ while read old_file
 do
     new_file=$(get_row $i --file="$new_files" 2>/dev/null)
 
-    if [ "$new_file" != "$old_file" ]
+    if [ "$new_file" != "$old_file" ] && [ -n "$new_file" ]
     then
         if [ "$require_sudo" = "true" ]
         then
