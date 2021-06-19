@@ -65,52 +65,20 @@ bottom_window_menu() {
 }
 
 term_menu() {
-    FZF_DEFAULT_OPTS='
-        --cycle
-        --margin 8%,4%,8%
-        --info inline
-        --preview-window noborder
-        --bind alt-j:down
-        --bind alt-k:up
-        --bind ctrl-d:half-page-down
-        --bind ctrl-u:half-page-up
-        --color fg:#D0D0D0,bg:-1,hl:#FFFFFF,fg+:#FFFFFF,bg+:-1,gutter:-1
-        --color info:#D0D0D0,prompt:#FFFFFF,pointer:#FFFFFF,hl+:#FFFFFF
-        --color marker:#FFFFFF,spinner:#FFFFFF,header:#FFFFFF,border:-1
-    '
     fzf
 }
 
 term_window_menu() {
-    while read input
-    do
-        list="$list$input
-"
-    done
+    tmp_list=$(mktemp)
+    tmp_result=$(mktemp)
 
-    list=${list%%
-}
+    cat > "$tmp_list" 2>/dev/null
 
-    tmp_file=$(mktemp)
+    term_exec --no-fork "fzf > \"$tmp_result\" < \"$tmp_list\""
 
-    FZF_DEFAULT_OPTS='
-        --cycle
-        --margin 8%,4%,8%
-        --info inline
-        --preview-window noborder
-        --bind alt-j:down
-        --bind alt-k:up
-        --bind ctrl-d:half-page-down
-        --bind ctrl-u:half-page-up
-        --color fg:#D0D0D0,bg:-1,hl:#FFFFFF,fg+:#FFFFFF,bg+:-1,gutter:-1
-        --color info:#D0D0D0,prompt:#FFFFFF,pointer:#FFFFFF,hl+:#FFFFFF
-        --color marker:#FFFFFF,spinner:#FFFFFF,header:#FFFFFF,border:-1
-    '
-    term_exec --no-fork "echo \"$list\" | FZF_DEFAULT_OPTS=\"$FZF_DEFAULT_OPTS\" fzf > \"$tmp_file\""
+    value=$(cat "$tmp_result" 2>/dev/null)
 
-    value=$(cat "$tmp_file" 2>/dev/null)
-
-    rm -f -- "$tmp_file"
+    rm -f -- "$list" "$result"
 
     echo "$value"
 }

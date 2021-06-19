@@ -34,7 +34,7 @@ do
     esac
 done
 
-sync_program_file "$program"
+sync_program_file "$programs"
 
 if [ "$use_history" = "true" ]
 then
