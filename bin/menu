@@ -70,7 +70,7 @@ get_term_menu_args() {
 
     if [ -n "$prompt" ]
     then
-        args="$args --prompt=\"$prompt\""
+        args="$args --prompt=\"$prompt \""
     fi
 
     echo "$args"
@@ -86,7 +86,7 @@ term_window_menu() {
 
     cat > "$tmp_list" 2>/dev/null
 
-    term_exec --no-fork "fzf $(get_term_menu_args) \" > \"$tmp_result\" < \"$tmp_list\""
+    term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
 
     value=$(cat "$tmp_result" 2>/dev/null)
 
