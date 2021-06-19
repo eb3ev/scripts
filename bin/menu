@@ -2,6 +2,7 @@
 
 . "${SCRIPTS_DIR:-${0%/*}/..}/scriptsrc"
 . "$lib/var/config"
+. "$lib/program"
 . "$lib/args"
 
 use_fuzzy="false"
@@ -86,7 +87,12 @@ term_window_menu() {
 
     cat > "$tmp_list" 2>/dev/null
 
-    term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
+    if [ "$(installed "xterm")" = "true" ]
+    then
+        override_term_cmd="xterm -T Menu -e" term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
+    else
+        term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
+    fi
 
     value=$(cat "$tmp_result" 2>/dev/null)
 
