@@ -24,7 +24,7 @@ wallpaper_setter="${XDG_CONFIG_HOME:-$HOME/.config}/set_wallpaper"
 
 screenlayout_setter="${XDG_CONFIG_HOME:-$HOME/.config}/screenlayout"
 
-wallpapers_dir="/usr/share/wallpapers"
+wallpapers_dir="${WALLPAPERS_DIR:-/usr/share/wallpapers}"
 
 wallpaper_presets="${WALLPAPER_PRESETS:-$HOME/linux/lib/wallpaper_presets}"
 
