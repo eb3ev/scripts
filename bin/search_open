@@ -36,6 +36,7 @@ do
         "--filter-doc") filters=$(list_add "$filters" "--doc") ;;
         "--filter-img") filters=$(list_add "$filters" "--img") ;;
         "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
+        "--filter-archive") filters=$(list_add "$filters" "--archive") ;;
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         *)
             if [ -d "$arg" ]
