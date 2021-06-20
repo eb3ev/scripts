@@ -41,32 +41,7 @@ extract() {
     for file in $files
     do
         case "$file" in
-            *".tar.bz2")
-                if [ -d "$dir" ]
-                then
-                    tar xjf "$file" -C "$dir"
-                else
-                    tar xjf "$file"
-                fi
-                ;;
-            *".tar.gz")
-                if [ -d "$dir" ]
-                then
-                    tar xzf "$file" -C "$dir"
-                else
-                    tar xzf "$file"
-                fi
-                ;;
-            *".bz2")
-                bunzip2 "$file"
-                ;;
-            *".rar")
-                unrar x "$file"
-                ;;
-            *".gz")
-                gunzip "$file"
-                ;;
-            *".tar")
+            *".tar"|*".tar.xz")
                 if [ -d "$dir" ]
                 then
                     tar xf "$file" -C "$dir"
@@ -74,7 +49,7 @@ extract() {
                     tar xf "$file"
                 fi
                 ;;
-            *".tbz2")
+            *".tar.bz2"|*".bz2"|*".tbz2")
                 if [ -d "$dir" ]
                 then
                     tar xjf "$file" -C "$dir"
@@ -82,13 +57,24 @@ extract() {
                     tar xjf "$file"
                 fi
                 ;;
-            *".tgz")
+            *".tar.gz"|*".tgz")
                 if [ -d "$dir" ]
                 then
                     tar xzf "$file" -C "$dir"
                 else
                     tar xzf "$file"
                 fi
+                ;;
+            *".rar")
+                if [ -d "$dir" ]
+                then
+                    unrar x "$file" "$dir"
+                else
+                    unrar x "$file"
+                fi
+                ;;
+            *".gz")
+                gzip "$file"
                 ;;
             *".zip")
                 if [ -d "$dir" ]
@@ -102,7 +88,12 @@ extract() {
                 uncompress "$file"
                 ;;
             *".7z")
-                7z x "$file"
+                if [ -d "$dir" ]
+                then
+                    7z x "$file" -o"$dir"
+                else
+                    7z x "$file"
+                fi
                 ;;
             *".deb")
                 if [ -d "$dir" ]
@@ -110,14 +101,6 @@ extract() {
                     ar x --output "$dir" "$file"
                 else
                     ar x "$file"
-                fi
-                ;;
-            *".tar.xz")
-                if [ -d "$dir" ]
-                then
-                    tar xf "$file" -C "$dir"
-                else
-                    tar xf "$file"
                 fi
                 ;;
             *".tar.zst")
