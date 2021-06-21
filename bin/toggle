@@ -9,7 +9,7 @@ toggle() {
         notify-send "$1" "On" &
         eval "$1 $2"
     else
-        killall "$1" && notify-send "$1" "Off"
+        killall -s SIGKILL "$1" && sleep 1 && notify-send "$1" "Off" 2>/dev/null
     fi
 }
 
