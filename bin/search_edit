@@ -5,20 +5,8 @@
 . "$lib/lines"
 . "$lib/files"
 
-use_filter="false"
 new_window="false"
 require_sudo="false"
-
-get_file() {
-    files=$(find_cmd "$1")
-
-    if [ "$use_filter" = "true" ]
-    then
-        files=$(echo "$files" | filter --use-pipe --txt-files)
-    fi
-
-    echo "$files" | menu --prompt="Edit"
-}
 
 edit_file() {
     if [ "$new_window" = "true" ]
@@ -40,14 +28,14 @@ edit_file() {
 }
 
 directories=""
-filter=""
+filters=""
 
 for arg in "$@"
 do
     case "$arg" in
         "--new-window") new_window="true" ;;
         "--sudo") require_sudo="true" ;;
-        "--use-filter") filter="--filter-txt" ;;
+        "--use-filter") filters=$(list_add "$filters" "--filter-txt") ;;
         *)
             if [ -d "$arg" ]
             then
@@ -74,5 +62,5 @@ else
     fi
 fi
 
-eval override_cmd="$run_cmd" search_open --prompt="Edit" $filter $directories
+eval override_cmd="$run_cmd" search_open --prompt="Edit" $filters $directories
 
