@@ -8,7 +8,7 @@ clipboard=$(get_clipboard)
 
 if [ -n "$(filter --url "$clipboard")" ]
 then
-    bookmark_name=$(printf "" | override_menu='bottom_window' menu --custom="-l 0" --prompt="Name ($clipboard)")
+    bookmark_name=$(printf "" | override_menu='bottom_window' menu --prompt="Name ($clipboard)")
 
     if [ -n "$bookmark_name" ]
     then
