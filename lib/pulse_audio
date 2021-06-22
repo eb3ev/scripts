@@ -13,12 +13,14 @@ get_sinks() {
     num_sinks=$(($(echo "$sinks" | wc -l) / 2))
 
     new_sinks=""
-    for i in $(seq 1 $num_sinks)
+    while [ $i -le $num_sinks ]
     do
         sink_id=$(get_row $i --list="$sinks")
         sink_name=$(get_row $((i+1)) --list="$sinks")
 
         new_sinks=$(list_add "$new_sinks" "$sink_name;$sink_id")
+
+        i=$((i + 1))
     done
 
     if [ "$1" = "--exclude-default" ]
