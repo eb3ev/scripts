@@ -78,7 +78,7 @@ done
 
 if [ "$use_groups" = "true" ]
 then
-    bookmark_key=$(get_bookmark_groups | menu 2 "Groups")
+    bookmark_key=$(get_bookmark_groups | menu -m "Groups")
 
     if [ "$copy" = "true" ]
     then
