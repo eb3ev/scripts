@@ -48,5 +48,8 @@ then
     esac
 
     notify-send "Unmounted $dev" "from $mount_pt"
+
+    sleep 0.5
+    rm -df "$mount_pts_dir"/* 2>/dev/null
 fi
 
