@@ -3,6 +3,7 @@
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/program"
 . "$lib/lines"
+. "$lib/args"
 
 find_cmd() {
     if [ "$(installed fd)" = "true" ]
@@ -12,13 +13,42 @@ find_cmd() {
         use_fd="false"
     fi
 
+    dirs=""
+    args=""
+
+    for arg in "$@"
+    do
+        case "$arg" in
+            --include-hidden)
+                if [ "$use_fd" = "true" ]
+                then
+                    args="$args -H -I"
+                fi
+                ;;
+            --non-recursive)
+                if [ "$use_fd" = "true" ]
+                then
+                    args="$args -d 1"
+                else
+                    args="$args -maxdepth 1"
+                fi
+                ;;
+            *) 
+                if [ -d "$arg" ]
+                then
+                    dirs=$(list_add "$dirs" "$arg")
+                fi
+                ;;
+        esac
+    done
+
     IFS="
 "
     if [ "$use_fd" = "true" ]
     then
-        fd . $1 -H -I -t f
+        eval fd . $dirs $args -t f
     else
-        find ${1:-.} -type f
+        eval find ${dirs:-.} $args -type f
     fi
     unset IFS
 }

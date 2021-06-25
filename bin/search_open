@@ -13,7 +13,9 @@ require_sudo="false"
 prompt="Open"
 
 get_file() {
-    find_cmd "$1" | filter --use-pipe $2 | menu --prompt="$prompt"
+    IFS="
+" 
+    find_cmd $1 --include-hidden | filter --use-pipe $2 | menu --prompt="$prompt"
 }
 
 open_file() {
