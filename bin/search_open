@@ -9,13 +9,14 @@
 use_filter="false"
 new_window="false"
 require_sudo="false"
+type="file"
 
 prompt="Open"
 
 get_file() {
     IFS="
 " 
-    find_cmd $1 --include-hidden | filter --use-pipe $2 | menu --prompt="$prompt"
+    find_cmd $1 --include-hidden --type="$file" | filter --use-pipe $2 | menu --prompt="$prompt"
 }
 
 open_file() {
@@ -39,6 +40,7 @@ do
         "--filter-img") filters=$(list_add "$filters" "--img") ;;
         "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
         "--filter-archive") filters=$(list_add "$filters" "--archive") ;;
+        "--filter-dir") type="dir" ;;
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         *)
             if [ -d "$arg" ]

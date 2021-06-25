@@ -19,19 +19,40 @@ find_cmd() {
     for arg in "$@"
     do
         case "$arg" in
-            --include-hidden)
+            "--include-hidden")
                 if [ "$use_fd" = "true" ]
                 then
                     args="$args -H -I"
                 fi
                 ;;
-            --non-recursive)
+            "--non-recursive")
                 if [ "$use_fd" = "true" ]
                 then
                     args="$args -d 1"
                 else
                     args="$args -maxdepth 1"
                 fi
+                ;;
+            "--type="*)
+                type=$(get_arg_value "--type=" "$arg")
+                case "$type" in
+                    "file")
+                        if [ "$use_fd" = "true" ]
+                        then
+                            args="$args -t f"
+                        else
+                            args="$args -type f"
+                        fi
+                        ;;
+                    "dir")
+                        if [ "$use_fd" = "true" ]
+                        then
+                            args="$args -t d"
+                        else
+                            args="$args -type d"
+                        fi
+                        ;;
+                esac
                 ;;
             *) 
                 if [ -d "$arg" ]
@@ -46,9 +67,9 @@ find_cmd() {
 "
     if [ "$use_fd" = "true" ]
     then
-        eval fd . $dirs $args -t f
+        eval fd . $dirs $args
     else
-        eval find ${dirs:-.} $args -type f
+        eval find ${dirs:-.} $args
     fi
     unset IFS
 }
