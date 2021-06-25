@@ -12,32 +12,15 @@ find_cmd() {
         use_fd="false"
     fi
 
-    vals=""
-
-    if [ -n "$1" ]
-    then
-        IFS="
+    IFS="
 "
-        for dir in $1
-        do
-            if [ "$use_fd" = "true" ]
-            then
-                vals=$(list_add "$vals" "$(fd . "$(printf "%s" "$dir")" -H -I -t f)")
-            else
-                vals=$(list_add "$vals" "$(find "$(printf "%s" "$dir")" -type f)")
-            fi
-        done
-        unset IFS
+    if [ "$use_fd" = "true" ]
+    then
+        fd . $1 -H -I -t f
     else
-        if [ "$use_fd" = "true" ]
-        then
-            vals=$(fd . -H -I -t f)
-        else
-            vals=$(find . -type f)
-        fi
+        find ${1:-.} -type f
     fi
-
-    echo "$vals"
+    unset IFS
 }
 
 set_value() {
