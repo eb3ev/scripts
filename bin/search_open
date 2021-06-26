@@ -16,7 +16,7 @@ prompt="Open"
 get_file() {
     IFS="
 " 
-    find_cmd $1 --include-hidden --type="$file" | filter --use-pipe $2 | menu --prompt="$prompt"
+    find_cmd $1 --include-hidden --type="$type" | filter --use-pipe $2 | menu --prompt="$prompt"
 }
 
 open_file() {
