@@ -9,14 +9,20 @@
 use_filter="false"
 new_window="false"
 require_sudo="false"
+recursive="true"
 type="file"
 
 prompt="Open"
 
 get_file() {
+    if [ "$recursive" = "false" ]
+    then
+        other_args="--non-recursive"
+    fi
+
     IFS="
 " 
-    find_cmd $1 --include-hidden --type="$type" | filter --use-pipe $2 | menu --prompt="$prompt"
+    find_cmd $1 --include-hidden --type="$type" $other_args | filter --use-pipe $2 | menu --prompt="$prompt"
 }
 
 open_file() {
@@ -41,6 +47,7 @@ do
         "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
         "--filter-archive") filters=$(list_add "$filters" "--archive") ;;
         "--filter-dir") type="dir" ;;
+        "--non-recursive") recursive="false" ;;
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         *)
             if [ -d "$arg" ]
