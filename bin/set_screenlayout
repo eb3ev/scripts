@@ -5,6 +5,8 @@
 . "$lib/csv"
 . "$lib/lines"
 
+save_layout="false"
+
 create_setter_script() {
     rm -f "$screenlayout_setter" && mkscript "$screenlayout_setter"
     
@@ -27,6 +29,12 @@ get_screenlayouts() {
     echo "$layouts"
 }
 
+for arg in "$@"
+do
+    case "$arg" in
+        "--save") save_layout="true" ;;
+    esac
+done
 
 hostname=$(cat /etc/hostname 2>/dev/null)
 
@@ -39,7 +47,7 @@ then
     set_screenlayout_cmd=$(value "$key" --file="$screenlayouts" --index=4)
     set_wallpaper_cmd=$(value "$key" --file="$screenlayouts" --index=5)
 
-    if [ "$1" = "--save" ]
+    if [ "$save_layout" = "true" ]
     then
         create_setter_script "$set_screenlayout_cmd"
     fi
