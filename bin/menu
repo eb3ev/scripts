@@ -54,7 +54,7 @@ top_window_menu() {
 }
 
 center_window_menu() {
-    base_dmenu="dmenu -fn 'Noto Sans-14' -i -h 32 -mn 1 -bw 1 -c -l 5"
+    base_dmenu="dmenu -fn 'Noto Sans-14' -i -h 26 -mn 1 -bw 1 -c -l 5"
 
     exec_menu "$base_dmenu" "$(get_window_menu_args)"
 }
