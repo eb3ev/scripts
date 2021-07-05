@@ -6,7 +6,10 @@ single_instance "spotify"
 
 spt_class_name="spt"
 
-i3-msg [class="$spt_class_name"] kill
+for pid in $(xdotool search --class "$spt_class_name")
+do
+    xdotool windowkill $pid
+done
 
 override_term_cmd="alacritty --class $spt_class_name,$spt_class_name -e" term_exec "spt"
 
