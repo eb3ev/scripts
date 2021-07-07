@@ -11,5 +11,5 @@ do
     xdotool windowkill $pid
 done
 
-override_term_cmd="alacritty --class $spt_class_name,$spt_class_name -e" term_exec "spt"
+override_term_cmd="alacritty -t \"spt\" --class $spt_class_name,$spt_class_name -e" term_exec "spt"
 

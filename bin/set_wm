@@ -1,0 +1,62 @@
+#!/bin/sh
+
+. "$SCRIPTS_HOME/scriptsrc"
+. "$lib/lines"
+. "$lib/var/config"
+. "$lib/program"
+
+set_wm() {
+    rm -f "$config_file" && echo "$1" > "$config_file"
+}
+
+get_curr_wm() {
+    curr_wm=$(cat "$wmrc")
+    if grep -Fxq "$curr_wm" "$lib/data/wms" && [ "$(installed "$curr_wm")" = "true" ]
+    then
+        echo "$curr_wm"
+    else
+        echo "$def_wm"
+    fi
+}
+
+kill_all_windows() {
+    for win in $(wmctrl -l | awk '{print $1}')
+    do
+        wmctrl -i -c "$win"
+    done
+}
+
+wms=""
+while read wm
+do
+    if [ "$(installed "$wm")" = "true" ]
+    then
+        wms=$(list_add "$wms" "$wm")
+    fi
+done 2>/dev/null < "$lib/data/wms"
+unset wm
+
+wms=$(rm_line "$(get_curr_wm)" --list="$wms")
+
+if [ -n "$DISPLAY" ]
+then
+    wm=$(echo "$wms" | menu -m --prompt="WM")
+else
+    wm=$(echo "$wms" | override_menu='term' menu -m --prompt="WM")
+fi
+
+if [ -n "$wm" ]
+then
+    set_wm "$wm"
+
+    if [ -n "$DISPLAY" ]
+    then
+        kill_all_windows
+
+        if [ -n "$(pgrep -x "xinit")" ]
+        then
+            pkill "xinit"
+        fi
+    fi
+fi
+

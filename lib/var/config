@@ -33,3 +33,8 @@ browserrc="${XDG_CONFIG_HOME:-$HOME/.config}/browserrc"
 screenlayouts="${SCREENLAYOUTS:-$HOME/linux/lib/screenlayouts/screenlayouts}"
 
 mount_pts_dir="$HOME/mnt"
+
+wmrc="${XDG_CONFIG_HOME:-$HOME/.config}/wm"
+
+def_wm="xmonad"
+
