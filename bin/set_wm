@@ -6,11 +6,11 @@
 . "$lib/program"
 
 set_wm() {
-    rm -f "$config_file" && echo "$1" > "$config_file"
+    rm -f "$wmrc" && echo "$1" > "$wmrc"
 }
 
 get_curr_wm() {
-    curr_wm=$(cat "$wmrc")
+    curr_wm=$(cat "$wmrc" 2>/dev/null)
     if grep -Fxq "$curr_wm" "$lib/data/wms" && [ "$(installed "$curr_wm")" = "true" ]
     then
         echo "$curr_wm"
