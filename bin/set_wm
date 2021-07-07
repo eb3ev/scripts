@@ -14,8 +14,6 @@ get_curr_wm() {
     if grep -Fxq "$curr_wm" "$lib/data/wms" && [ "$(installed "$curr_wm")" = "true" ]
     then
         echo "$curr_wm"
-    else
-        echo "$def_wm"
     fi
 }
 

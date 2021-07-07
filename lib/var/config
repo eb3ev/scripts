@@ -36,5 +36,3 @@ mount_pts_dir="$HOME/mnt"
 
 wmrc="${XDG_CONFIG_HOME:-$HOME/.config}/wm"
 
-def_wm="xmonad"
-
