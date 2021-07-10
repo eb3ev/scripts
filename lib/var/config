@@ -34,5 +34,5 @@ screenlayouts="${SCREENLAYOUTS:-$HOME/linux/lib/screenlayouts/screenlayouts}"
 
 mount_pts_dir="$HOME/mnt"
 
-wmrc="${XDG_CONFIG_HOME:-$HOME/.config}/wm"
+wmrc="${XDG_CONFIG_HOME:-$HOME/.config}/wmrc"
 
