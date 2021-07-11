@@ -122,14 +122,19 @@ do
     esac
 done
 
-config="${override_menu:-$(cat "$menurc" 2>/dev/null)}"
+if [ -n "$DISPLAY" ]
+then
+    config="${override_menu:-$(cat "$menurc" 2>/dev/null)}"
 
-case "$config" in
-    "top_window") top_window_menu ;;
-    "center_window") center_window_menu ;;
-    "bottom_window") bottom_window_menu ;;
-    "term_window") term_window_menu ;;
-    "term") term_menu ;;
-    *) default_menu ;;
-esac
+    case "$config" in
+        "top_window") top_window_menu ;;
+        "center_window") center_window_menu ;;
+        "bottom_window") bottom_window_menu ;;
+        "term_window") term_window_menu ;;
+        "term") term_menu ;;
+        *) default_menu ;;
+    esac
+else
+    term_menu
+fi
 
