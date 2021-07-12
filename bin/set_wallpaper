@@ -99,7 +99,7 @@ set_wallpaper() {
 }
 
 get_presets() {
-    monitor_count=$(xrandr | awk '/ connected/' | wc -l)
+    monitor_count=$(xrandr --listactivemonitors | awk -F ": " '/^Monitors: / {print $2}')
 
     keys --file="$wallpaper_presets" --pattern="!/^ *#/ && NF && / ; $monitor_count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}"
 }
