@@ -52,7 +52,7 @@ create_setter_script() {
 }
 
 set_wallpaper() {
-    monitors=$(xrandr | awk '/ connected/ {print $1}')
+    monitors=$(xrandr --listactivemonitors | awk '{print $4}')
 
     monitors=$(list_add "$monitors" "Span")
 

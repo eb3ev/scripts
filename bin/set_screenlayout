@@ -19,7 +19,7 @@ create_setter_script() {
 }
 
 get_screenlayouts() {
-    monitor_count=$(xrandr | awk '/ connected/' | wc -l)
+    monitor_count=$(xrandr | grep -c ' connected')
     layouts=""
     for count in $(seq 1 $monitor_count)
     do
