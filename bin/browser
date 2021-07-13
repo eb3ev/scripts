@@ -7,79 +7,65 @@
 . "$lib/program"
 . "$lib/browser"
 
-run="true"
-new_window="false"
-new_tab="false"
-use_clipboard="false"
-diff_browser="false"
+run=true
+new_window=false
+new_tab=false
+use_clipboard=false
+diff_browser=false
 
 queries=""
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--new-window") new_window="true" ;;
-        "--new-tab") new_tab="true" ;;
-        "--print-cmd") run="false" ;;
-        "--use-clipboard") use_clipboard="true" ;;
-        "--use-diff") diff_browser="true" ;;
+        "--new-window") new_window=true ;;
+        "--new-tab") new_tab=true ;;
+        "--print-cmd") run=false ;;
+        "--use-clipboard") use_clipboard=true ;;
+        "--use-diff") diff_browser=true ;;
         *) queries=$(list_add "$queries" "$arg") ;;
     esac
 done
 
-if [ "$diff_browser" = "true" ]
-then
+if [ "$diff_browser" = true ]; then
     browser=$(installed_browsers | menu -m --prompt="Browser")
 
-    if [ -z "$browser" ]
-    then
-        exit 0
-    fi
+    [ "$browser" ] || exit 0
 else
     browser=$(cat "$browserrc" 2>/dev/null)
 fi
 
 browser_cmd=$(get_cmd "$browser")
 
-if [ "$(installed "$browser_cmd")" = "true" ]
-then
-    if [ "$new_window" = true ]
-    then
+if installed "$browser_cmd"; then
+    if [ "$new_window" = true ]; then
         browser_cmd=$(get_new_win_cmd "$browser")
-    elif [ "$new_tab" = true ]
-    then
+    elif [ "$new_tab" = true ]; then
         browser_cmd=$(get_new_tab_cmd "$browser")
     fi
 else
     browser_cmd="xdg-open"
 fi
 
-if [ "$use_clipboard" = true ]
-then
+if [ "$use_clipboard" = true ]; then
     clipboard=$(get_clipboard)
 
-    if [ -n "$(filter --url "$clipboard")" ]
+    if [ "$(filter --url "$clipboard")" ]
     then
         queries=$(list_add "$queries" "$clipboard")
     fi
 fi
 
-if [ "$run" = "true" ]
-then
-    if [ -n "$queries" ]
-    then
-        for query in $queries
-        do
+if [ "$run" = true ]; then
+    if [ "$queries" ]; then
+        for query in $queries; do
             eval "$browser_cmd $query"
         done
     else
         eval "$browser_cmd"
     fi
 else
-    if [ -n "$queries" ]
-    then
-        for query in $queries
-        do
+    if [ "$queries" ]; then
+        for query in $queries; do
             echo "$browser_cmd $query"
         done
     else

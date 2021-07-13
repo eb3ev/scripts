@@ -3,17 +3,13 @@
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/var/config"
 
-if [ ! $# -eq 0 ]
-then
-    require_sudo="false"
-    for arg in "$@"
-    do
-        if [ "$arg" = "--sudo" ]
-        then
-            require_sudo="true"
+if [ ! $# -eq 0 ]; then
+    require_sudo=false
+    for arg in "$@"; do
+        if [ "$arg" = "--sudo" ]; then
+            require_sudo=true
         else
-            if [ "$require_sudo" = "true" ]
-            then
+            if [ "$require_sudo" = true ]; then
                 term_exec "$sudo_editor '$arg'; read hello" &
             else
                 term_exec "${EDITOR:-$editor} '$arg'" &

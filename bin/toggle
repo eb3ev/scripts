@@ -4,8 +4,7 @@
 . "$lib/program"
 
 toggle() {
-    if [ -z "$(pgrep -x "$1")" ]
-    then
+    if [ ! "$(pgrep -x "$1")" ]; then
         notify-send "$1" "On" &
         eval "$1 $2"
     else
@@ -15,7 +14,7 @@ toggle() {
 
 program="${1:-$(exec_program --print-cmd --promt="Toggle")}"
 
-if [ "$(installed "$program")" = "true" ]
+if installed "$program"
 then
     toggle "$program" "$2"
 fi

@@ -5,16 +5,14 @@
 
 sinks=$(get_sinks --exclude-default)
 
-if [ -z "$sinks" ]
-then
+if [ ! "$sinks" ]; then
     notify-send "Alert" "No alternative outputs"
     exit 0
 fi
 
 sink=$(get_sink_names "$sinks" | menu -m --prompt="Output")
 
-if [ -n "$sink" ]
-then
+if [ "$sink" ]; then
     set_def_sink "$(get_sink_id "$sink" "$sinks")"
 fi
 

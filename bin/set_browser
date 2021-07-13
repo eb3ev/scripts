@@ -5,10 +5,8 @@
 . "$lib/files"
 . "$lib/browser"
 
-if [ $# -gt 0 ]
-then
-    if installed_browsers | grep -Fqx -- "$1"
-    then
+if [ $# -gt 0 ]; then
+    if installed_browsers | grep -Fqx -- "$1"; then
         new_browser="$1"
     else
         echo "Invalid: $1"
@@ -17,8 +15,7 @@ else
     new_browser=$(installed_browsers | menu -m --prompt="Browsers")
 fi
 
-if [ -n "$new_browser" ]
-then
+if [ "$new_browser" ]; then
     set_value "$new_browser" "$browserrc"
 fi
 

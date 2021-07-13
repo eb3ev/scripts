@@ -12,17 +12,12 @@ term
 term_window"
 
 arg_check() {
-    if echo "$opts" | grep -Fqx -- "$1"
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
+    echo "$opts" | grep -Fqx -- "$1" && return 0 || return 1
 }
 
 opt="${1:-$(echo "$opts" | menu -m --prompt="Profiles")}"
 
-if [ "$(arg_check "$opt")" = "true" ]
+if arg_check "$opt"
 then
     set_value "$opt" "$menurc"
 fi

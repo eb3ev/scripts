@@ -18,21 +18,11 @@ get_removable_dev_names() {
 }
 
 is_android_mounted() {
-    if grep -Fq "simple-mtpfs $1" "/etc/mtab"
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
+    grep -Fq "simple-mtpfs $1" "/etc/mtab" && return 0 || return 1
 }
 
 is_removable_mounted() {
-    if grep -Fq -- "$1" "/etc/mtab"
-    then
-        echo "true"
-    else
-        echo "false"
-    fi
+    grep -Fq -- "$1" "/etc/mtab" && return 0 || return 1
 }
 
 sync_mounted_devs() {
@@ -42,15 +32,13 @@ sync_mounted_devs() {
             *" ; android ; "*)
                 mount_point=$(get_column 3 --list="$mounted")
 
-                if [ "$(is_android_mounted "$mount_point")" = "false" ]
-                then
+                if is_android_mounted "$mount_point"; then
                     rm_line "$mounted" --file="$mounted_dev_cache"
                 fi
                 ;;
             *" ; removable ; "*)
                 dev_name=$(get_column 1 --list="$mounted")
-                if [ "$(is_removable_mounted "${dev_name##*」}")" = "false" ]
-                then
+                if is_removable_mounted "${dev_name##*」}"; then
                     rm_line "$mounted" --file="$mounted_dev_cache"
                 fi
         esac
@@ -81,8 +69,7 @@ get_android_devs() {
 }
 
 get_android_dev_names() {
-    if [ "$1" = "--exclude-mounted" ]
-    then
+    if [ "$1" = "--exclude-mounted" ]; then
         android_devs=$(get_android_devs --exclude-mounted)
     else
         android_devs=$(get_android_devs)
@@ -96,8 +83,7 @@ get_android_id() {
 }
 
 get_mount_point() {
-    if [ ! -d "$mount_pts_dir" ]
-    then
+    if [ ! -d "$mount_pts_dir" ]; then
         mkdir -p "$mount_pts_dir"
     fi
 
@@ -105,12 +91,10 @@ get_mount_point() {
 
     mount_pt=""
 
-    for dir in "$mount_pts_dir"/*
-    do
+    for dir in "$mount_pts_dir"/*; do
         case "${dir##*/}" in
             "$base_mount_pt_name"*)
-                if [ -z "$(ls -A "$dir" 2>/dev/null)" ]
-                then
+                if [ ! "$(ls -A "$dir" 2>/dev/null)" ]; then
                     mount_pt="$dir"
                     break
                 else
@@ -121,8 +105,7 @@ get_mount_point() {
         esac
     done
 
-    if [ ! -d "$mount_pt" ]
-    then
+    if [ ! -d "$mount_pt" ]; then
         mount_pt="$mount_pts_dir/$base_mount_pt_name${i:-}"
 
         mkdir -p "$mount_pt"
@@ -153,8 +136,7 @@ mount_android() {
 
     simple-mtpfs --device $android_id "$mount_pt" || return
 
-    if [ "$(is_android_mounted "$mount_pt")" = "true" ]
-    then
+    if is_android_mounted "$mount_pt"; then
         echo "$1 ; android ; $mount_pt" >> "$mounted_dev_cache"
     fi
 

@@ -4,218 +4,191 @@
 . "$lib/args"
 
 prepend_to_lines() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         sed "s/^/$line/"
-    elif [ -w "$file" ]
-    then
+    elif [ -w "$file" ]; then
         sed -i "s/^/$line/" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | sed "s/^/$line/"
     fi
 }
 
 append_to_lines() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         sed "s/$/$line/"
-    elif [ -w "$file" ]
+    elif [ -w "$file" ];
     then
         sed -i "s/^/$line/" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" sed "s/$/$line/"
     fi
 }
 
 prepend_line() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
+    if [ "$use_pipe" = true ]
     then
         sed "1i\\$line"
-    elif [ -w "$file" ]
-    then
-        if [ -s "$file" ]
-        then
+    elif [ -w "$file" ]; then
+        if [ -s "$file" ]; then
             sed -i "1i\\$line" "$file"
         else
             echo "$line" >> "$file"
         fi
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | sed "1i\\$line"
     fi
 }
 
 append_line() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         sed "\$a\\$line"
-    elif [ -w "$file" ]
-    then
+    elif [ -w "$file" ]; then
         echo "$line" >> "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | sed "\$a\\$line"
     fi
 }
 
 rm_line() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
     line=$(enc --sed-regex "$line")
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         sed "/^$line$/d"
-    elif [ -w "$file" ]
-    then
+    elif [ -w "$file" ]; then
         sed -i "/^$line\$/d" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | sed "/^$line\$/d"
     fi
 }
 
 to_top() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         rm_line "$line" | prepend_line --use-pipe
-    elif [ -w "$file" ]
-    then
+    elif [ -w "$file" ]; then
         rm_line "$line" --file="$file" && prepend_line "$line" --file="$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | rm_line --use-pipe "$line" | prepend_line --use-pipe
     fi
 }
 
 to_bottom() {
-    use_pipe="false"
+    use_pipe=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         rm_line "$line" | append_line --use-pipe
-    elif [ -w "$file" ]
-    then
+    elif [ -w "$file" ]; then
         rm_line "$line" --file="$file" && append_line "$line" --file="$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | rm_line --use-pipe "$line" | append_line --use-pipe
     fi
 }
@@ -223,8 +196,7 @@ to_bottom() {
 rm_file_dups() {
     dups=$(sort "$1" | uniq -D)
 
-    while [ -n "$dups" ]
-    do
+    while [ "$dups" ]; do
         dup=$(echo "$dups" | head -n 1)
 
         to_bottom "$dup" --file="$1"
@@ -238,8 +210,7 @@ rm_list_dups() {
 
     new_list=""
 
-    while [ -n "$dups" ]
-    do
+    while [ "$dups" ]; do
         dup=$(echo "$dups" | head -n 1)
 
         new_list=$(to_bottom "$dup" --list="$new_list")
@@ -256,8 +227,7 @@ $2"
 }
 
 list_add() {
-    if [ -z "$1" ]
-    then
+    if [ ! "$1" ]; then
         echo "$2"
     else
         echo "$1
@@ -273,18 +243,14 @@ sync_file_file() {
 
     IFS="
 "
-    for line in $uniq
-    do
-        if ! grep -Fqx -- "$line" "$1"
-        then
+    for line in $uniq; do
+        if ! grep -Fqx -- "$line" "$1"; then
             prepend_line "$line" --file="$1"
-        elif ! grep -Fqx -- "$line" "$2"
-        then
+        elif ! grep -Fqx -- "$line" "$2"; then
             rm_line "$line" --file="$1"
         fi
 
-        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]
-        then
+        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]; then
             to_top "$line" --file="$1"
         fi
     done
@@ -299,18 +265,14 @@ sync_file_list() {
 
     IFS="
 "
-    for line in $uniq
-    do
-        if ! grep -Fqx -- "$line" "$1"
-        then
+    for line in $uniq; do
+        if ! grep -Fqx -- "$line" "$1"; then
             prepend_line "$line" --file="$1"
-        elif ! echo "$2" | grep -Fqx -- "$line"
-        then
+        elif ! echo "$2" | grep -Fqx -- "$line"; then
             rm_line "$line" --file="$1"
         fi
 
-        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]
-        then
+        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]; then
             to_top "$line" --file="$1"
         fi
     done
@@ -325,18 +287,14 @@ sync_list_list() {
 
     IFS="
 "
-    for line in $uniq
-    do
-        if ! echo "$new_list" | grep -Fqx -- "$line"
-        then
+    for line in $uniq; do
+        if ! echo "$new_list" | grep -Fqx -- "$line"; then
             new_list=$(prepend_line "$line" --list="$new_list")
-        elif ! echo "$2" | grep -Fqx -- "$line"
-        then
+        elif ! echo "$2" | grep -Fqx -- "$line"; then
             new_list=$(rm_line "$line" --list="$new_list")
         fi
 
-        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]
-        then
+        if [ "$(grep -Fqxc -- "$line" "$1")" -gt 1 ]; then
             new_list=$(to_top "$line" --list="$new_list")
         fi
     done
@@ -346,38 +304,33 @@ sync_list_list() {
 }
 
 index_of() {
-    use_pipe="false"
-    singular="false"
+    use_pipe=false
+    singular=false
 
     line=""
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
-            "--singular") singular="true" ;;
+            "--use-pipe") use_pipe=true ;;
+            "--singular") singular=true ;;
             *) line="$arg" ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         awk "/^$line$/ {print NR}"
-    elif [ -r "$file" ]
-    then
+    elif [ -r "$file" ]; then
         awk "/^$line$/ {print NR}" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | awk "/^$line$/ {print NR}"
     fi |
 
-    if [ "$singular" = "true" ]
-    then
+    if [ "$singular" = true ]; then
         head -n 1
     else
         cat

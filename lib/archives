@@ -9,28 +9,25 @@ extract() {
 
     files=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--dir="*) 
                 arg_value=$(get_arg_value "--dir=" "$arg")
-                if [ -d "$arg_value" ]
-                then
+                if [ -d "$arg_value" ]; then
                     dir="$arg_value"
                 else
                     mkdir -p "$arg_value" 2>/dev/null
 
-                    if [ -d "$arg_value" ]
-                    then
+                    if [ -d "$arg_value" ]; then
                         dir="$arg_value"
                     fi
                 fi
                 ;;
             *)
-                if [ -f "$arg" ]
-                then
+                if [ -f "$arg" ]; then
                     files=$(list_add "$files" "$arg")
                 fi
+                ;;
         esac
     done
 
@@ -38,36 +35,31 @@ extract() {
 
     IFS="
 "
-    for file in $files
-    do
+    for file in $files; do
         case "$file" in
             *".tar"|*".tar.xz")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     tar xf "$file" -C "$dir"
                 else
                     tar xf "$file"
                 fi
                 ;;
             *".tar.bz2"|*".bz2"|*".tbz2")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     tar xjf "$file" -C "$dir"
                 else
                     tar xjf "$file"
                 fi
                 ;;
             *".tar.gz"|*".tgz")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     tar xzf "$file" -C "$dir"
                 else
                     tar xzf "$file"
                 fi
                 ;;
             *".rar")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     unrar x "$file" "$dir"
                 else
                     unrar x "$file"
@@ -77,8 +69,7 @@ extract() {
                 gzip "$file"
                 ;;
             *".zip")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     unzip "$file" -d "$dir"
                 else
                     unzip "$file"
@@ -88,24 +79,21 @@ extract() {
                 uncompress "$file"
                 ;;
             *".7z")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     7z x "$file" -o"$dir"
                 else
                     7z x "$file"
                 fi
                 ;;
             *".deb")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     ar x --output "$dir" "$file"
                 else
                     ar x "$file"
                 fi
                 ;;
             *".tar.zst")
-                if [ -d "$dir" ]
-                then
+                if [ -d "$dir" ]; then
                     unzstd --output-dir-flat "$dir" "$file"
                 else
                     unzstd "$file"

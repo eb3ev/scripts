@@ -4,31 +4,27 @@
 . "$lib/var/config"
 . "$lib/clipboard"
 
-diff_browser="false"
-open_term="false"
-new_tab="false"
-new_window="false"
+diff_browser=false
+open_term=false
+new_tab=false
+new_window=false
 
 open_url() {
     args=""
-    if [ "$diff_browser" = "true" ]
-    then
+    if [ "$diff_browser" = true ]; then
         args="$args --use-diff"
     fi
-    if [ "$new_tab" = "true" ]
-    then
+    if [ "$new_tab" = true ]; then
         args="$args --new-tab"
     fi
-    if [ "$new_window" = "true" ]
-    then
+    if [ "$new_window" = true ]; then
         args="$args --new-window"
     fi
     browser $args "$1"
 }
 
 open_dir() {
-    if [ "$open_term" = "true" ]
-    then
+    if [ "$open_term" = true ]; then
         eval "${override_term_cmd:-$term_working_dir} '$1'"
     else
         term_fm "$1"
@@ -44,26 +40,22 @@ invalid() {
     notify-send "Invalid" "$1"
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--new-tab") new_tab="true" ;;
-        "--new-window") new_window="true" ;;
-        "--open-term") open_term="true" ;;
-        "--diff-browser") diff_browser="true" ;;
+        "--new-tab") new_tab=true ;;
+        "--new-window") new_window=true ;;
+        "--open-term") open_term=true ;;
+        "--diff-browser") diff_browser=true ;;
     esac
 done
 
 clipboard=$(get_clipboard)
 
-if [ -n "$(filter --url "$clipboard")" ]
-then
+if [ "$(filter --url "$clipboard")" ]; then
     type="url"
-elif [ -d "$clipboard" ]
-then
+elif [ -d "$clipboard" ]; then
     type="dir"
-elif [ -e "$clipboard" ]
-then
+elif [ -e "$clipboard" ]; then
     type="file"
 else
     type=""

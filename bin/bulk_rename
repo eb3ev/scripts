@@ -5,46 +5,35 @@
 . "$lib/lines"
 . "$lib/csv"
 
-require_sudo="false"
-include_hidden="false"
+require_sudo=false
+include_hidden=false
+
 files=""
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--sudo") require_sudo="true" ;;
-        "--include-hidden") include_hidden="true" ;;
-        *)
-            if [ -e "${arg##*/}" ]
-            then
-                files=$(list_add "$files" "$arg")
-            fi
-            ;;
+        "--sudo") require_sudo=true ;;
+        "--include-hidden") include_hidden=true ;;
+        *) [ -e "${arg##*/}" ] && files=$(list_add "$files" "$arg") ;;
     esac
 done
 
-if [ -z "$files" ]
-then
-    if [ "$include_hidden" = "true" ]
-    then
+if [ ! "$files" ]; then
+    if [ "$include_hidden" = true ]; then
         files=$(ls -A1 2>/dev/null)
     else
         files=$(ls -1 2>/dev/null)
     fi
 fi
 
-if [ -z "$files" ]
-then
-    exit 0
-fi
+[ ! "$files" ] && exit 1
 
 old_files=$(mktemp)
 new_files=$(mktemp)
 
 IFS="
 "
-for file in $files
-do
+for file in $files; do
     echo "${file##*/}" >> "$old_files"
     echo "${file##*/}" >> "$new_files"
 done
@@ -52,25 +41,17 @@ unset IFS
 
 "${EDITOR:-$editor}" "$new_files"
 
-if [ $(wc -l 2>/dev/null < "$old_files") -ne $(wc -l 2>/dev/null < "$new_files") ]
-then
-    exit 0
-fi
+[ $(wc -l 2>/dev/null < "$old_files") -ne $(wc -l 2>/dev/null < "$new_files") ] && exit 0
 
-if cmp --silent "$old_files" "$new_files"
-then
-    exit 0
-fi
+cmp --silent "$old_files" "$new_files" && exit 0
 
 i=1
 while read old_file
 do
     new_file=$(get_row $i --file="$new_files" 2>/dev/null)
 
-    if [ "$new_file" != "$old_file" ] && [ -n "$new_file" ]
-    then
-        if [ "$require_sudo" = "true" ]
-        then
+    if [ "$new_file" != "$old_file" ] && [ "$new_file" ]; then
+        if [ "$require_sudo" = true ]; then
             sudo mv -n -- "$old_file" "$new_file" 2>/dev/null
         else
             mv -n -- "$old_file" "$new_file" 2>/dev/null

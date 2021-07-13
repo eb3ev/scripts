@@ -8,13 +8,11 @@ turn_off_secondary_monitors() {
 
     args=""
 
-    for monitor in $monitors
-    do
+    for monitor in $monitors; do
         args="$args --output $monitor --off"
     done
 
-    if [ -n "$args" ]
-    then
+    if [ "$args" ]; then
         eval "xrandr$args"
     fi
 }

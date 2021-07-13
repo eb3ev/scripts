@@ -5,28 +5,24 @@
 
 filter="$lib/filter"
 
-use_pipe="false"
+use_pipe=false
 
 args=""
 vals=""
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
         "--txt"|"--doc"|"--img"|"--vid"|"--url"|"--archive")
             args=$(list_add "$args" "$arg")
             ;;
-        "--use-pipe") use_pipe="true" ;;
+        "--use-pipe") use_pipe=true ;;
         *) vals=$(list_add "$vals" "$arg") ;;
     esac
 done
 
-if [ "$use_pipe" = "true" ]
-then
-    if [ -n "$args" ]
-    then
-        for arg in $args
-        do
+if [ "$use_pipe" = true ]; then
+    if [ "$args" ]; then
+        for arg in $args; do
             case "$arg" in
                 "--txt") $filter/files/filter_txt.awk ;;
                 "--doc") $filter/files/filter_doc.awk ;;
@@ -40,10 +36,8 @@ then
         cat
     fi
 else
-    if [ -n "$args" ]
-    then
-        for arg in $args
-        do
+    if [ "$args" ]; then
+        for arg in $args; do
             case "$arg" in
                 "--txt") echo "$vals" | $filter/files/filter_txt.awk ;;
                 "--doc") echo "$vals" | $filter/files/filter_doc.awk ;;

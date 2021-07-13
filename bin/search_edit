@@ -5,21 +5,18 @@
 . "$lib/lines"
 . "$lib/files"
 
-new_window="false"
-require_sudo="false"
+new_window=false
+require_sudo=false
 
 edit_file() {
-    if [ "$new_window" = "true" ]
-    then
-        if [ "$require_sudo" = "true" ]
-        then
+    if [ "$new_window" = true ]; then
+        if [ "$require_sudo" = true ]; then
             term_edit --sudo "$1"
         else
             term_edit "$1"
         fi
     else
-        if [ "$require_sudo" = "true" ]
-        then
+        if [ "$require_sudo" = true ]; then
             $sudo_editor "$1"
         else
             $editor "$1"
@@ -30,32 +27,27 @@ edit_file() {
 directories=""
 filters=""
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--new-window") new_window="true" ;;
-        "--sudo") require_sudo="true" ;;
+        "--new-window") new_window=true ;;
+        "--sudo") require_sudo=true ;;
         "--use-filter") filters=$(list_add "$filters" "--filter-txt") ;;
         *)
-            if [ -d "$arg" ]
-            then
+            if [ -d "$arg" ]; then
                 directories=$(list_add "$directories" "'$arg'")
             fi
             ;;
     esac
 done
 
-if [ "$new_window" = "true" ]
-then
-    if [ "$require_sudo" = "true" ]
-    then
+if [ "$new_window" = true ]; then
+    if [ "$require_sudo" = true ]; then
         run_cmd="term_edit --sudo"
     else
         run_cmd="term_edit"
     fi
 else
-    if [ "$require_sudo" = "true" ]
-    then
+    if [ "$require_sudo" = true ]; then
         run_cmd="$sudo_editor"
     else
         run_cmd="$editor"

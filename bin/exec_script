@@ -5,9 +5,9 @@
 . "$lib/lines"
 . "$lib/clipboard"
 
-run="true"
-require_sudo="false"
-use_history="false"
+run=true
+require_sudo=false
+use_history=false
 
 get_scripts_list() {
     ls -F1 "$bin" | awk '/\*$/' | sed 's/\*$//g'
@@ -16,8 +16,7 @@ get_scripts_list() {
 get_scripts_history() {
     scripts_list=$(get_scripts_list)
 
-    if [ ! -e "$scripts_history" ]
-    then
+    if [ ! -e "$scripts_history" ]; then
         echo "$scripts_list" > "$scripts_history"
     fi
 
@@ -26,49 +25,39 @@ get_scripts_history() {
     cat "$scripts_history"
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--sudo") require_sudo="true" ;;
-        "--use-history") use_history="true" ;;
-        "--print-cmd") run="false" ;;
+        "--sudo") require_sudo=true ;;
+        "--use-history") use_history=true ;;
+        "--print-cmd") run=false ;;
     esac
 done
 
-script_list=$()
-
-if [ "$use_history" = "true" ]
-then
+if [ "$use_history" = true ]; then
     script_list=$(get_scripts_history)
 else
     script_list=$(get_scripts_list)
 fi
 
-if [ "$require_sudo" = "true" ]
-then
+if [ "$require_sudo" = true ]; then
     script=$(echo "$script_list" | menu -am --prompt="Run")
 else
     script=$(echo "$script_list" | menu -m --prompt="Run")
 fi
 
-if [ -n "$script" ]
-then
-    if [ "$use_history" = "true" ]
-    then
+if [ "$script" ]; then
+    if [ "$use_history" = true ]; then
         to_top "$script" --file="$scripts_history"
     fi
     
-    if [ "$require_sudo" = "true" ]
-    then
-        if [ "$run" = "true" ]
-        then
+    if [ "$require_sudo" = true ]; then
+        if [ "$run" = true ]; then
             SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $bin/$script
         else
             echo "SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $bin/$script"
         fi
     else
-        if [ "$run" = "true" ]
-        then
+        if [ "$run" = true ]; then
             $bin/$script
         else
             echo "$bin/$script"

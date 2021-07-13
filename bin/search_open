@@ -6,17 +6,16 @@
 . "$lib/files"
 . "$lib/args"
 
-use_filter="false"
-new_window="false"
-require_sudo="false"
-recursive="true"
+use_filter=false
+new_window=false
+require_sudo=false
+recursive=true
 type="file"
 
 prompt="Open"
 
 get_file() {
-    if [ "$recursive" = "false" ]
-    then
+    if [ "$recursive" = false ]; then
         other_args="--non-recursive"
     fi
 
@@ -26,8 +25,7 @@ get_file() {
 }
 
 open_file() {
-    if [ "$require_sudo" = "true" ]
-    then
+    if [ "$require_sudo" = true ]; then
         SUDO_ASKPASS="$bin/passwd_prompt" sudo -A ${override_cmd:-xdg-open} "$1"
     else
         ${override_cmd:-xdg-open} "$1"
@@ -37,21 +35,19 @@ open_file() {
 directories=""
 filters=""
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--sudo") require_sudo="true" ;;
+        "--sudo") require_sudo=true ;;
         "--filter-txt") filters=$(list_add "$filters" "--txt") ;;
         "--filter-doc") filters=$(list_add "$filters" "--doc") ;;
         "--filter-img") filters=$(list_add "$filters" "--img") ;;
         "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
         "--filter-archive") filters=$(list_add "$filters" "--archive") ;;
         "--filter-dir") type="dir" ;;
-        "--non-recursive") recursive="false" ;;
+        "--non-recursive") recursive=false ;;
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         *)
-            if [ -d "$arg" ]
-            then
+            if [ -d "$arg" ]; then
                 directories=$(list_add "$directories" "$arg")
             fi
             ;;
@@ -60,8 +56,7 @@ done
 
 file=$(get_file "$directories" "$filters")
 
-if [ -n "$file" ]
-then
+if [ "$file" ]; then
     open_file "$file"
 fi
 

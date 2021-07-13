@@ -13,10 +13,8 @@ notify() {
     notify-send "Copied" "$1"
 }
 
-if [ -n "$1" ]
-then
-    if [ -e "$1" ]
-    then
+if [ "$1" ]; then
+    if [ -e "$1" ]; then
         copy "$(readlink -f "$1")"
     else
         echo "Invalid Path: "$1""

@@ -5,10 +5,10 @@
 . "$lib/program"
 . "$lib/args"
 
-use_fuzzy="false"
-use_alt="false"
-always_match="false"
-hidden="false"
+use_fuzzy=false
+use_alt=false
+always_match=false
+hidden=false
 custom_args=""
 prompt=""
 
@@ -23,24 +23,19 @@ default_menu() {
 get_window_menu_args() {
     args=""
 
-    if [ "$use_fuzzy" = "true" ]
-    then
+    if [ "$use_fuzzy" = true ]; then
         args="$args -F"
     fi
-    if [ "$use_alt" = "true" ]
-    then
+    if [ "$use_alt" = true ]; then
         args="$args -bw 4"
     fi
-    if [ "$always_match" = "true" ]
-    then
+    if [ "$always_match" = true ]; then
         args="$args -r"
     fi
-    if [ "$hidden" = "true" ]
-    then
+    if [ "$hidden" = true ]; then
         args="$args -P"
     fi
-    if [ -n "$prompt" ]
-    then
+    if [ "$prompt" ]; then
         args="$args -p \"$prompt\""
     fi
 
@@ -68,8 +63,7 @@ bottom_window_menu() {
 get_term_menu_args() {
     args=""
 
-    if [ -n "$prompt" ]
-    then
+    if [ "$prompt" ]; then
         args="$args --prompt=\"$prompt \""
     fi
 
@@ -86,8 +80,7 @@ term_window_menu() {
 
     cat > "$tmp_list" 2>/dev/null
 
-    if [ "$(installed "xterm")" = "true" ]
-    then
+    if installed "xterm"; then
         override_term_cmd="xterm -T Menu -e" term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
     else
         term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
@@ -100,30 +93,28 @@ term_window_menu() {
     echo "$value"
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         "--custom="*) custom_args=$(get_arg_value "--custom=" "$arg") ;;
         "-"*)
             case "$arg" in
-                *"f"*) use_fuzzy="true" ;;
+                *"f"*) use_fuzzy=true ;;
             esac
             case "$arg" in
-                *"a"*) use_alt="true" ;;
+                *"a"*) use_alt=true ;;
             esac
             case "$arg" in
-                *"m"*) always_match="true" ;;
+                *"m"*) always_match=true ;;
             esac
             case "$arg" in
-                *"h"*) hidden="true" ;;
+                *"h"*) hidden=true ;;
             esac
             ;;
     esac
 done
 
-if [ -n "$DISPLAY" ]
-then
+if [ "$DISPLAY" ]; then
     config="${override_menu:-$(cat "$menurc" 2>/dev/null)}"
 
     case "$config" in

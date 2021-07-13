@@ -7,15 +7,14 @@
 . "$lib/program"
 . "$lib/args"
 
-run="true"
-require_sudo="false"
-use_history="false"
+run=true
+require_sudo=false
+use_history=false
 
 prompt="Launch"
 
 get_program_history() {
-    if [ ! -e "$program_history" ]
-    then
+    if [ ! -e "$program_history" ]; then
         cp "$programs" "$program_history"
     fi
 
@@ -24,50 +23,42 @@ get_program_history() {
     cat "$program_history" 2>/dev/null
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--sudo") require_sudo="true" ;;
-        "--use-history") use_history="true" ;;
-        "--print-cmd") run="false" ;;
+        "--sudo") require_sudo=true ;;
+        "--use-history") use_history=true ;;
+        "--print-cmd") run=false ;;
         "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
     esac
 done
 
 sync_program_file "$programs"
 
-if [ "$use_history" = "true" ]
-then
+if [ "$use_history" = true ]; then
     program_list=$(get_program_history)
 else
     program_list=$(cat "$programs" 2>/dev/null)
 fi
 
-if [ "$require_sudo" = "true" ]
-then
+if [ "$require_sudo" = true ]; then
     program=$(echo "$program_list" | menu -am --prompt="$prompt")
 else
     program=$(echo "$program_list" | menu -m --prompt="$prompt")
 fi
 
-if [ -n "$program" ]
-then
-    if [ "$use_history" = "true" ]
-    then
+if [ "$program" ]; then
+    if [ "$use_history" = true ]; then
         to_top "$program" --file="$program_history"
     fi
 
-    if [ "$require_sudo" = "true" ]
-    then
-        if [ "$run" = "true" ]
-        then
+    if [ "$require_sudo" = true ]; then
+        if [ "$run" = true ]; then
             SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $program
         else
             echo "SUDO_ASKPASS="$bin/passwd_prompt" sudo -A $program"
         fi
     else
-        if [ "$run" = "true" ]
-        then
+        if [ "$run" = true ]; then
             $program
         else
             echo "$program"

@@ -6,28 +6,24 @@
 . "$lib/args"
 
 find_cmd() {
-    if [ "$(installed fd)" = "true" ]
-    then
-        use_fd="true"
+    if installed "fd"; then
+        use_fd=true
     else
-        use_fd="false"
+        use_fd=false
     fi
 
     dirs=""
     args=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--include-hidden")
-                if [ "$use_fd" = "true" ]
-                then
+                if [ "$use_fd" = true ]; then
                     args="$args -H -I"
                 fi
                 ;;
             "--non-recursive")
-                if [ "$use_fd" = "true" ]
-                then
+                if [ "$use_fd" = true ]; then
                     args="$args -d 1"
                 else
                     args="$args -maxdepth 1"
@@ -37,16 +33,14 @@ find_cmd() {
                 type=$(get_arg_value "--type=" "$arg")
                 case "$type" in
                     "file")
-                        if [ "$use_fd" = "true" ]
-                        then
+                        if [ "$use_fd" = true ]; then
                             args="$args -t f"
                         else
                             args="$args -type f"
                         fi
                         ;;
                     "dir")
-                        if [ "$use_fd" = "true" ]
-                        then
+                        if [ "$use_fd" = true ]; then
                             args="$args -t d"
                         else
                             args="$args -type d"
@@ -55,8 +49,7 @@ find_cmd() {
                 esac
                 ;;
             *) 
-                if [ -d "$arg" ]
-                then
+                if [ -d "$arg" ]; then
                     dirs=$(list_add "$dirs" "$arg")
                 fi
                 ;;
@@ -65,8 +58,7 @@ find_cmd() {
 
     IFS="
 "
-    if [ "$use_fd" = "true" ]
-    then
+    if [ "$use_fd" = true ]; then
         eval fd . $dirs $args
     else
         eval find ${dirs:-.} $args
@@ -75,8 +67,7 @@ find_cmd() {
 }
 
 set_value() {
-    if [ -s "$2" ]
-    then
+    if [ -s "$2" ]; then
         sed -i '1,$d' "$2"
     fi
 
@@ -84,8 +75,7 @@ set_value() {
 }
 
 create_file() {
-    if [ ! -e "$1" ]
-    then
+    if [ ! -e "$1" ]; then
         case "$1" in
             *"/"*) mkdir -p "${1%/*}" ;;
         esac
@@ -95,8 +85,7 @@ create_file() {
 }
 
 create_script_file() {
-    if [ ! -e "$1" ]
-    then
+    if [ ! -e "$1" ]; then
         case "$1" in
             *"/"*) mkdir -p "${1%/*}" ;;
         esac

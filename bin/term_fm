@@ -3,23 +3,17 @@
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/var/config"
 
-if [ ! $# -eq 0 ]
-then
-    for arg in "$@"
-    do
-        if [ -d "$arg" ]
-        then
+if [ ! $# -eq 0 ]; then
+    for arg in "$@"; do
+        if [ -d "$arg" ]; then
             term_exec "$term_fm '$arg'" &
-        elif [ "$arg" = "--use-clipboard" ]
-        then
+        elif [ "$arg" = "--use-clipboard" ]; then
             dir=$(get_clipboard)
             dir1=$(get_clipboard --primary)
 
-            if [ -d "$dir" ]
-            then
+            if [ -d "$dir" ]; then
                 term_exec "$term_fm '$dir'"
-            elif [ -d "$dir1" ]
-            then
+            elif [ -d "$dir1" ]; then
                 term_exec "$term_fm '$dir1'"
             else
                 term_exec "$term_fm"

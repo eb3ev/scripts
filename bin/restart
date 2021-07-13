@@ -4,13 +4,9 @@
 . "$lib/program"
 
 restart_program() {
-    if [ "$(installed "$1")" = "false" ]
-    then
-        return
-    fi
+    installed "$1" || return
 
-    if [ -z "$(pgrep -x "$1")" ]
-    then
+    if [ ! "$(pgrep -x "$1")" ]; then
         eval "$1" &
     else
         killall -s SIGKILL "$1" && sleep 1 && eval "$1" &
@@ -20,17 +16,14 @@ restart_program() {
 
 }
 
-if [ $# -gt 0 ]
-then
-    for arg in "$@"
-    do
+if [ $# -gt 0 ]; then
+    for arg in "$@"; do
         restart_program "$arg"
     done
 else
     program=$(exec_program --print-cmd --prompt="Restart")
 
-    if [ -n "$program" ]
-    then
+    if [ "$program" ]; then
         restart_program "$program"
     fi
 fi

@@ -30,12 +30,10 @@ installed_browsers() {
 
     IFS="
 "
-    for browser in $browser_list
-    do
+    for browser in $browser_list; do
         browser_cmd=$(get_cmd "$browser")
 
-        if [ "$(installed "$browser_cmd")" = "true" ]
-        then
+        if installed "$browser_cmd"; then
             new_browser_list=$(list_add "$new_browser_list" "$browser")
         fi
     done

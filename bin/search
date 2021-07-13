@@ -6,45 +6,39 @@
 . "$lib/csv"
 . "$lib/lines"
 
-use_history="false"
+use_history=false
 
 create_histfile() {
-    if [ -e "$search_history" ]
-    then
+    if [ -e "$search_history" ]; then
         histsize="${search_histsize:-1000}"
         sed -i "$histsize,\$d" "$search_history"
     else
         echo > "$search_history"
     fi
-    echo "true"
+    return
 } 
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--use-history") use_history="true" ;;
+        "--use-history") use_history=true ;;
         *) browser_cmd="$arg" ;;
     esac
 done
 
 search_engine_key=$(keys --file="$search_engines" | menu -m --prompt="")
 
-if [ -n "$search_engine_key" ]
+if [ "$search_engine_key" ]
 then
-    if [ "$use_history" = "true" ]
-    then
-        if [ "$(create_histfile)" = "true" ]
-        then
+    if [ "$use_history" = true ]; then
+        if create_histfile; then
             query=$(menu --prompt="$search_engine_key" < "$search_history")
         fi
     else
         query=$(printf "" | menu --prompt="$search_engine_key")
     fi
 
-    if [ -n "$query" ]
-    then
-        if [ "$use_history" = "true" ]
-        then
+    if [ "$query" ]; then
+        if [ "$use_history" = true ]; then
             to_top "$query" --file="$search_history"
         fi
 

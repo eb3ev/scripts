@@ -5,7 +5,7 @@
 . "$lib/csv"
 . "$lib/lines"
 
-use_presets="false"
+use_presets=false
 
 pos_opts="\
 Zoom
@@ -16,26 +16,21 @@ Maximize"
 get_pos() {
     pos_opt=$(echo "$pos_opts" | menu -m --prompt="漣")
 
-    if [ -n "$pos_opt" ]
-    then
-        case "$pos_opt" in
-            "Zoom") echo "--zoom" ;;
-            "Center") echo "--center" ;;
-            "Stretch") echo "--stretch" ;;
-            "Maximize") echo "--maximize" ;;
-        esac
-    fi
+    case "$pos_opt" in
+        "Zoom") echo "--zoom" ;;
+        "Center") echo "--center" ;;
+        "Stretch") echo "--stretch" ;;
+        "Maximize") echo "--maximize" ;;
+    esac
 }
 
 get_wallpaper() {
     wallpaper=$(ls -F1 "$wallpapers_dir" | awk '!/\/$|\*$/' | menu -m --prompt=" ")
 
-    if [ -n "$wallpaper" ]
-    then
+    if [ "$wallpaper" ]; then
         pos_arg=$(get_pos)
 
-        if [ -n "$pos_arg" ]
-        then
+        if [ "$pos_arg" ]; then
             echo "$pos_arg '$wallpapers_dir/$wallpaper'"
         fi
     fi
@@ -44,8 +39,7 @@ get_wallpaper() {
 create_setter_script() {
     rm -f "$wallpaper_setter" && mkscript "$wallpaper_setter"
     
-    if [ -x "$wallpaper_setter" ]
-    then
+    if [ -x "$wallpaper_setter" ]; then
         echo "$1" >> "$wallpaper_setter"
         $wallpaper_setter
     fi
@@ -61,22 +55,14 @@ set_wallpaper() {
 
     args=""
     num_monitors=$(echo "$monitors" | wc -l)
-    for _ in $(seq 1 $num_monitors)
-    do
-        if [ -z "$monitors" ]
-        then
-            break
-        fi
+    for _ in $(seq 1 $num_monitors); do
+        [ ! "$monitors" ] && break
 
         monitor=$(echo "$monitors" | menu -m --prompt=" ")
 
-        if [ -z "$monitor" ]
-        then
-            exit 0
-        fi
+        [ ! "$monitor" ] && exit 0
 
-        if [ "$monitor" = "Span" ]
-        then
+        if [ "$monitor" = "Span" ]; then
             monitor_arg="--no-randr"
             monitors=""
         else
@@ -87,10 +73,7 @@ set_wallpaper() {
 
         wallpaper_arg=$(get_wallpaper)
 
-        if [ -z "$wallpaper_arg" ]
-        then
-            exit 0
-        fi
+        [ ! "$wallpaper_arg" ] && exit 0
 
         args="$args $monitor_arg $wallpaper_arg"
     done
@@ -109,37 +92,30 @@ set_preset_wallpaper() {
 
     presets=$(get_presets "$hostname")
 
-    if [ -z "$presets" ]
-    then
-        exit 0
-    fi
+    [ ! "$presets" ] && exit 0
     
     preset=$(echo "$presets" | menu -m --prompt="   Presets")
 
-    if [ -n "$preset" ]
-    then
+    if [ "$preset" ]; then
         key="$preset ; $hostname"
 
         value "$key" --file="$wallpaper_presets" --index=4
     fi
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--use-presets") use_presets="true" ;;
+        "--use-presets") use_presets=true ;;
     esac
 done
 
-if [ "$use_presets" = "true" ]
-then
+if [ "$use_presets" = true ]; then
     set_cmd=$(set_preset_wallpaper)
 else
     set_cmd=$(set_wallpaper)
 fi
 
-if [ -n "$set_cmd" ]
-then
+if [ "$set_cmd" ]; then
     create_setter_script "$set_cmd"
 fi
 

@@ -16,7 +16,7 @@ get_clipboard() {
 
 set_clipboard() {
     selection="clipboard"
-    trailing_new_line="false"
+    trailing_new_line=false
 
     clipboard=""
 
@@ -25,13 +25,12 @@ set_clipboard() {
         case "$arg" in
             "--primary") selection="primary" ;;
             "--secondary") selection="secondary" ;;
-            "--trailing-new-line") trailing_new_line="true" ;;
+            "--trailing-new-line") trailing_new_line=true ;;
             *) clipboard=$(list_add "$clipboard" "$arg") ;;
         esac
     done
 
-    if [ "$trailing_new_line" = "true" ]
-    then
+    if [ "$trailing_new_line" = true ]; then
         echo "$clipboard" | xclip -selection "$selection"
     else
         printf "%s" "$clipboard" | xclip -selection "$selection"

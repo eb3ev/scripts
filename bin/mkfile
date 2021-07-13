@@ -3,10 +3,8 @@
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/files"
 
-if [ $# -gt 0 ]
-then
-    for file in "$@"
-    do
+if [ $# -gt 0 ]; then
+    for file in "$@"; do
         create_script_file "$file"
     done
 else

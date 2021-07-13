@@ -5,13 +5,12 @@
 . "$lib/csv"
 . "$lib/lines"
 
-save_layout="false"
+save_layout=false
 
 create_setter_script() {
     rm -f "$screenlayout_setter" && mkscript "$screenlayout_setter"
     
-    if [ -x "$wallpaper_setter" ]
-    then
+    if [ -x "$wallpaper_setter" ]; then
         echo "sleep 0.5" >> "$screenlayout_setter"
         echo "$1" >> "$screenlayout_setter"
         $screenlayout_setter
@@ -21,18 +20,16 @@ create_setter_script() {
 get_screenlayouts() {
     monitor_count=$(xrandr | grep -c ' connected')
     layouts=""
-    for count in $(seq 1 $monitor_count)
-    do
+    for count in $(seq 1 $monitor_count); do
         layouts=$(list_add "$layouts" "$(keys --file="$screenlayouts" --pattern="!/^ *#/ && NF && / ; $count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}")")
     done
 
     echo "$layouts"
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--save") save_layout="true" ;;
+        "--save") save_layout=true ;;
     esac
 done
 
@@ -40,15 +37,13 @@ hostname=$(cat /etc/hostname 2>/dev/null)
 
 screenlayout=$(get_screenlayouts "$hostname" | menu -m --prompt=" ")
 
-if [ -n "$screenlayout" ]
-then
+if [ "$screenlayout" ]; then
     key="$screenlayout ; $hostname"
 
     set_screenlayout_cmd=$(value "$key" --file="$screenlayouts" --index=4)
     set_wallpaper_cmd=$(value "$key" --file="$screenlayouts" --index=5)
 
-    if [ "$save_layout" = "true" ]
-    then
+    if [ "$save_layout" = true ]; then
         create_setter_script "$set_screenlayout_cmd"
     fi
 

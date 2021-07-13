@@ -6,12 +6,10 @@
 
 clipboard=$(get_clipboard)
 
-if [ -n "$(filter --url "$clipboard")" ]
-then
+if [ "$(filter --url "$clipboard")" ]; then
     bookmark_name=$(printf "" | override_menu='bottom_window' menu --prompt="Name ($clipboard)")
 
-    if [ -n "$bookmark_name" ]
-    then
+    if [ "$bookmark_name" ]; then
         echo "$bookmark_name ; $clipboard" >> "$bookmarks"
 
         notify-send "New bookmark" "$bookmark_name ($clipboard)"

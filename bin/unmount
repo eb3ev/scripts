@@ -12,8 +12,7 @@ mounted_devs=""
 
 sync_mounted_devs
 
-while read mounted
-do
+while read mounted; do
     dev_name=$(get_column 1 --list="$mounted")
 
     case "$mounted" in
@@ -24,16 +23,14 @@ do
     mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$identifier" --list="$dev_name")")
 done 2>/dev/null < "$mounted_dev_cache"
 
-if [ -z "$mounted_devs" ]
-then
+if [ ! "$mounted_devs" ]; then
     notify-send "Alert" "No unmountable devices"
     exit 0
 fi
 
 dev=$(echo "$mounted_devs" | menu -m --prompt="Unmount")
 
-if [ -n "$dev" ]
-then
+if [ "$dev" ]; then
     case "$dev" in
         "$android_identifier"*)
             dev="${dev##*$android_identifier}"

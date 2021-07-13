@@ -14,8 +14,7 @@ get_sinks() {
 
     new_sinks=""
     i=1
-    while [ $i -le $num_sinks ]
-    do
+    while [ $i -le $num_sinks ]; do
         sink_id=$(get_row $i --list="$sinks")
         sink_name=$(get_row $((i+1)) --list="$sinks")
 
@@ -24,8 +23,7 @@ get_sinks() {
         i=$((i + 2))
     done
 
-    if [ "$1" = "--exclude-default" ]
-    then
+    if [ "$1" = "--exclude-default" ]; then
         def_sink=$(echo "$new_sinks" | grep -F -- "$(get_def_sink)") 
         new_sinks=$(rm_line "$def_sink" --list="$new_sinks")
     fi

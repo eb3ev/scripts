@@ -1,23 +1,19 @@
 #!/bin/sh
 
 launch_once() {
-    if [ -z "$(pgrep -x "$1")" ]
-    then
+    if [ ! "$(pgrep -x "$1")" ]; then
         eval "$arg"
     fi
 }
 
-if [ $# -gt 0 ]
-then
-    for arg in "$@"
-    do
+if [ $# -gt 0 ]; then
+    for arg in "$@"; do
         launch_once "$arg" &
     done
 else
     program=$(exec_program --print-cmd --prompt="Single Instance")
 
-    if [ -n "$program" ]
-    then
+    if [ "$program" ]; then
         launch_once "$program"
     fi
 fi

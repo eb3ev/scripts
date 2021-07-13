@@ -6,8 +6,7 @@ single_instance "spotify"
 
 spt_class_name="spt"
 
-for pid in $(xdotool search --class "$spt_class_name")
-do
+for pid in $(xdotool search --class "$spt_class_name"); do
     xdotool windowkill $pid
 done
 

@@ -5,38 +5,34 @@
 . "$lib/args"
 
 keys() {
-    use_pipe="false"
+    use_pipe=false
     delim=" ; "
     pattern='!/^ *#/ && NF {print $1}'
 
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
             "--pattern="*) pattern=$(get_arg_value "--pattern=" "$arg") ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
         esac
     done
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         awk -F "$delim" "$pattern"
-    elif [ -r "$file" ]
-    then
+    elif [ -r "$file" ]; then
         awk -F "$delim" "$pattern" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | awk -F "$delim" "$pattern"
     fi
 }
 
 value() {
-    use_pipe="false"
+    use_pipe=false
     delim=" ; "
     index=2
 
@@ -45,14 +41,13 @@ value() {
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
             "--index="*) index=$(get_arg_value "--index=" "$arg") ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) key="$arg" ;;
         esac
     done
@@ -64,20 +59,17 @@ value() {
 
     key=$(enc --awk-regex "$key")
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         awk -F "$delim" "/^$key$delim/ {print \$$index}"
-    elif [ -r "$file" ]
-    then
+    elif [ -r "$file" ]; then
         awk -F "$delim" "/^$key$delim/ {print \$$index}" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | awk -F "$delim" "/^$key$delim/ {print \$$index}"
     fi
 }
 
 get_column() {
-    use_pipe="false"
+    use_pipe=false
     delim=" ; "
 
     index=1
@@ -85,36 +77,31 @@ get_column() {
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) index="$arg" ;;
         esac
     done
 
-    if [ ! "$index" -ge 1 ] 2>/dev/null
-    then
+    if [ ! "$index" -ge 1 ] 2>/dev/null; then
         index=1
     fi
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         awk -F "$delim" "{print \$$index}" "$2"
-    elif [ -r "$file" ]
-    then
+    elif [ -r "$file" ]; then
         awk -F "$delim" "{print \$$index}" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | awk -F "$delim" "{print \$$index}"
     fi
 }
 
 get_row() {
-    use_pipe="false"
+    use_pipe=false
     delim=" ; "
 
     index=1
@@ -122,13 +109,12 @@ get_row() {
     file=""
     list=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case "$arg" in
             "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
             "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
             "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe="true" ;;
+            "--use-pipe") use_pipe=true ;;
             *) index="$arg" ;;
         esac
     done
@@ -138,14 +124,11 @@ get_row() {
         index=$1
     fi
 
-    if [ "$use_pipe" = "true" ]
-    then
+    if [ "$use_pipe" = true ]; then
         sed -n "$index p"
-    elif [ -r "$file" ]
-    then
+    elif [ -r "$file" ]; then
         sed -n "$index p" "$file"
-    elif [ -n "$list" ]
-    then
+    elif [ "$list" ]; then
         echo "$list" | sed -n "$index p"
     fi
 }

@@ -6,9 +6,9 @@
 . "$lib/csv"
 . "$lib/clipboard"
 
-copy="false"
-use_history="false"
-use_groups="false"
+copy=false
+use_history=false
+use_groups=false
 browser_cmd="xdg-open"
 
 get_bookmarks() {
@@ -24,8 +24,7 @@ get_bookmark() {
 }
 
 get_bookmark_history() {
-    if [ ! -e "$bookmark_history" ]
-    then
+    if [ ! -e "$bookmark_history" ]; then
         get_bookmarks > "$bookmark_history"
     fi
 
@@ -43,8 +42,7 @@ get_group_urls() {
 }
 
 open_bookmark() {
-    if [ -n "$1" ]
-    then
+    if [ "$1" ]; then
         $browser_cmd "$1"
     fi
 }
@@ -52,59 +50,50 @@ open_bookmark() {
 open_bookmark_group() {
     urls=$(get_group_urls "$1")
 
-    for url in $urls
-    do
+    for url in $urls; do
         open_bookmark "$url"
     done
 }
 
 copy_bookmark() {
-    if [ -n "$1" ]
-    then
+    if [ "$1" ]; then
         set_clipboard "$1"
         notify-send "Copied" "$1"
     fi
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case "$arg" in
-        "--copy") copy="true" ;;
-        "--use-history") use_history="true" ;;
-        "--use-groups") use_groups="true" ;;
+        "--copy") copy=true ;;
+        "--use-history") use_history=true ;;
+        "--use-groups") use_groups=true ;;
         *) browser_cmd="$arg" ;;
     esac
 done
 
-if [ "$use_groups" = "true" ]
-then
+if [ "$use_groups" = true ]; then
     bookmark_key=$(get_bookmark_groups | menu -m "Groups")
 
-    if [ "$copy" = "true" ]
-    then
+    if [ "$copy" = true ]; then
         copy_bookmark "$(get_group_urls "$bookmark_key")"
     else
         open_bookmark_group "$bookmark_key"
     fi
 else
-    if [ "$use_history" = true ]
-    then
+    if [ "$use_history" = true ]; then
         bookmark_key=$(get_bookmark_history)
     else
         bookmark_key=$(get_bookmark)
     fi
 
-    if [ "$copy" = "true" ]
-    then
+    if [ "$copy" = true ]; then
         copy_bookmark "$(get_url "$bookmark_key")"
     else
-        if [ "$use_history" = "true" ]
-        then
+        if [ "$use_history" = true ]; then
             to_top "$bookmark_key" --file="$bookmark_history"
         fi
 
         open_bookmark "$(get_url "$bookmark_key")"
-
     fi
 fi
 

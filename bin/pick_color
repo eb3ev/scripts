@@ -12,8 +12,7 @@ get_rgb_value() {
 
 color=$(colorpicker --one-shot 2>/dev/null)
 
-if [ -n "$color" ]
-then
+if [ "$color" ]; then
     hex=$(get_hex_value "$color")
     rgb=$(get_rgb_value "$color")
 
