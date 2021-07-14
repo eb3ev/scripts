@@ -63,10 +63,10 @@ copy_bookmark() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--copy") copy=true ;;
-        "--use-history") use_history=true ;;
-        "--use-groups") use_groups=true ;;
+    case $arg in
+        --copy) copy=true ;;
+        --use-history) use_history=true ;;
+        --use-groups) use_groups=true ;;
         *) browser_cmd="$arg" ;;
     esac
 done

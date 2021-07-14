@@ -10,8 +10,8 @@ extract() {
     files=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--dir="*) 
+        case $arg in
+            --dir=*) 
                 arg_value=$(get_arg_value "--dir=" "$arg")
                 if [ -d "$arg_value" ]; then
                     dir="$arg_value"
@@ -36,7 +36,7 @@ extract() {
     IFS="
 "
     for file in $files; do
-        case "$file" in
+        case $file in
             *".tar"|*".tar.xz")
                 if [ -d "$dir" ]; then
                     tar xf "$file" -C "$dir"

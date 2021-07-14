@@ -20,8 +20,8 @@ get_emoji_history () {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--use-history") use_history=true ;;
+    case $arg in
+        --use-history) use_history=true ;;
     esac
 done
 

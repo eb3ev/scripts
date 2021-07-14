@@ -15,7 +15,7 @@ sync_mounted_devs
 while read mounted; do
     dev_name=$(get_column 1 --list="$mounted")
 
-    case "$mounted" in
+    case $mounted in
         *" ; android ; "*) identifier="$android_identifier" ;;
         *" ; removable ; "*) identifier="$removable_identifier" ;;
     esac
@@ -31,7 +31,7 @@ fi
 dev=$(echo "$mounted_devs" | menu -m --prompt="Unmount")
 
 if [ "$dev" ]; then
-    case "$dev" in
+    case $dev in
         "$android_identifier"*)
             dev="${dev##*$android_identifier}"
             mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)

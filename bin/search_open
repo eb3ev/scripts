@@ -36,16 +36,16 @@ directories=""
 filters=""
 
 for arg in "$@"; do
-    case "$arg" in
-        "--sudo") require_sudo=true ;;
-        "--filter-txt") filters=$(list_add "$filters" "--txt") ;;
-        "--filter-doc") filters=$(list_add "$filters" "--doc") ;;
-        "--filter-img") filters=$(list_add "$filters" "--img") ;;
-        "--filter-vid") filters=$(list_add "$filters" "--vid") ;;
-        "--filter-archive") filters=$(list_add "$filters" "--archive") ;;
-        "--filter-dir") type="dir" ;;
-        "--non-recursive") recursive=false ;;
-        "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
+    case $arg in
+        --sudo) require_sudo=true ;;
+        --filter-txt) filters=$(list_add "$filters" "--txt") ;;
+        --filter-doc) filters=$(list_add "$filters" "--doc") ;;
+        --filter-img) filters=$(list_add "$filters" "--img") ;;
+        --filter-vid) filters=$(list_add "$filters" "--vid") ;;
+        --filter-archive) filters=$(list_add "$filters" "--archive") ;;
+        --filter-dir) type="dir" ;;
+        --non-recursive) recursive=false ;;
+        --prompt=*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         *)
             if [ -d "$arg" ]; then
                 directories=$(list_add "$directories" "$arg")

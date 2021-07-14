@@ -16,7 +16,7 @@ Maximize"
 get_pos() {
     pos_opt=$(echo "$pos_opts" | menu -m --prompt="漣")
 
-    case "$pos_opt" in
+    case $pos_opt in
         "Zoom") echo "--zoom" ;;
         "Center") echo "--center" ;;
         "Stretch") echo "--stretch" ;;
@@ -56,11 +56,15 @@ set_wallpaper() {
     args=""
     num_monitors=$(echo "$monitors" | wc -l)
     for _ in $(seq 1 $num_monitors); do
-        [ ! "$monitors" ] && break
+        if [ ! "$monitors" ]; then
+            break
+        fi
 
         monitor=$(echo "$monitors" | menu -m --prompt=" ")
 
-        [ ! "$monitor" ] && exit 0
+        if [ ! "$monitor" ]; then
+            exit 0
+        fi
 
         if [ "$monitor" = "Span" ]; then
             monitor_arg="--no-randr"
@@ -73,7 +77,9 @@ set_wallpaper() {
 
         wallpaper_arg=$(get_wallpaper)
 
-        [ ! "$wallpaper_arg" ] && exit 0
+        if [ ! "$wallpaper_arg" ]; then
+            exit 0
+        fi
 
         args="$args $monitor_arg $wallpaper_arg"
     done
@@ -92,7 +98,9 @@ set_preset_wallpaper() {
 
     presets=$(get_presets "$hostname")
 
-    [ ! "$presets" ] && exit 0
+    if [ ! "$presets" ]; then
+        exit 0
+    fi
     
     preset=$(echo "$presets" | menu -m --prompt="   Presets")
 
@@ -104,8 +112,8 @@ set_preset_wallpaper() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--use-presets") use_presets=true ;;
+    case $arg in
+        --use-presets) use_presets=true ;;
     esac
 done
 

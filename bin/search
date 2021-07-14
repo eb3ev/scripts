@@ -19,8 +19,8 @@ create_histfile() {
 } 
 
 for arg in "$@"; do
-    case "$arg" in
-        "--use-history") use_history=true ;;
+    case $arg in
+        --use-history) use_history=true ;;
         *) browser_cmd="$arg" ;;
     esac
 done

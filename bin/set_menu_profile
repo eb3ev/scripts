@@ -17,8 +17,7 @@ arg_check() {
 
 opt="${1:-$(echo "$opts" | menu -m --prompt="Profiles")}"
 
-if arg_check "$opt"
-then
+if arg_check "$opt"; then
     set_value "$opt" "$menurc"
 fi
 

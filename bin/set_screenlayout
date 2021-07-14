@@ -28,8 +28,8 @@ get_screenlayouts() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--save") save_layout=true ;;
+    case $arg in
+        --save) save_layout=true ;;
     esac
 done
 

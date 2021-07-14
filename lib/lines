@@ -12,10 +12,10 @@ prepend_to_lines() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -38,10 +38,10 @@ append_to_lines() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -65,10 +65,10 @@ prepend_line() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -96,10 +96,10 @@ append_line() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -122,10 +122,10 @@ rm_line() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -150,10 +150,10 @@ to_top() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            -list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -176,10 +176,10 @@ to_bottom() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) line="$arg" ;;
         esac
     done
@@ -313,11 +313,11 @@ index_of() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
-            "--singular") singular=true ;;
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
+            --singular) singular=true ;;
             *) line="$arg" ;;
         esac
     done

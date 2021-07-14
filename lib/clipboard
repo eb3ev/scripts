@@ -6,9 +6,9 @@
 get_clipboard() {
     selection="clipboard"
 
-    case "$1" in
-        "--primary") selection="primary" ;;
-        "--secondary") selection="secondary" ;;
+    case $1 in
+        --primary) selection="primary" ;;
+        --secondary) selection="secondary" ;;
     esac
 
     xclip -selection "$selection" -o 2>/dev/null
@@ -22,10 +22,10 @@ set_clipboard() {
 
     for arg in "$@"
     do
-        case "$arg" in
-            "--primary") selection="primary" ;;
-            "--secondary") selection="secondary" ;;
-            "--trailing-new-line") trailing_new_line=true ;;
+        case $arg in
+            --primary) selection="primary" ;;
+            --secondary) selection="secondary" ;;
+            --trailing-new-line) trailing_new_line=true ;;
             *) clipboard=$(list_add "$clipboard" "$arg") ;;
         esac
     done

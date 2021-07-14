@@ -28,7 +28,7 @@ fi
 dev=$(echo "$mountable_devs" | menu -m --prompt="Mount")
 
 if [ "$dev" ]; then
-    case "$dev" in
+    case $dev in
         "$android_identifier"*)
             dev="${dev##*$android_identifier}"
             mount_pt=$(mount_android "$dev")

@@ -26,10 +26,10 @@ get_scripts_history() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--sudo") require_sudo=true ;;
-        "--use-history") use_history=true ;;
-        "--print-cmd") run=false ;;
+    case $arg in
+        --sudo) require_sudo=true ;;
+        --use-history) use_history=true ;;
+        --print-cmd) run=false ;;
     esac
 done
 

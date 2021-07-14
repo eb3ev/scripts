@@ -13,12 +13,12 @@ keys() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--pattern="*) pattern=$(get_arg_value "--pattern=" "$arg") ;;
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --delim=*) delim=$(get_arg_value "--delim=" "$arg") ;;
+            --pattern=*) pattern=$(get_arg_value "--pattern=" "$arg") ;;
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
         esac
     done
 
@@ -42,12 +42,12 @@ value() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--index="*) index=$(get_arg_value "--index=" "$arg") ;;
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --delim=*) delim=$(get_arg_value "--delim=" "$arg") ;;
+            --index=*) index=$(get_arg_value "--index=" "$arg") ;;
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) key="$arg" ;;
         esac
     done
@@ -78,11 +78,11 @@ get_column() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --delim=*) delim=$(get_arg_value "--delim=" "$arg") ;;
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) index="$arg" ;;
         esac
     done
@@ -110,18 +110,18 @@ get_row() {
     list=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--delim="*) delim=$(get_arg_value "--delim=" "$arg") ;;
-            "--file="*) file=$(get_arg_value "--file=" "$arg") ;;
-            "--list="*) list=$(get_arg_value "--list=" "$arg") ;;
-            "--use-pipe") use_pipe=true ;;
+        case $arg in
+            --delim=*) delim=$(get_arg_value "--delim=" "$arg") ;;
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
             *) index="$arg" ;;
         esac
     done
 
     if [ ! "$index" -ge 1 ] 2>/dev/null
     then
-        index=$1
+        index=1
     fi
 
     if [ "$use_pipe" = true ]; then

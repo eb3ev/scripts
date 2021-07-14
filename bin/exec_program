@@ -24,11 +24,11 @@ get_program_history() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--sudo") require_sudo=true ;;
-        "--use-history") use_history=true ;;
-        "--print-cmd") run=false ;;
-        "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
+    case $arg in
+        --sudo) require_sudo=true ;;
+        --use-history) use_history=true ;;
+        --print-cmd) run=false ;;
+        --prompt=*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
     esac
 done
 

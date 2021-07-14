@@ -26,15 +26,19 @@ get_window_menu_args() {
     if [ "$use_fuzzy" = true ]; then
         args="$args -F"
     fi
+
     if [ "$use_alt" = true ]; then
         args="$args -bw 4"
     fi
+
     if [ "$always_match" = true ]; then
         args="$args -r"
     fi
+
     if [ "$hidden" = true ]; then
         args="$args -P"
     fi
+
     if [ "$prompt" ]; then
         args="$args -p \"$prompt\""
     fi
@@ -94,21 +98,21 @@ term_window_menu() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--prompt="*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
-        "--custom="*) custom_args=$(get_arg_value "--custom=" "$arg") ;;
-        "-"*)
-            case "$arg" in
-                *"f"*) use_fuzzy=true ;;
+    case $arg" in
+        --prompt=*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
+        --custom=*) custom_args=$(get_arg_value "--custom=" "$arg") ;;
+        -*)
+            case $arg in
+                *f*) use_fuzzy=true ;;
             esac
-            case "$arg" in
-                *"a"*) use_alt=true ;;
+            case $arg in
+                *a*) use_alt=true ;;
             esac
-            case "$arg" in
-                *"m"*) always_match=true ;;
+            case $arg in
+                *m*) always_match=true ;;
             esac
-            case "$arg" in
-                *"h"*) hidden=true ;;
+            case $arg in
+                *h*) hidden=true ;;
             esac
             ;;
     esac
@@ -117,7 +121,7 @@ done
 if [ "$DISPLAY" ]; then
     config="${override_menu:-$(cat "$menurc" 2>/dev/null)}"
 
-    case "$config" in
+    case $config in
         "top_window") top_window_menu ;;
         "center_window") center_window_menu ;;
         "bottom_window") bottom_window_menu ;;

@@ -11,15 +11,19 @@ new_window=false
 
 open_url() {
     args=""
+
     if [ "$diff_browser" = true ]; then
         args="$args --use-diff"
     fi
+
     if [ "$new_tab" = true ]; then
         args="$args --new-tab"
     fi
+
     if [ "$new_window" = true ]; then
         args="$args --new-window"
     fi
+
     browser $args "$1"
 }
 
@@ -41,11 +45,11 @@ invalid() {
 }
 
 for arg in "$@"; do
-    case "$arg" in
-        "--new-tab") new_tab=true ;;
-        "--new-window") new_window=true ;;
-        "--open-term") open_term=true ;;
-        "--diff-browser") diff_browser=true ;;
+    case $arg in
+        --new-tab) new_tab=true ;;
+        --new-window) new_window=true ;;
+        --open-term) open_term=true ;;
+        --diff-browser) diff_browser=true ;;
     esac
 done
 
@@ -61,7 +65,7 @@ else
     type=""
 fi
 
-case "$type" in
+case $type in
     "url") open_url "$clipboard" ;;
     "dir") open_dir "$clipboard" ;;
     "file") open_file "$clipboard" ;;

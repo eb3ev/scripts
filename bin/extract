@@ -9,8 +9,8 @@ args=""
 
 for arg in "$@"
 do
-    case "$arg" in
-        "--dir="*) 
+    case $arg in
+        --dir=*) 
             arg_value=$(get_arg_value "--dir=" "$arg")
             if [ -d "$arg_value" ]; then
                 args=$(list_add "$args" "$arg")

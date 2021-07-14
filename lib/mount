@@ -18,17 +18,24 @@ get_removable_dev_names() {
 }
 
 is_android_mounted() {
-    grep -Fq "simple-mtpfs $1" "/etc/mtab" && return 0 || return 1
+    if grep -Fq "simple-mtpfs $1" "/etc/mtab"; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 is_removable_mounted() {
-    grep -Fq -- "$1" "/etc/mtab" && return 0 || return 1
+    if grep -Fq -- "$1" "/etc/mtab"; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 sync_mounted_devs() {
-    while read mounted
-    do
-        case "$mounted" in
+    while read mounted; do
+        case $mounted in
             *" ; android ; "*)
                 mount_point=$(get_column 3 --list="$mounted")
 
@@ -48,17 +55,14 @@ sync_mounted_devs() {
 get_android_devs() {
     android_devs=$(simple-mtpfs -l 2>/dev/null | awk -F ": " '{print $2";"$1}')
 
-    if [ "$1" = "--exclude-mounted" ]
-    then
+    if [ "$1" = "--exclude-mounted" ]; then
         sync_mounted_devs
 
         IFS="
 "
-        for dev in $android_devs
-        do
+        for dev in $android_devsl do
             dev_name=$(get_column 1 --list="$dev" --delim=";")
-            if grep -Fq -- "$dev_name" "$mounted_dev_cache"
-            then
+            if grep -Fq -- "$dev_name" "$mounted_dev_cache"; then
                 android_devs=$(rm_line "$dev" --list="$android_devs")
             fi
         done
@@ -92,7 +96,7 @@ get_mount_point() {
     mount_pt=""
 
     for dir in "$mount_pts_dir"/*; do
-        case "${dir##*/}" in
+        case ${dir##*/} in
             "$base_mount_pt_name"*)
                 if [ ! "$(ls -A "$dir" 2>/dev/null)" ]; then
                     mount_pt="$dir"

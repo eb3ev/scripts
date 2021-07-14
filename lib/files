@@ -16,22 +16,22 @@ find_cmd() {
     args=""
 
     for arg in "$@"; do
-        case "$arg" in
-            "--include-hidden")
+        case $arg in
+            --include-hidden)
                 if [ "$use_fd" = true ]; then
                     args="$args -H -I"
                 fi
                 ;;
-            "--non-recursive")
+            --non-recursive)
                 if [ "$use_fd" = true ]; then
                     args="$args -d 1"
                 else
                     args="$args -maxdepth 1"
                 fi
                 ;;
-            "--type="*)
+            --type=*)
                 type=$(get_arg_value "--type=" "$arg")
-                case "$type" in
+                case $type in
                     "file")
                         if [ "$use_fd" = true ]; then
                             args="$args -t f"
@@ -76,7 +76,7 @@ set_value() {
 
 create_file() {
     if [ ! -e "$1" ]; then
-        case "$1" in
+        case $1 in
             *"/"*) mkdir -p "${1%/*}" ;;
         esac
 
@@ -86,7 +86,7 @@ create_file() {
 
 create_script_file() {
     if [ ! -e "$1" ]; then
-        case "$1" in
+        case $1 in
             *"/"*) mkdir -p "${1%/*}" ;;
         esac
 

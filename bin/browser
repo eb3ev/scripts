@@ -16,12 +16,12 @@ diff_browser=false
 queries=""
 
 for arg in "$@"; do
-    case "$arg" in
-        "--new-window") new_window=true ;;
-        "--new-tab") new_tab=true ;;
-        "--print-cmd") run=false ;;
-        "--use-clipboard") use_clipboard=true ;;
-        "--use-diff") diff_browser=true ;;
+    case $arg in
+        --new-window) new_window=true ;;
+        --new-tab) new_tab=true ;;
+        --print-cmd) run=false ;;
+        --use-clipboard) use_clipboard=true ;;
+        --use-diff) diff_browser=true ;;
         *) queries=$(list_add "$queries" "$arg") ;;
     esac
 done
@@ -49,8 +49,7 @@ fi
 if [ "$use_clipboard" = true ]; then
     clipboard=$(get_clipboard)
 
-    if [ "$(filter --url "$clipboard")" ]
-    then
+    if [ "$(filter --url "$clipboard")" ]; then
         queries=$(list_add "$queries" "$clipboard")
     fi
 fi

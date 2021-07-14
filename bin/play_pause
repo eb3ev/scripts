@@ -19,7 +19,7 @@ $play_all"
         player=$(echo "$players" | menu -m --prompt=" ")
 
         if [ "$player" ]; then
-            case "$player" in
+            case $player in
                 "$pause_all") playerctl -a pause ;;
                 "$play_all") playerctl -a play ;;
                 *) playerctl --player="$player" play-pause ;;

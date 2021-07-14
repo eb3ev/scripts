@@ -28,10 +28,10 @@ directories=""
 filters=""
 
 for arg in "$@"; do
-    case "$arg" in
-        "--new-window") new_window=true ;;
-        "--sudo") require_sudo=true ;;
-        "--use-filter") filters=$(list_add "$filters" "--filter-txt") ;;
+    case $arg in
+        --new-window) new_window=true ;;
+        --sudo) require_sudo=true ;;
+        --use-filter) filters=$(list_add "$filters" "--filter-txt") ;;
         *)
             if [ -d "$arg" ]; then
                 directories=$(list_add "$directories" "'$arg'")
