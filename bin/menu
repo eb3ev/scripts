@@ -98,7 +98,7 @@ term_window_menu() {
 }
 
 for arg in "$@"; do
-    case $arg" in
+    case $arg in
         --prompt=*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
         --custom=*) custom_args=$(get_arg_value "--custom=" "$arg") ;;
         -*)
