@@ -17,7 +17,7 @@ if [ "$1" ]; then
     if [ -e "$1" ]; then
         copy "$(readlink -f "$1")"
     else
-        echo "Invalid Path: "$1""
+        echo "Invalid Path: \"$1\""
         notify-send "Invalid Path" "$1"
     fi
 else

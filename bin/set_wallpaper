@@ -51,10 +51,9 @@ set_wallpaper() {
     monitors=$(list_add "$monitors" "Span")
 
     monitor_arg=""
-    pos=""
 
     args=""
-    num_monitors=$(echo "$monitors" | wc -l)
+    num_monitors=$(len "$monitors")
     for _ in $(seq 1 $num_monitors); do
         if [ ! "$monitors" ]; then
             break

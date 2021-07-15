@@ -1,6 +1,4 @@
 #!/bin/sh
 
-. "$SCRIPTS_HOME/scriptsrc"
-
-bookmarks --copy
+"$SCRIPTS_BIN"/bookmarks --copy
 

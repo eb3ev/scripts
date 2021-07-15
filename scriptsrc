@@ -6,3 +6,6 @@ bin="$SCRIPTS_HOME/bin"
 
 PATH="$PATH:$bin"
 
+NL="
+"
+

@@ -11,14 +11,14 @@ set_wm() {
 
 get_curr_wm() {
     curr_wm=$(cat "$wmrc" 2>/dev/null)
-    if grep -Fxq "$curr_wm" "$lib/data/wms" && installed "$curr_wm"; then
+    if grep -Fxq "$curr_wm" "$lib/data/wms" && is_installed "$curr_wm"; then
         echo "$curr_wm"
     fi
 }
 
 wms=""
 while read wm; do
-    if installed "$wm"; then
+    if is_installed "$wm"; then
         wms=$(list_add "$wms" "$wm")
     fi
 done 2>/dev/null < "$lib/data/wms"
@@ -38,7 +38,7 @@ if [ "$wm" ]; then
     if [ "$DISPLAY" ]; then
         kill_all
 
-        if [ "$(pgrep -x "xinit")" ]; then
+        if is_running "$1" ; then
             pkill "xinit"
         fi
     fi

@@ -48,6 +48,7 @@ sync_mounted_devs() {
                 if is_removable_mounted "${dev_name##*」}"; then
                     rm_line "$mounted" --file="$mounted_dev_cache"
                 fi
+                ;;
         esac
     done 2>/dev/null < "$mounted_dev_cache"
 }
@@ -58,9 +59,8 @@ get_android_devs() {
     if [ "$1" = "--exclude-mounted" ]; then
         sync_mounted_devs
 
-        IFS="
-"
-        for dev in $android_devsl do
+        IFS="$NL"
+        for dev in $android_devs; do
             dev_name=$(get_column 1 --list="$dev" --delim=";")
             if grep -Fq -- "$dev_name" "$mounted_dev_cache"; then
                 android_devs=$(rm_line "$dev" --list="$android_devs")
@@ -82,7 +82,7 @@ get_android_dev_names() {
     get_column 1 --list="$android_devs" --delim=";"
 }
 
-get_android_id() {
+get_android_dev_id() {
     value "$1" --list="$2" --index=2 --delim=";"
 }
 
@@ -135,10 +135,10 @@ unmount_removable() {
 }
 
 mount_android() {
-    android_id=$(get_android_id "$1" "$(get_android_devs)")
+    android_dev_id=$(get_android_dev_id "$1" "$(get_android_devs)")
     mount_pt="${2:-$(get_mount_point "android")}"
 
-    simple-mtpfs --device $android_id "$mount_pt" || return
+    simple-mtpfs --device $android_dev_id "$mount_pt" || return
 
     if is_android_mounted "$mount_pt"; then
         echo "$1 ; android ; $mount_pt" >> "$mounted_dev_cache"

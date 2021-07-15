@@ -27,7 +27,7 @@ for arg in "$@"; do
 done
 
 if [ "$diff_browser" = true ]; then
-    browser=$(installed_browsers | menu -m --prompt="Browser")
+    browser=$(is_installed_browsers | menu -m --prompt="Browser")
 
     [ "$browser" ] || exit 0
 else
@@ -36,7 +36,7 @@ fi
 
 browser_cmd=$(get_cmd "$browser")
 
-if installed "$browser_cmd"; then
+if is_installed "$browser_cmd"; then
     if [ "$new_window" = true ]; then
         browser_cmd=$(get_new_win_cmd "$browser")
     elif [ "$new_tab" = true ]; then

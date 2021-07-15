@@ -25,15 +25,14 @@ get_names() {
     get_column 1 --file="$lib/data/browsers"
 }
 
-installed_browsers() {
+is_installed_browsers() {
     browser_list=$(get_names)
 
-    IFS="
-"
+    IFS="$NL"
     for browser in $browser_list; do
         browser_cmd=$(get_cmd "$browser")
 
-        if installed "$browser_cmd"; then
+        if is_installed "$browser_cmd"; then
             new_browser_list=$(list_add "$new_browser_list" "$browser")
         fi
     done

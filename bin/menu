@@ -84,7 +84,7 @@ term_window_menu() {
 
     cat > "$tmp_list" 2>/dev/null
 
-    if installed "xterm"; then
+    if is_installed "xterm"; then
         override_term_cmd="xterm -T Menu -e" term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""
     else
         term_exec --no-fork "fzf $(get_term_menu_args) > \"$tmp_result\" < \"$tmp_list\""

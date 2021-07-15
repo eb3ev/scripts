@@ -1,6 +1,6 @@
 #!/bin/sh
 
-installed() {
+is_installed() {
     if [ "$(command -v "$1")" ]; then
         return 0
     else
@@ -8,8 +8,24 @@ installed() {
     fi
 }
 
-sync_program_file() {
-    IFS=:
+is_running() {
+    if [ "$(pgrep -x "$1")" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+is_not_running() {
+    if [ "$(pgrep -x "$1")" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+sync_program_cache() {
+    IFS=":"
     if stest -dqr -n "$1" $PATH; then
         stest -flx $PATH | sort -u > "$1"
     fi

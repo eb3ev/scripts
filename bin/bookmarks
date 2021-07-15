@@ -72,7 +72,7 @@ for arg in "$@"; do
 done
 
 if [ "$use_groups" = true ]; then
-    bookmark_key=$(get_bookmark_groups | menu -m "Groups")
+    bookmark_key=$(get_bookmark_groups | menu -m --prompt="Groups")
 
     if [ "$copy" = true ]; then
         copy_bookmark "$(get_group_urls "$bookmark_key")"

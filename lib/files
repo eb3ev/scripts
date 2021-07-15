@@ -6,7 +6,7 @@
 . "$lib/args"
 
 find_cmd() {
-    if installed "fd"; then
+    if is_installed "fd"; then
         use_fd=true
     else
         use_fd=false
@@ -56,8 +56,7 @@ find_cmd() {
         esac
     done
 
-    IFS="
-"
+    IFS="$NL"
     if [ "$use_fd" = true ]; then
         eval fd . $dirs $args
     else
@@ -77,7 +76,7 @@ set_value() {
 create_file() {
     if [ ! -e "$1" ]; then
         case $1 in
-            *"/"*) mkdir -p "${1%/*}" ;;
+            */*) mkdir -p "${1%/*}" ;;
         esac
 
         printf "" > "$1"
@@ -87,7 +86,7 @@ create_file() {
 create_script_file() {
     if [ ! -e "$1" ]; then
         case $1 in
-            *"/"*) mkdir -p "${1%/*}" ;;
+            */*) mkdir -p "${1%/*}" ;;
         esac
 
         echo '#!/bin/sh' > "$1" && chmod +x "$1"

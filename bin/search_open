@@ -6,8 +6,6 @@
 . "$lib/files"
 . "$lib/args"
 
-use_filter=false
-new_window=false
 require_sudo=false
 recursive=true
 type="file"
@@ -19,8 +17,7 @@ get_file() {
         other_args="--non-recursive"
     fi
 
-    IFS="
-" 
+    IFS="$NL"
     find_cmd $1 --include-hidden --type="$type" $other_args | filter --use-pipe $2 | menu -m --prompt="$prompt"
 }
 

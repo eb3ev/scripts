@@ -2,11 +2,12 @@
 
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/var/cache"
+. "$lib/var/config"
 . "$lib/mount"
 . "$lib/lines"
 
-android_identifier="  "
-removable_identifier="  "
+android_id="  "
+removable_id="  "
 
 mounted_devs=""
 
@@ -16,11 +17,11 @@ while read mounted; do
     dev_name=$(get_column 1 --list="$mounted")
 
     case $mounted in
-        *" ; android ; "*) identifier="$android_identifier" ;;
-        *" ; removable ; "*) identifier="$removable_identifier" ;;
+        *" ; android ; "*) id="$android_id" ;;
+        *" ; removable ; "*) id="$removable_id" ;;
     esac
 
-    mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$identifier" --list="$dev_name")")
+    mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$id" --list="$dev_name")")
 done 2>/dev/null < "$mounted_dev_cache"
 
 if [ ! "$mounted_devs" ]; then
@@ -32,13 +33,13 @@ dev=$(echo "$mounted_devs" | menu -m --prompt="Unmount")
 
 if [ "$dev" ]; then
     case $dev in
-        "$android_identifier"*)
-            dev="${dev##*$android_identifier}"
+        "$android_id"*)
+            dev="${dev##*$android_id}"
             mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)
             unmount_android "$dev"
             ;;
-        "$removable_identifier"*)
-            dev="${dev##*$removable_identifier}"
+        "$removable_id"*)
+            dev="${dev##*$removable_id}"
             mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)
             unmount_removable "$dev"
             ;;

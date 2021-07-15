@@ -4,17 +4,17 @@
 . "$lib/mount"
 . "$lib/lines"
 
-android_identifier="  "
-removable_identifier="  "
+android_id="  "
+removable_id="  "
 
 android_devs=$(get_android_dev_names --exclude-mounted)
 if [ "$android_devs" ]; then
-    android_devs=$(prepend_to_lines "$android_identifier" --list="$android_devs")
+    android_devs=$(prepend_to_lines "$android_id" --list="$android_devs")
 fi
 
 removable_devs=$(get_removable_dev_names)
 if [ "$removable_devs" ]; then
-    removable_devs=$(prepend_to_lines "$removable_identifier" --list="$removable_devs")
+    removable_devs=$(prepend_to_lines "$removable_id" --list="$removable_devs")
 fi
 
 mountable_devs=$(list_add "$mountable_devs" "$android_devs")
@@ -29,8 +29,8 @@ dev=$(echo "$mountable_devs" | menu -m --prompt="Mount")
 
 if [ "$dev" ]; then
     case $dev in
-        "$android_identifier"*)
-            dev="${dev##*$android_identifier}"
+        "$android_id"*)
+            dev="${dev##*$android_id}"
             mount_pt=$(mount_android "$dev")
             if [ ! "$mount_pt" ]; then
                 notify-send "Alert" "Allow phone access"
@@ -38,8 +38,8 @@ if [ "$dev" ]; then
                 exit 0
             fi
             ;;
-        "$removable_identifier"*)
-            dev="${dev##*$removable_identifier}"
+        "$removable_id"*)
+            dev="${dev##*$removable_id}"
             mount_pt=$(mount_removable "$dev")
             ;;
     esac

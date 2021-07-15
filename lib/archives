@@ -33,66 +33,65 @@ extract() {
 
     echo $dir
 
-    IFS="
-"
+    IFS="$NL"
     for file in $files; do
         case $file in
-            *".tar"|*".tar.xz")
+            *.tar|*.tar.xz)
                 if [ -d "$dir" ]; then
                     tar xf "$file" -C "$dir"
                 else
                     tar xf "$file"
                 fi
                 ;;
-            *".tar.bz2"|*".bz2"|*".tbz2")
+            *.tar.bz2|*.bz2|*.tbz2)
                 if [ -d "$dir" ]; then
                     tar xjf "$file" -C "$dir"
                 else
                     tar xjf "$file"
                 fi
                 ;;
-            *".tar.gz"|*".tgz")
+            *.tar.gz|*.tgz)
                 if [ -d "$dir" ]; then
                     tar xzf "$file" -C "$dir"
                 else
                     tar xzf "$file"
                 fi
                 ;;
-            *".rar")
+            *.rar)
                 if [ -d "$dir" ]; then
                     unrar x "$file" "$dir"
                 else
                     unrar x "$file"
                 fi
                 ;;
-            *".gz")
+            *.gz)
                 gzip "$file"
                 ;;
-            *".zip")
+            *.zip)
                 if [ -d "$dir" ]; then
                     unzip "$file" -d "$dir"
                 else
                     unzip "$file"
                 fi
                 ;;
-            *".Z")
+            *.Z)
                 uncompress "$file"
                 ;;
-            *".7z")
+            *.7z)
                 if [ -d "$dir" ]; then
                     7z x "$file" -o"$dir"
                 else
                     7z x "$file"
                 fi
                 ;;
-            *".deb")
+            *.deb)
                 if [ -d "$dir" ]; then
                     ar x --output "$dir" "$file"
                 else
                     ar x "$file"
                 fi
                 ;;
-            *".tar.zst")
+            *.tar.zst)
                 if [ -d "$dir" ]; then
                     unzstd --output-dir-flat "$dir" "$file"
                 else

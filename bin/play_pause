@@ -1,20 +1,18 @@
 #!/bin/sh
 
 . "$SCRIPTS_HOME/scriptsrc"
+. "$SCRIPTS_HOME/lines"
 
 players=$(playerctl -l)
 
 if [ "$players" ]; then
-    if [ $(echo "$players" | wc -l) -eq 1 ]; then
+    if [ "$(len "$players")" -eq 1 ]; then
         playerctl --player="$players" play-pause
     else
         pause_all="  Pause All"
         play_all="  Play All"
 
-        players="\
-$players
-$pause_all
-$play_all"
+        players="$players$NL$pause_all$NL$play_all"
 
         player=$(echo "$players" | menu -m --prompt=" ")
 

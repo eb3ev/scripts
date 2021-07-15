@@ -48,8 +48,7 @@ append_to_lines() {
 
     if [ "$use_pipe" = true ]; then
         sed "s/$/$line/"
-    elif [ -w "$file" ];
-    then
+    elif [ -w "$file" ]; then
         sed -i "s/^/$line/" "$file"
     elif [ "$list" ]; then
         echo "$list" sed "s/$/$line/"
@@ -73,8 +72,7 @@ prepend_line() {
         esac
     done
 
-    if [ "$use_pipe" = true ]
-    then
+    if [ "$use_pipe" = true ]; then
         sed "1i\\$line"
     elif [ -w "$file" ]; then
         if [ -s "$file" ]; then
@@ -221,18 +219,38 @@ rm_list_dups() {
     echo "$new_list"
 }
 
+len() {
+    use_pipe=false
+
+    line=""
+
+    file=""
+    list=""
+
+    for arg in "$@"; do
+        case $arg in
+            --file=*) file=$(get_arg_value "--file=" "$arg") ;;
+            --list=*) list=$(get_arg_value "--list=" "$arg") ;;
+            --use-pipe) use_pipe=true ;;
+            *) list="${list:=$arg}" ;;
+        esac
+    done
+
+    if [ "$use_pipe" = true ]; then
+        wc -l 2>/dev/null
+    elif [ -w "$file" ]; then
+        wc -l 2>/dev/null < "$file"
+    elif [ "$list" ]; then
+        echo "$list" | wc -l 2>/dev/null
+    fi
+}
+
 concat_list() {
-    echo "$1
-$2"
+    echo "$1$NL$2"
 }
 
 list_add() {
-    if [ ! "$1" ]; then
-        echo "$2"
-    else
-        echo "$1
-$2"
-    fi
+    echo "${1:+$1$NL}$2"
 }
 
 # Syncs the file list to the main file list.
@@ -241,8 +259,7 @@ sync_file_file() {
 
     uniq=$(cat "$1" "$2" | sort | uniq -u)
 
-    IFS="
-"
+    IFS="$NL"
     for line in $uniq; do
         if ! grep -Fqx -- "$line" "$1"; then
             prepend_line "$line" --file="$1"
@@ -263,8 +280,7 @@ sync_file_list() {
 
     uniq=$(list_add "$2" "$(cat "$1" 2>/dev/null)" | sort | uniq -u)
 
-    IFS="
-"
+    IFS="$NL"
     for line in $uniq; do
         if ! grep -Fqx -- "$line" "$1"; then
             prepend_line "$line" --file="$1"
@@ -285,8 +301,7 @@ sync_list_list() {
 
     uniq=$(list_add "$2" "$new_list" | sort | uniq -u)
 
-    IFS="
-"
+    IFS="$NL"
     for line in $uniq; do
         if ! echo "$new_list" | grep -Fqx -- "$line"; then
             new_list=$(prepend_line "$line" --list="$new_list")

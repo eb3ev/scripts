@@ -7,7 +7,7 @@ single_instance "spotify"
 spt_class_name="spt"
 
 for pid in $(xdotool search --class "$spt_class_name"); do
-    xdotool windowkill $pid
+    xdotool windowkill "$pid"
 done
 
 override_term_cmd="alacritty -t \"spt\" --class $spt_class_name,$spt_class_name -e" term_exec "spt"

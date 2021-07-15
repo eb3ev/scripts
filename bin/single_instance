@@ -1,7 +1,10 @@
 #!/bin/sh
 
+. "$SCRIPTS_HOME/scriptsrc"
+. "$lib/program"
+
 launch_once() {
-    if [ ! "$(pgrep -x "$1")" ]; then
+    if is_not_running "$1"; then
         eval "$arg"
     fi
 }

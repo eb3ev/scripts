@@ -4,18 +4,17 @@
 . "$lib/program"
 
 toggle() {
-    if [ ! "$(pgrep -x "$1")" ]; then
+    if is_running "$1"; then
+        killall -s SIGKILL "$1" && sleep 1 && notify-send "$1" "Off" 2>/dev/null
+    else
         notify-send "$1" "On" &
         eval "$1 $2"
-    else
-        killall -s SIGKILL "$1" && sleep 1 && notify-send "$1" "Off" 2>/dev/null
     fi
 }
 
 program="${1:-$(exec_program --print-cmd --promt="Toggle")}"
 
-if installed "$program"
-then
+if is_installed "$program"; then
     toggle "$program" "$2"
 fi
 
