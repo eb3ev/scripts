@@ -4,7 +4,7 @@
 . "$lib/program"
 
 restart_program() {
-    if is_not_installed "$1"; then
+    if ! is_installed "$1"; then
         return
     fi
 

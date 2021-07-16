@@ -4,7 +4,7 @@
 . "$lib/program"
 
 launch_once() {
-    if is_not_running "$1"; then
+    if ! is_running "$1"; then
         eval "$arg"
     fi
 }

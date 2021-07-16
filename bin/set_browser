@@ -6,13 +6,13 @@
 . "$lib/browser"
 
 if [ $# -gt 0 ]; then
-    if is_installed_browsers | grep -Fqx -- "$1"; then
+    if get_installed_browsers | grep -Fqx -- "$1"; then
         new_browser="$1"
     else
         echo "Invalid: $1"
     fi
 else
-    new_browser=$(is_installed_browsers | menu -m --prompt="Browsers")
+    new_browser=$(get_installed_browsers | menu -m --prompt="Browsers")
 fi
 
 if [ "$new_browser" ]; then

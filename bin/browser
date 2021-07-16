@@ -29,7 +29,9 @@ done
 if [ "$diff_browser" = true ]; then
     browser=$(is_installed_browsers | menu -m --prompt="Browser")
 
-    [ "$browser" ] || exit 0
+    if [ ! "$browser" ]; then
+        exit 0
+    fi
 else
     browser=$(cat "$browserrc" 2>/dev/null)
 fi

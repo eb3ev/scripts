@@ -67,7 +67,7 @@ for arg in "$@"; do
         --copy) copy=true ;;
         --use-history) use_history=true ;;
         --use-groups) use_groups=true ;;
-        *) browser_cmd="$arg" ;;
+        *) browser_cmd=$arg ;;
     esac
 done
 

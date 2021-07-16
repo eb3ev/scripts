@@ -16,7 +16,7 @@ prepend_to_lines() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -42,7 +42,7 @@ append_to_lines() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -68,7 +68,7 @@ prepend_line() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -98,7 +98,7 @@ append_line() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -124,7 +124,7 @@ rm_line() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -152,7 +152,7 @@ to_top() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             -list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -178,7 +178,7 @@ to_bottom() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) line="$arg" ;;
+            *) line=$arg ;;
         esac
     done
 
@@ -232,7 +232,7 @@ len() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) list="${list:=$arg}" ;;
+            *) list=${list:=$arg} ;;
         esac
     done
 
