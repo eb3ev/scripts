@@ -8,6 +8,14 @@ is_installed() {
     fi
 }
 
+is_not_installed() {
+    if [ "$(command -v "$1")" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 is_running() {
     if [ "$(pgrep -x "$1")" ]; then
         return 0

@@ -4,7 +4,9 @@
 . "$lib/program"
 
 restart_program() {
-    is_installed "$1" || return
+    if is_not_installed "$1"; then
+        return
+    fi
 
     if is_running "$1"; then
         killall -s SIGKILL "$1" && sleep 1 && eval "$1" &

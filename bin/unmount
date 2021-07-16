@@ -23,6 +23,7 @@ while read mounted; do
 
     mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$id" --list="$dev_name")")
 done 2>/dev/null < "$mounted_dev_cache"
+unset mounted
 
 if [ ! "$mounted_devs" ]; then
     notify-send "Alert" "No unmountable devices"
