@@ -5,6 +5,10 @@
 program="${1:-$(exec_program --print-cmd --prompt="Man Page")}"
 
 if [ "$program" ]; then
-    term_exec "man \"$program\""
+    if man "$program" >/dev/null 2>&1; then
+        term_exec "man \"$program\""
+    else
+        notify-send "Alert" "No Manpage for $program"
+    fi
 fi
 
