@@ -17,7 +17,7 @@ get_file() {
         other_args="--non-recursive"
     fi
 
-    IFS="$NL"
+    IFS=$NL
     find_cmd $1 --include-hidden --type="$type" $other_args | filter --use-pipe $2 | menu -m --prompt="$prompt"
 }
 

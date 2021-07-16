@@ -33,7 +33,7 @@ extract() {
 
     echo $dir
 
-    IFS="$NL"
+    IFS=$NL
     for file in $files; do
         case $file in
             *.tar|*.tar.xz)

@@ -28,7 +28,7 @@ get_names() {
 is_installed_browsers() {
     browser_list=$(get_names)
 
-    IFS="$NL"
+    IFS=$NL
     for browser in $browser_list; do
         browser_cmd=$(get_cmd "$browser")
 

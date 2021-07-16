@@ -259,7 +259,7 @@ sync_file_file() {
 
     uniq=$(cat "$1" "$2" | sort | uniq -u)
 
-    IFS="$NL"
+    IFS=$NL
     for line in $uniq; do
         if ! grep -Fqx -- "$line" "$1"; then
             prepend_line "$line" --file="$1"
@@ -280,7 +280,7 @@ sync_file_list() {
 
     uniq=$(list_add "$2" "$(cat "$1" 2>/dev/null)" | sort | uniq -u)
 
-    IFS="$NL"
+    IFS=$NL
     for line in $uniq; do
         if ! grep -Fqx -- "$line" "$1"; then
             prepend_line "$line" --file="$1"
@@ -301,7 +301,7 @@ sync_list_list() {
 
     uniq=$(list_add "$2" "$new_list" | sort | uniq -u)
 
-    IFS="$NL"
+    IFS=$NL
     for line in $uniq; do
         if ! echo "$new_list" | grep -Fqx -- "$line"; then
             new_list=$(prepend_line "$line" --list="$new_list")

@@ -32,7 +32,7 @@ for arg in "$@"; do
     esac
 done
 
-sync_program_cache "$programs"
+sync_program_cache
 
 if [ "$use_history" = true ]; then
     program_list=$(get_program_history)

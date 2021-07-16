@@ -1,5 +1,8 @@
 #!/bin/sh
 
+. "$SCRIPTS_HOME/scriptsrc"
+. "$lib/var/config"
+
 is_installed() {
     if [ "$(command -v "$1")" ]; then
         return 0
@@ -33,9 +36,9 @@ is_not_running() {
 }
 
 sync_program_cache() {
-    IFS=":"
-    if stest -dqr -n "$1" $PATH; then
-        stest -flx $PATH | sort -u > "$1"
+    IFS=:
+    if stest -dqr -n "$programs" $PATH; then
+        stest -flx $PATH | sort -u > "$programs"
     fi
     unset IFS
 }

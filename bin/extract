@@ -30,7 +30,7 @@ do
     esac
 done
 
-IFS="$NL"
+IFS=$NL
 extract $args
 unset IFS
 

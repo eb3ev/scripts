@@ -56,7 +56,7 @@ find_cmd() {
         esac
     done
 
-    IFS="$NL"
+    IFS=$NL
     if [ "$use_fd" = true ]; then
         eval fd . $dirs $args
     else

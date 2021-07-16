@@ -8,7 +8,7 @@ bookmark_groups="${BOOKMARK_GROUPS:-$HOME/linux/lib/bookmarks/groups}"
 
 search_engines="${SEARCH_ENGINE:-$HOME/linux/lib/search_engines}"
 
-programs="${PROGRAM_LIST:-$HOME/.cache/dmenu_run}"
+programs="${XDG_CACHE_HOME:-$HOME/.cache}/programs"
 
 term_cmd="alacritty -e"
 

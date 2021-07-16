@@ -37,7 +37,7 @@ fi
 old_files=$(mktemp)
 new_files=$(mktemp)
 
-IFS="$NL"
+IFS=$NL
 for file in $files; do
     echo "${file##*/}" >> "$old_files"
     echo "${file##*/}" >> "$new_files"

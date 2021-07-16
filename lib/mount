@@ -25,11 +25,27 @@ is_android_mounted() {
     fi
 }
 
+is_not_android_mounted() {
+    if grep -Fq "simple-mtpfs $1" "/etc/mtab"; then
+        return 1
+    else
+        return 0
+    fi
+}
+
 is_removable_mounted() {
     if grep -Fq -- "$1" "/etc/mtab"; then
         return 0
     else
         return 1
+    fi
+}
+
+is_not_removable_mounted() {
+    if grep -Fq -- "$1" "/etc/mtab"; then
+        return 1
+    else
+        return 0
     fi
 }
 
@@ -59,7 +75,7 @@ get_android_devs() {
     if [ "$1" = "--exclude-mounted" ]; then
         sync_mounted_devs
 
-        IFS="$NL"
+        IFS=$NL
         for dev in $android_devs; do
             dev_name=$(get_column 1 --list="$dev" --delim=";")
             if grep -Fq -- "$dev_name" "$mounted_dev_cache"; then
