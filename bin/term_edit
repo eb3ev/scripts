@@ -10,9 +10,9 @@ if [ ! $# -eq 0 ]; then
             require_sudo=true
         else
             if [ "$require_sudo" = true ]; then
-                term_exec "$sudo_editor '$arg'; read hello" &
+                term_exec "sleep 0.1 && $sudo_editor '$arg'" &
             else
-                term_exec "${EDITOR:-$editor} '$arg'" &
+                term_exec "sleep 0.1 && ${EDITOR:-$editor} '$arg'" &
             fi
         fi
     done

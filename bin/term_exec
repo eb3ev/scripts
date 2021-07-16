@@ -9,9 +9,9 @@ for arg in "$@"; do
     if [ "$arg" = "--no-fork" ]; then
         no_fork=true
     elif [ "$no_fork" = true ]; then
-        eval "${override_term_cmd:-$term_cmd} sh -c 'sleep 0.5 && $arg'"
+        eval "${override_term_cmd:-$term_cmd} sh -c '$arg'"
     else
-        eval "${override_term_cmd:-$term_cmd} sh -c 'sleep 0.5 && $arg'" &
+        eval "${override_term_cmd:-$term_cmd} sh -c '$arg'" &
     fi
 done
 

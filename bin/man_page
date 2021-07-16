@@ -2,7 +2,7 @@
 
 . "$SCRIPTS_HOME/scriptsrc"
 
-program="${1:-$(exec_program --print-cmd --promt="Man Page")}"
+program="${1:-$(exec_program --print-cmd --prompt="Man Page")}"
 
 if [ "$program" ]; then
     term_exec "man \"$program\""
