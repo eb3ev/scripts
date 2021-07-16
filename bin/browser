@@ -27,7 +27,7 @@ for arg in "$@"; do
 done
 
 if [ "$diff_browser" = true ]; then
-    browser=$(is_installed_browsers | menu -m --prompt="Browser")
+    browser=$(get_installed_browsers | menu -m --prompt="Browser")
 
     if [ ! "$browser" ]; then
         exit 0
