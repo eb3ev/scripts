@@ -25,7 +25,7 @@ get_names() {
     get_column 1 --file="$lib/data/browsers"
 }
 
-is_installed_browsers() {
+get_installed_browsers() {
     browser_list=$(get_names)
 
     IFS=$NL
