@@ -37,3 +37,11 @@ set_clipboard() {
     fi
 }
 
+is_url() {
+    if [ "$(filter --url "$1")" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+

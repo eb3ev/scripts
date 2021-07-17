@@ -51,7 +51,7 @@ fi
 if [ "$use_clipboard" = true ]; then
     clipboard=$(get_clipboard)
 
-    if [ "$(filter --url "$clipboard")" ]; then
+    if is_url "$clipboard"; then
         queries=$(list_add "$queries" "$clipboard")
     fi
 fi

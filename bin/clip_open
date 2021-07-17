@@ -55,7 +55,7 @@ done
 
 clipboard=$(get_clipboard)
 
-if [ "$(filter --url "$clipboard")" ]; then
+if is_url "$clipboard"; then
     type="url"
 elif [ -d "$clipboard" ]; then
     type="dir"

@@ -6,7 +6,7 @@
 
 clipboard=$(get_clipboard)
 
-if [ "$(filter --url "$clipboard")" ]; then
+if is_url "$clipboard"; then
     bookmark_name=$(printf "" | override_menu='bottom_window' menu --prompt="Name ($clipboard)")
 
     if [ "$bookmark_name" ]; then
