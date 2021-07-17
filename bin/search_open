@@ -8,17 +8,26 @@
 
 require_sudo=false
 recursive=true
+show_previews=false
 type="file"
 
 prompt="Open"
 
 get_file() {
+    other_args=""
+
     if [ "$recursive" = false ]; then
         other_args="--non-recursive"
     fi
 
+    other_menu_args=""
+
+    if [ "$show_previews" = true ]; then
+        other_menu_args="-p"
+    fi
+
     IFS=$NL
-    find_cmd $1 --include-hidden --type="$type" $other_args | filter --use-pipe $2 | menu -m --prompt="$prompt"
+    find_cmd $1 --include-hidden --type="$type" $other_args | filter --use-pipe $2 | menu -m --prompt="$prompt" $other_menu_args
 }
 
 open_file() {
@@ -43,6 +52,7 @@ for arg in "$@"; do
         --filter-dir) type="dir" ;;
         --non-recursive) recursive=false ;;
         --prompt=*) prompt=$(get_arg_value "--prompt=" "$arg") ;;
+        --show-previews) show_previews=true ;;
         *)
             if [ -d "$arg" ]; then
                 directories=$(list_add "$directories" "$arg")

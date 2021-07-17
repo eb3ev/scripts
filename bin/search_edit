@@ -7,6 +7,7 @@
 
 new_window=false
 require_sudo=false
+show_previews=false
 
 edit_file() {
     if [ "$new_window" = true ]; then
@@ -32,6 +33,7 @@ for arg in "$@"; do
         --new-window) new_window=true ;;
         --sudo) require_sudo=true ;;
         --use-filter) filters=$(list_add "$filters" "--filter-txt") ;;
+        --show-previews) show_previews=true ;;
         *)
             if [ -d "$arg" ]; then
                 directories=$(list_add "$directories" "'$arg'")
@@ -54,5 +56,11 @@ else
     fi
 fi
 
-eval override_cmd="$run_cmd" search_open --prompt="Edit" $filters $directories
+other_args=""
+
+if [ "$show_previews" = true ]; then
+    other_args="--show-previews"
+fi
+
+eval override_cmd="$run_cmd" search_open --prompt="Edit" $filters $directories $other_args
 

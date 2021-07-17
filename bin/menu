@@ -9,7 +9,7 @@ use_fuzzy=false
 use_alt=false
 always_match=false
 hidden=false
-show_preview=false
+show_previews=false
 custom_args=""
 prompt=""
 
@@ -72,7 +72,7 @@ get_term_menu_args() {
         args="$args --prompt=\"$prompt \""
     fi
 
-    if [ "$show_preview" = true ]; then
+    if [ "$show_previews" = true ]; then
         args="$args --preview=\"bat --color=never {}\""
     fi
 
@@ -120,7 +120,7 @@ for arg in "$@"; do
                 *h*) hidden=true ;;
             esac
             case $arg in
-                *p*) show_preview=true ;;
+                *p*) show_previews=true ;;
             esac
             ;;
     esac
