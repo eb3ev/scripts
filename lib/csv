@@ -52,7 +52,7 @@ value() {
         esac
     done
 
-    if [ ! "$index" -ge 1 ] 2>/dev/null; then
+    if ! [ "$index" -ge 1 ] 2>/dev/null; then
         index=1
     fi
 
@@ -86,7 +86,7 @@ get_column() {
         esac
     done
 
-    if [ ! "$index" -ge 1 ] 2>/dev/null; then
+    if ! [ "$index" -ge 1 ] 2>/dev/null; then
         index=1
     fi
 
@@ -118,7 +118,7 @@ get_row() {
         esac
     done
 
-    if [ ! "$index" -ge 1 ] 2>/dev/null; then
+    if ! [ "$index" -ge 1 ] 2>/dev/null; then
         index=1
     fi
 
