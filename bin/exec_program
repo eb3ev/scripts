@@ -14,7 +14,7 @@ use_history=false
 prompt="Launch"
 
 get_program_history() {
-    if [ ! -e "$program_history" ]; then
+    if ! [ -e "$program_history" ]; then
         cp "$programs" "$program_history"
     fi
 

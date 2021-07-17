@@ -55,13 +55,13 @@ set_wallpaper() {
     args=""
     num_monitors=$(len "$monitors")
     for _ in $(seq 1 $num_monitors); do
-        if [ ! "$monitors" ]; then
+        if ! [ "$monitors" ]; then
             break
         fi
 
         monitor=$(echo "$monitors" | menu -m --prompt=" ")
 
-        if [ ! "$monitor" ]; then
+        if ! [ "$monitor" ]; then
             exit 0
         fi
 
@@ -76,7 +76,7 @@ set_wallpaper() {
 
         wallpaper_arg=$(get_wallpaper)
 
-        if [ ! "$wallpaper_arg" ]; then
+        if ! [ "$wallpaper_arg" ]; then
             exit 0
         fi
 
@@ -97,7 +97,7 @@ set_preset_wallpaper() {
 
     presets=$(get_presets "$hostname")
 
-    if [ ! "$presets" ]; then
+    if ! [ "$presets" ]; then
         exit 0
     fi
     

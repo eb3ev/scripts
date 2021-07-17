@@ -74,7 +74,7 @@ set_value() {
 }
 
 create_file() {
-    if [ ! -e "$1" ]; then
+    if ! [ -e "$1" ]; then
         case $1 in
             */*) mkdir -p "${1%/*}" ;;
         esac
@@ -84,7 +84,7 @@ create_file() {
 }
 
 create_script_file() {
-    if [ ! -e "$1" ]; then
+    if ! [ -e "$1" ]; then
         case $1 in
             */*) mkdir -p "${1%/*}" ;;
         esac

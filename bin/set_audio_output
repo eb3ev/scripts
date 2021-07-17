@@ -5,7 +5,7 @@
 
 sinks=$(get_sinks --exclude-default)
 
-if [ ! "$sinks" ]; then
+if ! [ "$sinks" ]; then
     notify-send "Alert" "No alternative outputs"
     exit 0
 fi

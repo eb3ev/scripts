@@ -3,7 +3,7 @@
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/var/config"
 
-if [ ! $# -eq 0 ]; then
+if ! [ $# -eq 0 ]; then
     for arg in "$@"; do
         if [ -d "$arg" ]; then
             term_exec "$term_fm '$arg'" &

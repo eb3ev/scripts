@@ -22,7 +22,7 @@ for arg in "$@"; do
     esac
 done
 
-if [ ! "$files" ]; then
+if ! [ "$files" ]; then
     if [ "$include_hidden" = true ]; then
         files=$(ls -A1 2>/dev/null)
     else
@@ -30,7 +30,7 @@ if [ ! "$files" ]; then
     fi
 fi
 
-if [ ! "$files" ]; then
+if ! [ "$files" ]; then
     exit 1
 fi
 

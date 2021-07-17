@@ -16,7 +16,7 @@ get_scripts_list() {
 get_scripts_history() {
     scripts_list=$(get_scripts_list)
 
-    if [ ! -e "$scripts_history" ]; then
+    if ! [ -e "$scripts_history" ]; then
         echo "$scripts_list" > "$scripts_history"
     fi
 

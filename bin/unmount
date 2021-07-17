@@ -25,7 +25,7 @@ while read mounted; do
 done 2>/dev/null < "$mounted_dev_cache"
 unset mounted
 
-if [ ! "$mounted_devs" ]; then
+if ! [ "$mounted_devs" ]; then
     notify-send "Alert" "No unmountable devices"
     exit 0
 fi

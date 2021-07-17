@@ -3,7 +3,7 @@
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/var/config"
 
-if [ ! $# -eq 0 ]; then
+if ! [ $# -eq 0 ]; then
     require_sudo=false
     for arg in "$@"; do
         if [ "$arg" = "--sudo" ]; then

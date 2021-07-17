@@ -20,7 +20,7 @@ fi
 mountable_devs=$(list_add "$mountable_devs" "$android_devs")
 mountable_devs=$(list_add "$mountable_devs" "$removable_devs")
 
-if [ ! "$mountable_devs" ]; then
+if ! [ "$mountable_devs" ]; then
     notify-send "Alert" "No mountable devices"
     exit 0
 fi
@@ -32,7 +32,7 @@ if [ "$dev" ]; then
         "$android_id"*)
             dev="${dev##*$android_id}"
             mount_pt=$(mount_android "$dev")
-            if [ ! "$mount_pt" ]; then
+            if ! [ "$mount_pt" ]; then
                 notify-send "Alert" "Allow phone access"
                 $0
                 exit 0

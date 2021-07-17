@@ -10,7 +10,7 @@ emojis="$lib/data/emojis"
 use_history=false
 
 get_emoji_history () {
-    if [ ! -e "$emoji_history" ]; then
+    if ! [ -e "$emoji_history" ]; then
         cp "$emojis" "$emoji_history"
     fi
 

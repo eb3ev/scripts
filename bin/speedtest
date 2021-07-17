@@ -5,7 +5,7 @@
 
 speedtest_result=$(speedtest --simple --secure 2>/dev/null | awk -F ": " '{print $2}') 
 
-if [ ! "$speedtest_result" ]; then
+if ! [ "$speedtest_result" ]; then
     notify-send "Error" "No Connection"
     exit 1
 fi

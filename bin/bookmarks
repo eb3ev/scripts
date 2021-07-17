@@ -24,7 +24,7 @@ get_bookmark() {
 }
 
 get_bookmark_history() {
-    if [ ! -e "$bookmark_history" ]; then
+    if ! [ -e "$bookmark_history" ]; then
         get_bookmarks > "$bookmark_history"
     fi
 

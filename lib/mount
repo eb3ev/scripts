@@ -103,7 +103,7 @@ get_android_dev_id() {
 }
 
 get_mount_point() {
-    if [ ! -d "$mount_pts_dir" ]; then
+    if ! [ -d "$mount_pts_dir" ]; then
         mkdir -p "$mount_pts_dir"
     fi
 
@@ -114,7 +114,7 @@ get_mount_point() {
     for dir in "$mount_pts_dir"/*; do
         case ${dir##*/} in
             "$base_mount_pt_name"*)
-                if [ ! "$(ls -A "$dir" 2>/dev/null)" ]; then
+                if ! [ "$(ls -A "$dir" 2>/dev/null)" ]; then
                     mount_pt="$dir"
                     break
                 else
@@ -125,7 +125,7 @@ get_mount_point() {
         esac
     done
 
-    if [ ! -d "$mount_pt" ]; then
+    if ! [ -d "$mount_pt" ]; then
         mount_pt="$mount_pts_dir/$base_mount_pt_name${i:-}"
 
         mkdir -p "$mount_pt"
