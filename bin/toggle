@@ -12,7 +12,7 @@ toggle() {
     fi
 }
 
-program="${1:-$(exec_program --print-cmd --promt="Toggle")}"
+program=${1:-$(exec_program --print-cmd --promt="Toggle")}
 
 if is_installed "$program"; then
     toggle "$program" "$2"

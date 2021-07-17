@@ -7,7 +7,7 @@
 
 if [ $# -gt 0 ]; then
     if get_installed_browsers | grep -Fqx -- "$1"; then
-        new_browser="$1"
+        new_browser=$1
     else
         echo "Invalid: $1"
     fi

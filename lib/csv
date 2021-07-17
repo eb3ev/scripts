@@ -114,7 +114,7 @@ get_row() {
             --file=*) file=$(get_arg_value "--file=" "$arg") ;;
             --list=*) list=$(get_arg_value "--list=" "$arg") ;;
             --use-pipe) use_pipe=true ;;
-            *) index="$arg" ;;
+            *) index=$arg ;;
         esac
     done
 

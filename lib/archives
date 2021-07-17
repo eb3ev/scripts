@@ -14,12 +14,12 @@ extract() {
             --dir=*) 
                 arg_value=$(get_arg_value "--dir=" "$arg")
                 if [ -d "$arg_value" ]; then
-                    dir="$arg_value"
+                    dir=$arg_value
                 else
                     mkdir -p "$arg_value" 2>/dev/null
 
                     if [ -d "$arg_value" ]; then
-                        dir="$arg_value"
+                        dir=$arg_value
                     fi
                 fi
                 ;;

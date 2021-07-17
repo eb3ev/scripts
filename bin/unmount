@@ -17,8 +17,8 @@ while read mounted; do
     dev_name=$(get_column 1 --list="$mounted")
 
     case $mounted in
-        *" ; android ; "*) id="$android_id" ;;
-        *" ; removable ; "*) id="$removable_id" ;;
+        *" ; android ; "*) id=$android_id ;;
+        *" ; removable ; "*) id=$removable_id ;;
     esac
 
     mounted_devs=$(list_add "$mounted_devs" "$(prepend_to_lines "$id" --list="$dev_name")")
@@ -35,12 +35,12 @@ dev=$(echo "$mounted_devs" | menu -m --prompt="Unmount")
 if [ "$dev" ]; then
     case $dev in
         "$android_id"*)
-            dev="${dev##*$android_id}"
+            dev=${dev##*$android_id}
             mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)
             unmount_android "$dev"
             ;;
         "$removable_id"*)
-            dev="${dev##*$removable_id}"
+            dev=${dev##*$removable_id}
             mount_pt=$(value "$dev" --file="$mounted_dev_cache" --index=3)
             unmount_removable "$dev"
             ;;

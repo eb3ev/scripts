@@ -115,10 +115,10 @@ get_mount_point() {
         case ${dir##*/} in
             "$base_mount_pt_name"*)
                 if ! [ "$(ls -A "$dir" 2>/dev/null)" ]; then
-                    mount_pt="$dir"
+                    mount_pt=$dir
                     break
                 else
-                    i="${dir##*/$base_mount_pt_name}"
+                    i=${dir##*/$base_mount_pt_name}
                     i=$((i + 1))
                 fi
                 ;;

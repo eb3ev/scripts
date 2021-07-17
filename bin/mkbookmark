@@ -17,3 +17,4 @@ if [ "$(filter --url "$clipboard")" ]; then
 else
     notify-send "Invalid URL" "$clipboard"
 fi
+

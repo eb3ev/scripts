@@ -30,7 +30,7 @@ dev=$(echo "$mountable_devs" | menu -m --prompt="Mount")
 if [ "$dev" ]; then
     case $dev in
         "$android_id"*)
-            dev="${dev##*$android_id}"
+            dev=${dev##*$android_id}
             mount_pt=$(mount_android "$dev")
             if ! [ "$mount_pt" ]; then
                 notify-send "Alert" "Allow phone access"
@@ -39,7 +39,7 @@ if [ "$dev" ]; then
             fi
             ;;
         "$removable_id"*)
-            dev="${dev##*$removable_id}"
+            dev=${dev##*$removable_id}
             mount_pt=$(mount_removable "$dev")
             ;;
     esac
