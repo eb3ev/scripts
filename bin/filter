@@ -24,12 +24,12 @@ if [ "$use_pipe" = true ]; then
     if [ "$args" ]; then
         for arg in $args; do
             case $arg in
-                --txt) $filter/files/filter_txt.awk ;;
-                --doc) $filter/files/filter_doc.awk ;;
-                --img) $filter/files/filter_img.awk ;;
-                --vid) $filter/files/filter_vid.awk ;;
-                --archive) $filter/files/filter_archive.awk ;;
-                --url) $filter/filter_url.awk ;;
+                --txt) "$filter"/files/filter_txt.awk ;;
+                --doc) "$filter"/files/filter_doc.awk ;;
+                --img) "$filter"/files/filter_img.awk ;;
+                --vid) "$filter"/files/filter_vid.awk ;;
+                --archive) "$filter"/files/filter_archive.awk ;;
+                --url) "$filter"/filter_url.awk ;;
             esac
         done
     else
@@ -39,12 +39,12 @@ else
     if [ "$args" ]; then
         for arg in $args; do
             case $arg in
-                --txt) echo "$vals" | $filter/files/filter_txt.awk ;;
-                --doc) echo "$vals" | $filter/files/filter_doc.awk ;;
-                --img) echo "$vals" | $filter/files/filter_img.awk ;;
-                --vid) echo "$vals" | $filter/files/filter_vid.awk ;;
-                --archive) echo "$vals" | $filter/files/filter_archive.awk ;;
-                --url) echo "$vals" | $filter/filter_url.awk ;;
+                --txt) echo "$vals" | "$filter"/files/filter_txt.awk ;;
+                --doc) echo "$vals" | "$filter"/files/filter_doc.awk ;;
+                --img) echo "$vals" | "$filter"/files/filter_img.awk ;;
+                --vid) echo "$vals" | "$filter"/files/filter_vid.awk ;;
+                --archive) echo "$vals" | "$filter"/files/filter_archive.awk ;;
+                --url) echo "$vals" | "$filter"/filter_url.awk ;;
             esac
         done
     else

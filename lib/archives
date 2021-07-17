@@ -31,8 +31,6 @@ extract() {
         esac
     done
 
-    echo $dir
-
     IFS=$NL
     for file in $files; do
         case $file in

@@ -20,7 +20,7 @@ create_setter_script() {
 get_screenlayouts() {
     monitor_count=$(xrandr | grep -c ' connected')
     layouts=""
-    for count in $(seq 1 $monitor_count); do
+    for count in $(seq 1 "$monitor_count"); do
         layouts=$(list_add "$layouts" "$(keys --file="$screenlayouts" --pattern="!/^ *#/ && NF && / ; $count ; / && / ; $(enc --awk-regex "$1") ; / {print \$1}")")
     done
 

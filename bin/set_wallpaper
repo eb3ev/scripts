@@ -54,7 +54,7 @@ set_wallpaper() {
 
     args=""
     num_monitors=$(len "$monitors")
-    for _ in $(seq 1 $num_monitors); do
+    for _ in $(seq 1 "$num_monitors"); do
         if ! [ "$monitors" ]; then
             break
         fi
