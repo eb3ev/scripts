@@ -1,6 +1,4 @@
 #!/bin/sh
 
-. "$SCRIPTS_HOME/scriptsrc"
-
-printf "" | override_menu="center_window" menu -h --prompt=" "
+printf "" | override_menu="center_window" "$SCRIPTS_BIN"/menu -h --prompt=" "
 
