@@ -1,6 +1,7 @@
 #!/bin/sh
 
 . "$SCRIPTS_HOME/scriptsrc"
+. "$lib/clipboard"
 
 get_hex_value() {
     echo "${1##*| }" | sed 's/Hex: //g'
@@ -18,6 +19,6 @@ if [ "$color" ]; then
 
     notify-send "Color" "$hex    $rgb"
 
-    printf "%s" "$hex" | xclip -selection clipboard
+    set_clipboard "$hex"
 fi
 
