@@ -20,8 +20,7 @@ set_clipboard() {
 
     clipboard=""
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         case $arg in
             --primary) selection="primary" ;;
             --secondary) selection="secondary" ;;

@@ -7,8 +7,7 @@
 
 args=""
 
-for arg in "$@"
-do
+for arg in "$@"; do
     case $arg in
         --dir=*) 
             arg_value=$(get_arg_value "--dir=" "$arg")

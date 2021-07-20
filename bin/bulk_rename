@@ -55,8 +55,7 @@ if cmp --silent "$old_files" "$new_files"; then
 fi
 
 i=1
-while read old_file
-do
+while read old_file; do
     new_file=$(get_row "$i" --file="$new_files" 2>/dev/null)
 
     if [ "$new_file" != "$old_file" ] && [ "$new_file" ] ; then
