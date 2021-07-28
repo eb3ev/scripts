@@ -4,7 +4,7 @@
 . "$lib/var/config"
 
 is_installed() {
-    if [ "$(command -v "$1")" ]; then
+    if command -v "$1" >/dev/null 2>&1; then
         return 0
     else
         return 1
@@ -12,7 +12,7 @@ is_installed() {
 }
 
 is_not_installed() {
-    if [ "$(command -v "$1")" ]; then
+    if command -v "$1" >/dev/null 2>&1; then
         return 1
     else
         return 0
