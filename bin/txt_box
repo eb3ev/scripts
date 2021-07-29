@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. "$SCRIPTS_HOME/scriptsrc"
+. "$lib/clipboard"
+
+tmp_file=$(mktemp)
+
+term_edit --no-fork "$tmp_file"
+
+if ! [ "$(wc -w < "$tmp_file")" -gt 0 ]; then
+    exit 0
+fi
+
+set_clipboard "$(cat "$tmp_file")"
+

@@ -2,17 +2,39 @@
 
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/var/config"
+. "$lib/lines"
 
-if ! [ $# -eq 0 ]; then
-    require_sudo=false
-    for arg in "$@"; do
-        if [ "$arg" = "--sudo" ]; then
-            require_sudo=true
+require_sudo=false
+no_fork=false
+
+files=""
+
+for arg in "$@"; do
+    case $arg in
+        --sudo) require_sudo=true ;;
+        --no-fork) no_fork=true ;;
+        *)
+            if [ -f "$arg" ] || [ -d "$arg" ]; then
+                files=$(list_add "$files" "$arg")
+            fi
+            ;;
+    esac
+done
+
+if [ "$files" ]; then
+    IFS=$NL
+    for file in $files; do
+        if [ "$no_fork" = true ]; then
+            if [ "$require_sudo" = true ]; then
+                term_exec --no-fork "sleep 0.1 && $sudo_editor '$file'"
+            else
+                term_exec --no-fork "sleep 0.1 && $editor '$file'"
+            fi
         else
             if [ "$require_sudo" = true ]; then
-                term_exec "sleep 0.1 && $sudo_editor '$arg'" &
+                term_exec "sleep 0.1 && $sudo_editor '$file'" &
             else
-                term_exec "sleep 0.1 && $editor '$arg'" &
+                term_exec "sleep 0.1 && $editor '$file'" &
             fi
         fi
     done
