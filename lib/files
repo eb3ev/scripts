@@ -66,11 +66,7 @@ find_cmd() {
 }
 
 set_value() {
-    if [ -s "$2" ]; then
-        sed -i '1,$d' "$2"
-    fi
-
-    echo "$1" >> "$2"
+    echo "$1" > "$2"
 }
 
 create_file() {

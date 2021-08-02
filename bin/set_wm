@@ -2,12 +2,9 @@
 
 . "$SCRIPTS_HOME/scriptsrc"
 . "$lib/lines"
+. "$lib/files"
 . "$lib/var/config"
 . "$lib/program"
-
-set_wm() {
-    rm -f "$wmrc" && echo "$1" > "$wmrc"
-}
 
 get_curr_wm() {
     curr_wm=$(cat "$wmrc" 2>/dev/null)
@@ -33,7 +30,7 @@ else
 fi
 
 if [ "$wm" ]; then
-    set_wm "$wm"
+    set_value "$wm" "$wmrc"
 
     if [ "$DISPLAY" ]; then
         kill_all
