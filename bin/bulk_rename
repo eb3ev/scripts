@@ -58,7 +58,7 @@ i=1
 while read old_file; do
     new_file=$(get_row "$i" --file="$new_files" 2>/dev/null)
 
-    if [ "$new_file" != "$old_file" ] && [ "$new_file" ] ; then
+    if [ "$new_file" != "$old_file" ] && [ "$new_file" ]; then
         if [ "$require_sudo" = true ]; then
             sudo mv -n -- "$old_file" "$new_file" 2>/dev/null
         else
