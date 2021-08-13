@@ -55,13 +55,13 @@ sync_mounted_devs() {
             *" ; android ; "*)
                 mount_point=$(get_column 3 --list="$mounted")
 
-                if is_android_mounted "$mount_point"; then
+                if ! is_android_mounted "$mount_point"; then
                     rm_line "$mounted" --file="$mounted_dev_cache"
                 fi
                 ;;
             *" ; removable ; "*)
                 dev_name=$(get_column 1 --list="$mounted")
-                if is_removable_mounted "${dev_name##*」}"; then
+                if ! is_removable_mounted "${dev_name##*」}"; then
                     rm_line "$mounted" --file="$mounted_dev_cache"
                 fi
                 ;;
