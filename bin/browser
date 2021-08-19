@@ -27,7 +27,14 @@ for arg in "$@"; do
 done
 
 if [ "$diff_browser" = true ]; then
-    browser=$(get_installed_browsers | menu -m --prompt="Browser")
+    browser_list=$(get_alt_browsers)
+
+    if ! [ "$browser_list" ]; then
+        notify-send "Alert" "No alternative browsers"
+        exit 0
+    fi
+
+    browser=$(echo "$browser_list" | menu -m --prompt="Browser")
 
     if ! [ "$browser" ]; then
         exit 0

@@ -4,6 +4,7 @@
 . "$lib/csv"
 . "$lib/program"
 . "$lib/lines"
+. "$lib/var/config"
 
 get_name() {
     value "$1" --file="$lib/data/browsers" --index=1
@@ -39,5 +40,9 @@ get_installed_browsers() {
     unset IFS
 
     echo "$new_browser_list"
+}
+
+get_alt_browsers() {
+    rm_line "$(cat "$browserrc" 2>/dev/null)" --list="$(get_installed_browsers)"
 }
 

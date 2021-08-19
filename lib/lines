@@ -133,9 +133,9 @@ rm_line() {
     if [ "$use_pipe" = true ]; then
         sed "/^$line$/d"
     elif [ -w "$file" ]; then
-        sed -i "/^$line\$/d" "$file"
+        sed -i "/^$line$/d" "$file"
     elif [ "$list" ]; then
-        echo "$list" | sed "/^$line\$/d"
+        echo "$list" | sed "/^$line$/d"
     fi
 }
 
