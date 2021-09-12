@@ -34,6 +34,7 @@ if [ "$wm" ]; then
 
     if [ "$DISPLAY" ]; then
         kill_all
+        sleep 0.5
 
         if is_running "xinit" ; then
             pkill "xinit"
